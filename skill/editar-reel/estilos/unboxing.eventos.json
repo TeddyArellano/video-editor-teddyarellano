@@ -1,0 +1,131 @@
+{
+ "_ayuda": "Ejemplo real (Google Cloud Summit). Gancho detrás de la persona: corre  reel recorte -p P --frames 120; la 2a línea va 'delante' para que se lea. Zooms sin cx/cy → reel zooms los propone.",
+ "fix": {
+  "Tiederellano": "Teddy Arellano",
+  "Unosllaveritos": "unos llaveritos"
+ },
+ "resaltar": [
+  "Google",
+  "Cloud",
+  "regaló",
+  "té",
+  "galletas",
+  "tetera"
+ ],
+ "secciones": {
+  "main": {
+   "zoom": 1.15,
+   "caras": 1
+  }
+ },
+ "gancho": {
+  "top": 280,
+  "dur": 3.6,
+  "detras": true,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "Google",
+    "fuente": "Poppins",
+    "peso": 800,
+    "size": 210,
+    "contorno": 0,
+    "anim": "letras",
+    "at": 4
+   },
+   {
+    "tipo": "texto",
+    "texto": "CLOUD SUMMIT",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "size": 104,
+    "color": "#FBBC04",
+    "contorno": 0,
+    "anim": "letras",
+    "at": 18,
+    "delante": true
+   }
+  ],
+  "sfx": [
+   {
+    "f": 8,
+    "sfx": "whoosh",
+    "vol": 0.2
+   },
+   {
+    "f": 22,
+    "sfx": "pop",
+    "vol": 0.25
+   }
+  ]
+ },
+ "etiquetas": [
+  {
+   "en": "gafete",
+   "dur": 3.2,
+   "texto": "TEDDY ARELLANO · CREADOR DE CONTENIDO"
+  }
+ ],
+ "zooms": [
+  {
+   "en": "botellita",
+   "dur": 1.6,
+   "cx": 0.543,
+   "cy": 0.54
+  },
+  {
+   "en": "gafete",
+   "dur": 1.6,
+   "cx": 0.48,
+   "cy": 0.42
+  },
+  {
+   "en": "cables",
+   "dur": 1.6,
+   "cx": 0.522,
+   "cy": 0.53
+  },
+  {
+   "en": "correita",
+   "dur": 1.6,
+   "cx": 0.5,
+   "cy": 0.4
+  },
+  {
+   "en": "llaveritos",
+   "dur": 1.6,
+   "cx": 0.601,
+   "cy": 0.594
+  },
+  {
+   "en": "decoraciones",
+   "dur": 1.6,
+   "cx": 0.666,
+   "cy": 0.523
+  },
+  {
+   "en": "té",
+   "dur": 1.6,
+   "cx": 0.641,
+   "cy": 0.662
+  },
+  {
+   "en": "cajita#1",
+   "dur": 1.6,
+   "cx": 0.448,
+   "cy": 0.626
+  },
+  {
+   "en": "tetera",
+   "dur": 1.6,
+   "cx": 0.474,
+   "cy": 0.75
+  },
+  {
+   "en": "tazita",
+   "dur": 1.6,
+   "cx": 0.606,
+   "cy": 0.674
+  }
+ ]
+}

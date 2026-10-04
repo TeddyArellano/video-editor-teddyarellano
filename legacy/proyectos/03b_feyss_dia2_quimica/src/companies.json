@@ -1,0 +1,30 @@
+[
+ {
+  "name": "JARRITOS",
+  "key": "jarritos",
+  "start": 0,
+  "end": 775,
+  "gain": 0.881
+ },
+ {
+  "name": "GRUPO INIX",
+  "key": "inix",
+  "start": 775,
+  "end": 1481,
+  "gain": 0.881
+ },
+ {
+  "name": "ALS GLOBAL",
+  "key": "als",
+  "start": 1481,
+  "end": 2239,
+  "gain": 1.084
+ },
+ {
+  "name": "GRUPO SPIN",
+  "key": "spin",
+  "start": 2239,
+  "end": 2838,
+  "gain": 0.692
+ }
+]

@@ -1,0 +1,13 @@
+{
+  "nombre": "humor-comparacion",
+  "descripcion": "Humor / comparación entre personas (ej. Qué lleva en su mochila: 1er vs 9no semestre). Gancho tipo cuaderno con stickers, contador de objetos, VS, SFX de comedia.",
+  "colores": {"acento": "#FFE14D", "texto": "#FFFFFF", "contorno": "#111111", "a": "#2F80ED", "b": "#EB5757", "pildora": "#2F80ED"},
+  "subtitulos": {"fuente": "Lilita One", "size": 80, "top": 1190, "contorno": 12, "maxPalabras": 3, "maxChars": 16, "mayus": true},
+  "camara": {"empuje": 0.04, "ancla_y": 0.38, "zoom_objeto": 1.5},
+  "contador": {"titulo": "OBJETOS", "fuente": "Lilita One", "fuente_num": "Bungee"},
+  "nombre": {"fuente": "Lilita One", "sub_fuente": "Permanent Marker"},
+  "etiqueta": {"fuente": "Lilita One", "peso": 400, "size": 40, "top": 1330},
+  "transicion": {"fuente": "Bangers", "texto_fuente": "Lilita One"},
+  "cierre": {"fuente": "Lilita One"},
+  "sfx_auto": {"objeto": "ding", "objeto_vol": 0.32, "zoom": "whoosh2", "zoom_vol": 0.16, "transicion": "whoosh", "aparece": null}
+}

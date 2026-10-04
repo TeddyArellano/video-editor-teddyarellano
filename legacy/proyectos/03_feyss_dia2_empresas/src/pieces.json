@@ -1,0 +1,206 @@
+[
+{
+"start": 0,
+"frames": 389,
+"company": 0,
+"src": "9707"
+},
+{
+"start": 389,
+"frames": 200,
+"company": 0,
+"src": "9707"
+},
+{
+"start": 589,
+"frames": 130,
+"company": 0,
+"src": "9707"
+},
+{
+"start": 719,
+"frames": 56,
+"company": 0,
+"src": "9707"
+},
+{
+"start": 775,
+"frames": 93,
+"company": 1,
+"src": "9726"
+},
+{
+"start": 868,
+"frames": 356,
+"company": 1,
+"src": "9726"
+},
+{
+"start": 1224,
+"frames": 290,
+"company": 1,
+"src": "9726"
+},
+{
+"start": 1514,
+"frames": 82,
+"company": 2,
+"src": "9721"
+},
+{
+"start": 1596,
+"frames": 221,
+"company": 2,
+"src": "9721"
+},
+{
+"start": 1817,
+"frames": 318,
+"company": 2,
+"src": "9721"
+},
+{
+"start": 2135,
+"frames": 61,
+"company": 2,
+"src": "9721"
+},
+{
+"start": 2196,
+"frames": 167,
+"company": 3,
+"src": "9711"
+},
+{
+"start": 2363,
+"frames": 201,
+"company": 3,
+"src": "9711"
+},
+{
+"start": 2564,
+"frames": 136,
+"company": 3,
+"src": "9711"
+},
+{
+"start": 2700,
+"frames": 202,
+"company": 3,
+"src": "9711"
+},
+{
+"start": 2902,
+"frames": 72,
+"company": 4,
+"src": "9697"
+},
+{
+"start": 2974,
+"frames": 46,
+"company": 4,
+"src": "9697"
+},
+{
+"start": 3020,
+"frames": 179,
+"company": 4,
+"src": "9697"
+},
+{
+"start": 3199,
+"frames": 221,
+"company": 4,
+"src": "9697"
+},
+{
+"start": 3420,
+"frames": 142,
+"company": 4,
+"src": "9697"
+},
+{
+"start": 3562,
+"frames": 202,
+"company": 5,
+"src": "9718"
+},
+{
+"start": 3764,
+"frames": 77,
+"company": 5,
+"src": "9718"
+},
+{
+"start": 3841,
+"frames": 184,
+"company": 5,
+"src": "9718"
+},
+{
+"start": 4025,
+"frames": 46,
+"company": 5,
+"src": "9718"
+},
+{
+"start": 4071,
+"frames": 91,
+"company": 5,
+"src": "9718"
+},
+{
+"start": 4162,
+"frames": 291,
+"company": 6,
+"src": "9693"
+},
+{
+"start": 4453,
+"frames": 206,
+"company": 6,
+"src": "9693"
+},
+{
+"start": 4659,
+"frames": 271,
+"company": 6,
+"src": "9693"
+},
+{
+"start": 4930,
+"frames": 164,
+"company": 7,
+"src": "9714"
+},
+{
+"start": 5094,
+"frames": 191,
+"company": 7,
+"src": "9714"
+},
+{
+"start": 5285,
+"frames": 104,
+"company": 7,
+"src": "9714"
+},
+{
+"start": 5389,
+"frames": 299,
+"company": 7,
+"src": "9714"
+},
+{
+"start": 5688,
+"frames": 353,
+"company": 8,
+"src": "9704"
+},
+{
+"start": 6041,
+"frames": 246,
+"company": 8,
+"src": "9704"
+}
+]

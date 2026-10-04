@@ -1,0 +1,1234 @@
+[
+{
+"piece": 0,
+"clip": 1,
+"role": "q",
+"text": "¿Cuánto",
+"start": 0.16,
+"end": 0.7
+},
+{
+"piece": 0,
+"clip": 1,
+"role": "q",
+"text": "esperas",
+"start": 0.7,
+"end": 0.96
+},
+{
+"piece": 0,
+"clip": 1,
+"role": "q",
+"text": "ganar",
+"start": 0.96,
+"end": 1.18
+},
+{
+"piece": 0,
+"clip": 1,
+"role": "q",
+"text": "al",
+"start": 1.18,
+"end": 1.32
+},
+{
+"piece": 0,
+"clip": 1,
+"role": "q",
+"text": "egresar?",
+"start": 1.32,
+"end": 1.9
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "Arriba",
+"start": 2.055,
+"end": 2.455
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "de",
+"start": 2.455,
+"end": 2.795
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "30",
+"start": 2.795,
+"end": 3.055
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "mil,",
+"start": 3.055,
+"end": 3.375
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "40",
+"start": 3.375,
+"end": 3.595
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "mil",
+"start": 3.595,
+"end": 3.855
+},
+{
+"piece": 1,
+"clip": 1,
+"role": "a",
+"text": "pesos.",
+"start": 3.855,
+"end": 4.3
+},
+{
+"piece": 2,
+"clip": 1,
+"role": "q",
+"text": "¿Por",
+"start": 4.455,
+"end": 4.715
+},
+{
+"piece": 2,
+"clip": 1,
+"role": "q",
+"text": "qué?",
+"start": 4.715,
+"end": 5.4
+},
+{
+"piece": 3,
+"clip": 1,
+"role": "a",
+"text": "Porque",
+"start": 5.555,
+"end": 5.715
+},
+{
+"piece": 3,
+"clip": 1,
+"role": "a",
+"text": "ya",
+"start": 5.715,
+"end": 5.955
+},
+{
+"piece": 3,
+"clip": 1,
+"role": "a",
+"text": "tengo",
+"start": 5.955,
+"end": 6.115
+},
+{
+"piece": 3,
+"clip": 1,
+"role": "a",
+"text": "estudios",
+"start": 6.115,
+"end": 6.295
+},
+{
+"piece": 3,
+"clip": 1,
+"role": "a",
+"text": "de",
+"start": 6.295,
+"end": 6.415
+},
+{
+"piece": 3,
+"clip": 1,
+"role": "a",
+"text": "posgrado,",
+"start": 6.415,
+"end": 7.033
+},
+{
+"piece": 4,
+"clip": 1,
+"role": "a",
+"text": "tengo",
+"start": 7.113,
+"end": 7.393
+},
+{
+"piece": 4,
+"clip": 1,
+"role": "a",
+"text": "experiencia",
+"start": 7.393,
+"end": 7.553
+},
+{
+"piece": 4,
+"clip": 1,
+"role": "a",
+"text": "en",
+"start": 7.553,
+"end": 7.593
+},
+{
+"piece": 4,
+"clip": 1,
+"role": "a",
+"text": "la",
+"start": 7.593,
+"end": 7.713
+},
+{
+"piece": 4,
+"clip": 1,
+"role": "a",
+"text": "industria,",
+"start": 7.713,
+"end": 8.3
+},
+{
+"piece": 5,
+"clip": 1,
+"role": "q",
+"text": "¿Qué",
+"start": 8.46,
+"end": 8.76
+},
+{
+"piece": 5,
+"clip": 1,
+"role": "q",
+"text": "estudias?",
+"start": 8.76,
+"end": 9.633
+},
+{
+"piece": 6,
+"clip": 1,
+"role": "a",
+"text": "Estudié",
+"start": 9.788,
+"end": 10.248
+},
+{
+"piece": 6,
+"clip": 1,
+"role": "a",
+"text": "Ingeniería",
+"start": 10.248,
+"end": 10.448
+},
+{
+"piece": 6,
+"clip": 1,
+"role": "a",
+"text": "de",
+"start": 10.448,
+"end": 10.768
+},
+{
+"piece": 6,
+"clip": 1,
+"role": "a",
+"text": "alimentos,",
+"start": 10.768,
+"end": 11.2
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "y",
+"start": 11.32,
+"end": 11.5
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "actualmente",
+"start": 11.5,
+"end": 12.1
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "un",
+"start": 12.1,
+"end": 12.32
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "doctorado",
+"start": 12.32,
+"end": 12.78
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "en",
+"start": 12.78,
+"end": 12.9
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "ciencias",
+"start": 12.9,
+"end": 13.16
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "en",
+"start": 13.16,
+"end": 13.24
+},
+{
+"piece": 7,
+"clip": 1,
+"role": "a",
+"text": "bioprocesos.",
+"start": 13.24,
+"end": 14.44
+},
+{
+"piece": 8,
+"clip": 2,
+"role": "a",
+"text": "Yo",
+"start": 15.288,
+"end": 15.468
+},
+{
+"piece": 8,
+"clip": 2,
+"role": "a",
+"text": "creo",
+"start": 15.468,
+"end": 15.608
+},
+{
+"piece": 8,
+"clip": 2,
+"role": "a",
+"text": "que",
+"start": 15.608,
+"end": 15.928
+},
+{
+"piece": 8,
+"clip": 2,
+"role": "a",
+"text": "unos",
+"start": 15.928,
+"end": 16.668
+},
+{
+"piece": 8,
+"clip": 2,
+"role": "a",
+"text": "25",
+"start": 16.668,
+"end": 16.988
+},
+{
+"piece": 8,
+"clip": 2,
+"role": "a",
+"text": "mil.",
+"start": 16.988,
+"end": 17.466
+},
+{
+"piece": 9,
+"clip": 2,
+"role": "q",
+"text": "¿Por",
+"start": 17.621,
+"end": 17.881
+},
+{
+"piece": 9,
+"clip": 2,
+"role": "q",
+"text": "qué?",
+"start": 17.881,
+"end": 18.7
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "Porque",
+"start": 18.855,
+"end": 19.275
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "en",
+"start": 19.275,
+"end": 19.395
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "la",
+"start": 19.395,
+"end": 19.515
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "parte",
+"start": 19.515,
+"end": 19.695
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "de",
+"start": 19.695,
+"end": 19.855
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "robótica,",
+"start": 19.855,
+"end": 20.515
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "sí",
+"start": 20.515,
+"end": 20.615
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "vi",
+"start": 20.615,
+"end": 20.675
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "que",
+"start": 20.675,
+"end": 20.775
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "hay",
+"start": 20.775,
+"end": 20.955
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "mucho",
+"start": 20.955,
+"end": 21.155
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "campo",
+"start": 21.155,
+"end": 21.435
+},
+{
+"piece": 10,
+"clip": 2,
+"role": "a",
+"text": "laboral",
+"start": 21.435,
+"end": 22.0
+},
+{
+"piece": 11,
+"clip": 2,
+"role": "q",
+"text": "¿De",
+"start": 22.12,
+"end": 22.36
+},
+{
+"piece": 11,
+"clip": 2,
+"role": "q",
+"text": "qué",
+"start": 22.36,
+"end": 22.58
+},
+{
+"piece": 11,
+"clip": 2,
+"role": "q",
+"text": "carrera",
+"start": 22.58,
+"end": 22.96
+},
+{
+"piece": 11,
+"clip": 2,
+"role": "q",
+"text": "eres?",
+"start": 22.96,
+"end": 23.5
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "Soy",
+"start": 23.655,
+"end": 23.795
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "de",
+"start": 23.795,
+"end": 23.855
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "Ingeniería",
+"start": 23.855,
+"end": 24.235
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "en",
+"start": 24.235,
+"end": 24.335
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "Robótica",
+"start": 24.335,
+"end": 24.895
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "Industrial",
+"start": 24.895,
+"end": 25.275
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "en",
+"start": 25.275,
+"end": 25.375
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "la",
+"start": 25.375,
+"end": 25.475
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "ESIME",
+"start": 25.475,
+"end": 25.775
+},
+{
+"piece": 12,
+"clip": 2,
+"role": "a",
+"text": "Azcapotzalco.",
+"start": 25.775,
+"end": 26.975
+},
+{
+"piece": 13,
+"clip": 3,
+"role": "a",
+"text": "Como",
+"start": 27.755,
+"end": 27.955
+},
+{
+"piece": 13,
+"clip": 3,
+"role": "a",
+"text": "14",
+"start": 27.955,
+"end": 28.435
+},
+{
+"piece": 13,
+"clip": 3,
+"role": "a",
+"text": "mil.",
+"start": 28.435,
+"end": 28.733
+},
+{
+"piece": 14,
+"clip": 3,
+"role": "q",
+"text": "¿Por",
+"start": 28.888,
+"end": 29.148
+},
+{
+"piece": 14,
+"clip": 3,
+"role": "q",
+"text": "qué?",
+"start": 29.148,
+"end": 29.967
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "Porque",
+"start": 30.122,
+"end": 30.462
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "tal",
+"start": 30.462,
+"end": 30.682
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "vez",
+"start": 30.682,
+"end": 31.082
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "no",
+"start": 31.082,
+"end": 31.482
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "es",
+"start": 31.482,
+"end": 31.822
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "algo",
+"start": 31.822,
+"end": 32.162
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "que...",
+"start": 32.162,
+"end": 33.162
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "una",
+"start": 33.162,
+"end": 33.442
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "profesión",
+"start": 33.442,
+"end": 33.882
+},
+{
+"piece": 15,
+"clip": 3,
+"role": "a",
+"text": "tan",
+"start": 33.882,
+"end": 34.3
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "avanzada,",
+"start": 34.46,
+"end": 35.06
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "pero",
+"start": 35.06,
+"end": 35.36
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "es",
+"start": 35.36,
+"end": 35.54
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "un",
+"start": 35.54,
+"end": 35.92
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "salario",
+"start": 35.92,
+"end": 36.56
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "considerable.",
+"start": 36.56,
+"end": 37.36
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "¿De",
+"start": 37.36,
+"end": 37.56
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "qué",
+"start": 37.56,
+"end": 37.78
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "escuela",
+"start": 37.78,
+"end": 38.04
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "eres?",
+"start": 38.04,
+"end": 38.42
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "De",
+"start": 38.42,
+"end": 38.5
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "la",
+"start": 38.5,
+"end": 38.62
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "Escuela",
+"start": 38.62,
+"end": 39.0
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "Superior",
+"start": 39.0,
+"end": 39.14
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "de",
+"start": 39.14,
+"end": 39.24
+},
+{
+"piece": 16,
+"clip": 3,
+"role": "a",
+"text": "Turismo.",
+"start": 39.24,
+"end": 40.44
+},
+{
+"piece": 17,
+"clip": 4,
+"role": "a",
+"text": "Como",
+"start": 40.96,
+"end": 41.42
+},
+{
+"piece": 17,
+"clip": 4,
+"role": "a",
+"text": "unos",
+"start": 41.42,
+"end": 41.68
+},
+{
+"piece": 17,
+"clip": 4,
+"role": "a",
+"text": "20",
+"start": 41.68,
+"end": 42.14
+},
+{
+"piece": 17,
+"clip": 4,
+"role": "a",
+"text": "mil.",
+"start": 42.14,
+"end": 42.867
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "Unos",
+"start": 43.027,
+"end": 43.367
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "10",
+"start": 43.367,
+"end": 43.747
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "mil,",
+"start": 43.747,
+"end": 44.127
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "11.",
+"start": 44.127,
+"end": 45.327
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "20",
+"start": 45.367,
+"end": 45.687
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "mil,",
+"start": 45.687,
+"end": 45.827
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "20",
+"start": 45.827,
+"end": 46.107
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "mil.",
+"start": 46.107,
+"end": 47.247
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "Unos",
+"start": 47.247,
+"end": 48.267
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "30,",
+"start": 48.267,
+"end": 49.147
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "algo",
+"start": 49.147,
+"end": 49.427
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "10,",
+"start": 49.427,
+"end": 49.967
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "una",
+"start": 49.967,
+"end": 50.247
+},
+{
+"piece": 18,
+"clip": 4,
+"role": "a",
+"text": "casita.",
+"start": 50.247,
+"end": 50.967
+},
+{
+"piece": 19,
+"clip": 4,
+"role": "q",
+"text": "¿Por",
+"start": 51.122,
+"end": 51.402
+},
+{
+"piece": 19,
+"clip": 4,
+"role": "q",
+"text": "qué?",
+"start": 51.402,
+"end": 52.567
+},
+{
+"piece": 20,
+"clip": 4,
+"role": "a",
+"text": "Porque",
+"start": 52.722,
+"end": 52.842
+},
+{
+"piece": 20,
+"clip": 4,
+"role": "a",
+"text": "lo",
+"start": 52.842,
+"end": 53.082
+},
+{
+"piece": 20,
+"clip": 4,
+"role": "a",
+"text": "vale.",
+"start": 53.082,
+"end": 54.282
+},
+{
+"piece": 21,
+"clip": 4,
+"role": "a",
+"text": "Necesitamos",
+"start": 54.46,
+"end": 55.24
+},
+{
+"piece": 21,
+"clip": 4,
+"role": "a",
+"text": "comer",
+"start": 55.24,
+"end": 55.48
+},
+{
+"piece": 21,
+"clip": 4,
+"role": "a",
+"text": "hermano.",
+"start": 55.48,
+"end": 56.68
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "Porque",
+"start": 57.08,
+"end": 57.4
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "me",
+"start": 57.4,
+"end": 57.52
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "estoy",
+"start": 57.52,
+"end": 57.8
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "preparando",
+"start": 57.8,
+"end": 58.2
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "para",
+"start": 58.2,
+"end": 58.3
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "el",
+"start": 58.3,
+"end": 58.48
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "P***",
+"start": 58.48,
+"end": 58.76
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "sueño,",
+"start": 58.76,
+"end": 59.6
+},
+{
+"piece": 22,
+"clip": 4,
+"role": "a",
+"text": "justamente.",
+"start": 59.6,
+"end": 60.3
+},
+{
+"piece": 23,
+"clip": 4,
+"role": "q",
+"text": "¿Y",
+"start": 60.455,
+"end": 60.675
+},
+{
+"piece": 23,
+"clip": 4,
+"role": "q",
+"text": "de",
+"start": 60.675,
+"end": 60.815
+},
+{
+"piece": 23,
+"clip": 4,
+"role": "q",
+"text": "qué",
+"start": 60.815,
+"end": 61.015
+},
+{
+"piece": 23,
+"clip": 4,
+"role": "q",
+"text": "carrera",
+"start": 61.015,
+"end": 61.395
+},
+{
+"piece": 23,
+"clip": 4,
+"role": "q",
+"text": "son?",
+"start": 61.395,
+"end": 61.834
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "Ingeniería",
+"start": 61.989,
+"end": 62.549
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "fotónica.",
+"start": 62.549,
+"end": 63.749
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "Ingeniería",
+"start": 63.789,
+"end": 64.269
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "textil.",
+"start": 64.269,
+"end": 65.389
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "Ingeniería",
+"start": 65.389,
+"end": 65.809
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "de",
+"start": 65.809,
+"end": 66.209
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "alimentos.",
+"start": 66.209,
+"end": 67.129
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "Comunicaciones",
+"start": 67.129,
+"end": 67.849
+},
+{
+"piece": 24,
+"clip": 4,
+"role": "a",
+"text": "electrónica.",
+"start": 67.849,
+"end": 69.0
+}
+]

@@ -1,0 +1,19 @@
+# medios: nunca al repo
+*.mp4
+*.mov
+*.MOV
+*.m4v
+*.wav
+*.aiff
+*.heic
+*.HEIC
+# generados
+node_modules/
+out/
+__pycache__/
+*.pyc
+.DS_Store
+# SFX: los genera setup.sh (scripts/synth_sfx.py)
+skill/editar-reel/plantilla_remotion/public/sfx/
+# cachés / toolkit viven fuera (~/.reels-toolkit)
+.reels-toolkit/

@@ -1,0 +1,99 @@
+{
+ "piezas": [
+  {
+   "src": "IMG_0639",
+   "de": 25,
+   "a": 41,
+   "sec": "intro"
+  },
+  {
+   "src": "IMG_0636",
+   "de": 40,
+   "a": 58,
+   "sec": "juan"
+  },
+  {
+   "src": "IMG_0636",
+   "de": 62,
+   "a": 71,
+   "sec": "juan"
+  },
+  {
+   "src": "IMG_0636",
+   "de": 86,
+   "a": 115,
+   "sec": "juan"
+  },
+  {
+   "src": "IMG_0636",
+   "de": 119,
+   "a": 150,
+   "sec": "juan",
+   "speed": 2,
+   "quitar": [
+    132,
+    133,
+    150
+   ]
+  },
+  {
+   "src": "IMG_0636",
+   "de": 158,
+   "a": 185,
+   "sec": "juan",
+   "speed": 2
+  },
+  {
+   "src": "IMG_0636",
+   "de": 194,
+   "a": 203,
+   "sec": "juan",
+   "speed": 2
+  },
+  {
+   "src": "IMG_0636",
+   "de": 265,
+   "a": 279,
+   "sec": "juan",
+   "speed": 2
+  },
+  {
+   "src": "IMG_0636",
+   "de": 297,
+   "a": 301,
+   "sec": "juan",
+   "speed": 2
+  },
+  {
+   "src": "IMG_0636",
+   "de": 306,
+   "a": 307,
+   "sec": "juan"
+  },
+  {
+   "src": "IMG_0636",
+   "de": 324,
+   "a": 348,
+   "sec": "juan",
+   "speed": 2
+  },
+  {
+   "src": "IMG_0636",
+   "de": 352,
+   "a": 392,
+   "sec": "juan"
+  },
+  {
+   "src": "IMG_0634",
+   "de": 22,
+   "a": 40,
+   "sec": "radio"
+  },
+  {
+   "src": "IMG_0634",
+   "de": 42,
+   "a": 82,
+   "sec": "radio"
+  }
+ ]
+}

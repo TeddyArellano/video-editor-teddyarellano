@@ -1,0 +1,281 @@
+[
+ {
+  "clip": 1,
+  "in": 9.44,
+  "out": 11.325,
+  "role": "q",
+  "text": "¿Cuánto esperas ganar al egresar?",
+  "frames": 57,
+  "start": 0,
+  "zoom": 1.52,
+  "cut": "new"
+ },
+ {
+  "clip": 1,
+  "in": 11.325,
+  "out": 13.725,
+  "role": "a",
+  "text": "Arriba de 30 mil, 40 mil pesos.",
+  "frames": 72,
+  "start": 57,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 1,
+  "in": 13.725,
+  "out": 14.825,
+  "role": "q",
+  "text": "¿Por qué?",
+  "frames": 33,
+  "start": 129,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 1,
+  "in": 14.825,
+  "out": 16.45,
+  "role": "a",
+  "text": "Porque ya tengo estudios de posgrado,",
+  "frames": 49,
+  "start": 162,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 1,
+  "in": 18.52,
+  "out": 19.79,
+  "role": "a",
+  "text": "tengo experiencia en la industria,",
+  "frames": 38,
+  "start": 211,
+  "zoom": 1.642,
+  "cut": "jump"
+ },
+ {
+  "clip": 1,
+  "in": 20.98,
+  "out": 22.305,
+  "role": "q",
+  "text": "¿Qué estudias?",
+  "frames": 40,
+  "start": 249,
+  "zoom": 1.52,
+  "cut": "jump"
+ },
+ {
+  "clip": 1,
+  "in": 22.305,
+  "out": 23.87,
+  "role": "a",
+  "text": "Estudié ingeniero de alimentos,",
+  "frames": 47,
+  "start": 289,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 1,
+  "in": 25.32,
+  "out": 29.24,
+  "role": "a",
+  "text": "y actualmente un doctorado en ciencias en bioprocesos.",
+  "frames": 118,
+  "start": 336,
+  "zoom": 1.642,
+  "cut": "jump"
+ },
+ {
+  "clip": 2,
+  "in": 3.525,
+  "out": 5.865,
+  "role": "a",
+  "text": "Yo creo que unos 25 mil.",
+  "frames": 70,
+  "start": 454,
+  "zoom": 1.52,
+  "cut": "new"
+ },
+ {
+  "clip": 2,
+  "in": 5.865,
+  "out": 7.085,
+  "role": "q",
+  "text": "¿Por qué?",
+  "frames": 37,
+  "start": 524,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 2,
+  "in": 7.085,
+  "out": 10.39,
+  "role": "a",
+  "text": "Porque en la parte de robótica, sí vi que hay mucho campo laboral",
+  "frames": 99,
+  "start": 561,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 2,
+  "in": 16.88,
+  "out": 18.365,
+  "role": "q",
+  "text": "¿De qué carrera eres?",
+  "frames": 45,
+  "start": 660,
+  "zoom": 1.642,
+  "cut": "jump"
+ },
+ {
+  "clip": 2,
+  "in": 18.365,
+  "out": 22.47,
+  "role": "a",
+  "text": "Soy de Ingeniería en Robótica Industrial en la CIMAS Capotzalco.",
+  "frames": 123,
+  "start": 705,
+  "zoom": 1.642,
+  "cut": "cont"
+ },
+ {
+  "clip": 3,
+  "in": 6.945,
+  "out": 8.085,
+  "role": "a",
+  "text": "Como catorce mil.",
+  "frames": 34,
+  "start": 828,
+  "zoom": 1.52,
+  "cut": "new"
+ },
+ {
+  "clip": 3,
+  "in": 8.085,
+  "out": 9.305,
+  "role": "q",
+  "text": "¿Por qué?",
+  "frames": 37,
+  "start": 862,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 3,
+  "in": 9.305,
+  "out": 13.65,
+  "role": "a",
+  "text": "Porque tal vez no es algo que... una profesión tan",
+  "frames": 130,
+  "start": 899,
+  "zoom": 1.52,
+  "cut": "cont"
+ },
+ {
+  "clip": 3,
+  "in": 13.9,
+  "out": 20.41,
+  "role": "a",
+  "text": "avanzada, pero es un salario considerable. ¿De qué escuela eres? De la Escuela Superior de Turismo.",
+  "frames": 195,
+  "start": 1029,
+  "zoom": 1.642,
+  "cut": "jump"
+ },
+ {
+  "clip": 4,
+  "in": 23.22,
+  "out": 25.3,
+  "role": "a",
+  "text": "Como unos veinte mil.",
+  "frames": 62,
+  "start": 1224,
+  "zoom": 1.318,
+  "cut": "new"
+ },
+ {
+  "clip": 4,
+  "in": 25.52,
+  "out": 33.625,
+  "role": "a",
+  "text": "Unos diez mil, once. Veinte mil, veinte mil. Unos treinta, algo diez, una casita.",
+  "frames": 243,
+  "start": 1286,
+  "zoom": 1.22,
+  "cut": "jump"
+ },
+ {
+  "clip": 4,
+  "in": 33.625,
+  "out": 35.225,
+  "role": "q",
+  "text": "¿Por qué?",
+  "frames": 48,
+  "start": 1529,
+  "zoom": 1.22,
+  "cut": "cont"
+ },
+ {
+  "clip": 4,
+  "in": 35.225,
+  "out": 36.97,
+  "role": "a",
+  "text": "Porque lo vale.",
+  "frames": 52,
+  "start": 1577,
+  "zoom": 1.22,
+  "cut": "cont"
+ },
+ {
+  "clip": 4,
+  "in": 43.22,
+  "out": 45.62,
+  "role": "a",
+  "text": "Necesitamos comer hermano.",
+  "frames": 72,
+  "start": 1629,
+  "zoom": 1.318,
+  "cut": "jump"
+ },
+ {
+  "clip": 4,
+  "in": 45.8,
+  "out": 49.385,
+  "role": "a",
+  "text": "Porque me estoy preparando para el puto sueño, justamente.",
+  "frames": 108,
+  "start": 1701,
+  "beep": [
+   1.6,
+   1.86
+  ],
+  "zoom": 1.22,
+  "cut": "jump"
+ },
+ {
+  "clip": 4,
+  "in": 49.385,
+  "out": 50.925,
+  "role": "q",
+  "text": "¿Y de qué carrera son?",
+  "frames": 46,
+  "start": 1809,
+  "zoom": 1.22,
+  "cut": "cont"
+ },
+ {
+  "clip": 4,
+  "in": 50.925,
+  "out": 58.1,
+  "role": "a",
+  "text": "Ingeniería fotónica. Ingeniería textil. Ingeniería de alimentos. Comunicaciones electrónica.",
+  "frames": 215,
+  "start": 1855,
+  "zoom": 1.22,
+  "cut": "cont"
+ }
+]

@@ -1,0 +1,1 @@
+export const AREA = 'TECNOLOGÍA · SISTEMAS · FINANZAS';

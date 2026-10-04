@@ -1,0 +1,1074 @@
+[
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "¿Cuál",
+"start": 0.14,
+"end": 0.4
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "es",
+"start": 0.4,
+"end": 0.48
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "la",
+"start": 0.48,
+"end": 0.72
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "empresa",
+"start": 0.72,
+"end": 0.88
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "de",
+"start": 0.88,
+"end": 0.98
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "tus",
+"start": 0.98,
+"end": 1.14
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "sueños?",
+"start": 1.14,
+"end": 2.0
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "La",
+"start": 2.0,
+"end": 2.26
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "empresa",
+"start": 2.26,
+"end": 2.38
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "de",
+"start": 2.38,
+"end": 2.5
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "mis",
+"start": 2.5,
+"end": 2.72
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "sueños,",
+"start": 2.72,
+"end": 3.64
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "posiblemente",
+"start": 3.64,
+"end": 4.48
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "AWS",
+"start": 4.48,
+"end": 5.54
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "o",
+"start": 5.54,
+"end": 5.84
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "incluso",
+"start": 5.84,
+"end": 6.26
+},
+{
+"piece": 0,
+"seg": 0,
+"role": "q",
+"text": "Google.",
+"start": 6.26,
+"end": 6.667
+},
+{
+"piece": 1,
+"seg": 0,
+"role": "a",
+"text": "Porque",
+"start": 7.047,
+"end": 7.833
+},
+{
+"piece": 2,
+"seg": 0,
+"role": "a",
+"text": "se",
+"start": 7.973,
+"end": 8.073
+},
+{
+"piece": 2,
+"seg": 0,
+"role": "a",
+"text": "vale",
+"start": 8.073,
+"end": 8.113
+},
+{
+"piece": 2,
+"seg": 0,
+"role": "a",
+"text": "soñar.",
+"start": 8.213,
+"end": 9.4
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "Fíjate",
+"start": 9.54,
+"end": 9.94
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "que",
+"start": 9.94,
+"end": 10.18
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "desde",
+"start": 10.18,
+"end": 10.26
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "que",
+"start": 10.26,
+"end": 10.4
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "entré",
+"start": 10.4,
+"end": 10.5
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "la",
+"start": 10.6,
+"end": 10.74
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "robótica",
+"start": 10.74,
+"end": 11.6
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "y",
+"start": 11.6,
+"end": 11.82
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "actualmente",
+"start": 11.82,
+"end": 12.22
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "por",
+"start": 12.22,
+"end": 12.32
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "lo",
+"start": 12.32,
+"end": 12.42
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "que",
+"start": 12.42,
+"end": 12.5
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "he",
+"start": 12.5,
+"end": 12.74
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "visto",
+"start": 12.74,
+"end": 13.34
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "sería",
+"start": 13.34,
+"end": 13.66
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "Boston",
+"start": 13.66,
+"end": 13.92
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "Dynamics.",
+"start": 13.92,
+"end": 14.6
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "Se",
+"start": 14.6,
+"end": 14.68
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "dedica",
+"start": 14.68,
+"end": 14.96
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "mucho",
+"start": 14.96,
+"end": 15.06
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "la",
+"start": 15.1,
+"end": 15.24
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "automatización,",
+"start": 15.24,
+"end": 15.78
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "bueno,",
+"start": 15.78,
+"end": 16.04
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "los",
+"start": 16.04,
+"end": 16.36
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "robots",
+"start": 16.36,
+"end": 16.56
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "y",
+"start": 16.56,
+"end": 16.88
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "pues",
+"start": 16.88,
+"end": 17.42
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "eso",
+"start": 17.42,
+"end": 17.52
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "me",
+"start": 17.52,
+"end": 17.78
+},
+{
+"piece": 3,
+"seg": 1,
+"role": "a",
+"text": "encanta.",
+"start": 17.78,
+"end": 18.433
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Para",
+"start": 18.573,
+"end": 18.733
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "mí",
+"start": 18.733,
+"end": 19.113
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Tesla.",
+"start": 19.113,
+"end": 20.313
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Híjole,",
+"start": 20.773,
+"end": 21.973
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "podría",
+"start": 22.193,
+"end": 22.633
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "ser",
+"start": 22.633,
+"end": 23.013
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Siemens",
+"start": 23.013,
+"end": 23.493
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "o",
+"start": 23.493,
+"end": 23.733
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "General",
+"start": 23.733,
+"end": 24.153
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Motors.",
+"start": 24.153,
+"end": 25.353
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "A",
+"start": 25.413,
+"end": 25.533
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "mí",
+"start": 25.533,
+"end": 25.853
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Lego,",
+"start": 25.853,
+"end": 27.053
+},
+{
+"piece": 4,
+"seg": 2,
+"role": "a",
+"text": "Festo.",
+"start": 27.173,
+"end": 28.373
+},
+{
+"piece": 5,
+"seg": 2,
+"role": "a",
+"text": "Porque",
+"start": 28.773,
+"end": 29.333
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "se",
+"start": 29.473,
+"end": 29.613
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "dedican",
+"start": 29.613,
+"end": 29.953
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "como",
+"start": 29.953,
+"end": 30.093
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "innovar",
+"start": 30.293,
+"end": 30.553
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "la",
+"start": 30.553,
+"end": 30.953
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "tecnología",
+"start": 30.953,
+"end": 31.193
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "y",
+"start": 31.193,
+"end": 31.433
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "siempre",
+"start": 31.433,
+"end": 31.613
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "yo",
+"start": 31.613,
+"end": 31.713
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "he",
+"start": 31.713,
+"end": 31.793
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "querido",
+"start": 31.793,
+"end": 32.073
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "inventar",
+"start": 32.073,
+"end": 32.513
+},
+{
+"piece": 6,
+"seg": 2,
+"role": "a",
+"text": "cosas.",
+"start": 32.513,
+"end": 33.533
+},
+{
+"piece": 7,
+"seg": 3,
+"role": "a",
+"text": "Me",
+"start": 33.673,
+"end": 33.933
+},
+{
+"piece": 7,
+"seg": 3,
+"role": "a",
+"text": "gustaría",
+"start": 33.933,
+"end": 34.353
+},
+{
+"piece": 7,
+"seg": 3,
+"role": "a",
+"text": "trabajar",
+"start": 34.353,
+"end": 34.733
+},
+{
+"piece": 7,
+"seg": 3,
+"role": "a",
+"text": "mucho",
+"start": 34.733,
+"end": 34.973
+},
+{
+"piece": 7,
+"seg": 3,
+"role": "a",
+"text": "en",
+"start": 34.973,
+"end": 35.253
+},
+{
+"piece": 7,
+"seg": 3,
+"role": "a",
+"text": "Samsung.",
+"start": 35.253,
+"end": 35.833
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "me",
+"start": 35.973,
+"end": 36.293
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "gustaría",
+"start": 36.293,
+"end": 36.613
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "ver",
+"start": 36.613,
+"end": 36.853
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "todo",
+"start": 36.853,
+"end": 37.193
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "el",
+"start": 37.193,
+"end": 37.473
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "proceso",
+"start": 37.473,
+"end": 37.633
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "de",
+"start": 37.633,
+"end": 37.773
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "cómo",
+"start": 37.773,
+"end": 37.953
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "hacen",
+"start": 37.953,
+"end": 38.133
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "sus",
+"start": 38.133,
+"end": 38.413
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "dispositivos",
+"start": 38.413,
+"end": 39.453
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "o",
+"start": 39.453,
+"end": 40.013
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "ser",
+"start": 40.013,
+"end": 40.313
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "parte",
+"start": 40.313,
+"end": 40.533
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "de",
+"start": 40.533,
+"end": 40.753
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "sus",
+"start": 40.753,
+"end": 41.013
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "proyectos",
+"start": 41.013,
+"end": 41.353
+},
+{
+"piece": 8,
+"seg": 3,
+"role": "a",
+"text": "tecnológicos.",
+"start": 41.353,
+"end": 41.867
+},
+{
+"piece": 9,
+"seg": 4,
+"role": "a",
+"text": "Televisa.",
+"start": 42.007,
+"end": 43.207
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "Ah,",
+"start": 43.407,
+"end": 43.667
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "cualquiera",
+"start": 43.667,
+"end": 44.207
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "textilera,",
+"start": 44.207,
+"end": 45.187
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "cualquiera.",
+"start": 45.187,
+"end": 46.387
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "Coca-Cola,",
+"start": 46.427,
+"end": 46.887
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "FEMSA.",
+"start": 46.887,
+"end": 48.027
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "Creo",
+"start": 48.027,
+"end": 48.127
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "que",
+"start": 48.127,
+"end": 48.327
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "sería",
+"start": 48.327,
+"end": 48.927
+},
+{
+"piece": 10,
+"seg": 4,
+"role": "a",
+"text": "Microsoft.",
+"start": 48.927,
+"end": 49.733
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "Sí,",
+"start": 49.873,
+"end": 50.093
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "lo",
+"start": 50.093,
+"end": 50.253
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "mío",
+"start": 50.253,
+"end": 50.413
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "creo",
+"start": 50.413,
+"end": 50.513
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "que",
+"start": 50.513,
+"end": 50.613
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "es",
+"start": 50.613,
+"end": 50.753
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "más",
+"start": 50.753,
+"end": 50.933
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "por",
+"start": 50.933,
+"end": 51.053
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "el",
+"start": 51.053,
+"end": 51.233
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "tema",
+"start": 51.233,
+"end": 51.353
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "de",
+"start": 51.353,
+"end": 51.593
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "programación,",
+"start": 51.593,
+"end": 52.233
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "por",
+"start": 52.233,
+"end": 52.353
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "el",
+"start": 52.353,
+"end": 52.573
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "tema",
+"start": 52.573,
+"end": 52.833
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "de",
+"start": 52.833,
+"end": 53.493
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "crear,",
+"start": 53.493,
+"end": 53.853
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "desarrollar",
+"start": 53.853,
+"end": 54.353
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "programas,",
+"start": 54.353,
+"end": 54.913
+},
+{
+"piece": 11,
+"seg": 4,
+"role": "a",
+"text": "software",
+"start": 54.913,
+"end": 54.867
+}
+]

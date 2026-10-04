@@ -1,0 +1,560 @@
+[
+{
+"clip": 0,
+"text": "Llegó",
+"start": 0.16,
+"end": 0.61
+},
+{
+"clip": 0,
+"text": "el",
+"start": 0.61,
+"end": 0.681
+},
+{
+"clip": 0,
+"text": "momento",
+"start": 0.681,
+"end": 1.067
+},
+{
+"clip": 0,
+"text": "del",
+"start": 1.067,
+"end": 1.264
+},
+{
+"clip": 0,
+"text": "torneo",
+"start": 1.264,
+"end": 1.659
+},
+{
+"clip": 0,
+"text": "que",
+"start": 1.659,
+"end": 1.927
+},
+{
+"clip": 0,
+"text": "todos",
+"start": 1.927,
+"end": 2.187
+},
+{
+"clip": 0,
+"text": "esperaban.",
+"start": 2.187,
+"end": 2.81
+},
+{
+"clip": 1,
+"text": "Es",
+"start": 3.007,
+"end": 3.312
+},
+{
+"clip": 1,
+"text": "hora",
+"start": 3.312,
+"end": 3.391
+},
+{
+"clip": 1,
+"text": "de",
+"start": 3.391,
+"end": 3.508
+},
+{
+"clip": 1,
+"text": "demostrar",
+"start": 3.508,
+"end": 3.869
+},
+{
+"clip": 1,
+"text": "de",
+"start": 3.869,
+"end": 3.971
+},
+{
+"clip": 1,
+"text": "qué",
+"start": 3.971,
+"end": 4.128
+},
+{
+"clip": 1,
+"text": "están",
+"start": 4.128,
+"end": 4.371
+},
+{
+"clip": 1,
+"text": "hechos.",
+"start": 4.371,
+"end": 4.857
+},
+{
+"clip": 2,
+"text": "Las",
+"start": 5.04,
+"end": 5.381
+},
+{
+"clip": 2,
+"text": "inscripciones",
+"start": 5.381,
+"end": 5.944
+},
+{
+"clip": 2,
+"text": "para",
+"start": 5.944,
+"end": 6.165
+},
+{
+"clip": 2,
+"text": "los",
+"start": 6.165,
+"end": 6.336
+},
+{
+"clip": 2,
+"text": "Interpolitécnicos",
+"start": 6.336,
+"end": 7.29
+},
+{
+"clip": 2,
+"text": "2026",
+"start": 7.29,
+"end": 7.972
+},
+{
+"clip": 2,
+"text": "están",
+"start": 7.972,
+"end": 8.254
+},
+{
+"clip": 2,
+"text": "abiertas.",
+"start": 8.254,
+"end": 8.91
+},
+{
+"clip": 3,
+"text": "Reúne",
+"start": 9.107,
+"end": 9.398
+},
+{
+"clip": 3,
+"text": "a",
+"start": 9.398,
+"end": 9.482
+},
+{
+"clip": 3,
+"text": "tu",
+"start": 9.482,
+"end": 9.582
+},
+{
+"clip": 3,
+"text": "equipo",
+"start": 9.582,
+"end": 9.804
+},
+{
+"clip": 3,
+"text": "y",
+"start": 9.804,
+"end": 9.858
+},
+{
+"clip": 3,
+"text": "prepárense",
+"start": 9.858,
+"end": 10.356
+},
+{
+"clip": 3,
+"text": "para",
+"start": 10.356,
+"end": 10.563
+},
+{
+"clip": 3,
+"text": "la",
+"start": 10.563,
+"end": 10.732
+},
+{
+"clip": 3,
+"text": "gloria.",
+"start": 10.732,
+"end": 11.177
+},
+{
+"clip": 4,
+"text": "Marvel",
+"start": 11.43,
+"end": 11.8
+},
+{
+"clip": 4,
+"text": "Rivals,",
+"start": 11.8,
+"end": 12.63
+},
+{
+"clip": 4,
+"text": "Overwatch,",
+"start": 12.63,
+"end": 13.53
+},
+{
+"clip": 4,
+"text": "League",
+"start": 13.53,
+"end": 13.8
+},
+{
+"clip": 4,
+"text": "of",
+"start": 13.8,
+"end": 13.92
+},
+{
+"clip": 4,
+"text": "Legends,",
+"start": 13.92,
+"end": 14.45
+},
+{
+"clip": 5,
+"text": "Brawl",
+"start": 14.683,
+"end": 15.143
+},
+{
+"clip": 5,
+"text": "Stars,",
+"start": 15.143,
+"end": 15.313
+},
+{
+"clip": 5,
+"text": "Valorant",
+"start": 15.313,
+"end": 15.73
+},
+{
+"clip": 5,
+"text": "o",
+"start": 15.73,
+"end": 15.836
+},
+{
+"clip": 5,
+"text": "Rocket",
+"start": 15.836,
+"end": 16.168
+},
+{
+"clip": 5,
+"text": "League.",
+"start": 16.168,
+"end": 16.493
+},
+{
+"clip": 6,
+"text": "¿Están",
+"start": 16.707,
+"end": 17.21
+},
+{
+"clip": 6,
+"text": "listos",
+"start": 17.21,
+"end": 17.357
+},
+{
+"clip": 6,
+"text": "para",
+"start": 17.357,
+"end": 17.544
+},
+{
+"clip": 6,
+"text": "darlo",
+"start": 17.544,
+"end": 17.804
+},
+{
+"clip": 6,
+"text": "todo",
+"start": 17.804,
+"end": 18.015
+},
+{
+"clip": 6,
+"text": "en",
+"start": 18.015,
+"end": 18.12
+},
+{
+"clip": 6,
+"text": "el",
+"start": 18.12,
+"end": 18.283
+},
+{
+"clip": 6,
+"text": "campo",
+"start": 18.283,
+"end": 18.494
+},
+{
+"clip": 6,
+"text": "de",
+"start": 18.494,
+"end": 18.6
+},
+{
+"clip": 6,
+"text": "batalla?",
+"start": 18.6,
+"end": 19.177
+},
+{
+"clip": 7,
+"text": "No",
+"start": 19.26,
+"end": 19.37
+},
+{
+"clip": 7,
+"text": "te",
+"start": 19.37,
+"end": 19.46
+},
+{
+"clip": 7,
+"text": "pierdas",
+"start": 19.46,
+"end": 19.82
+},
+{
+"clip": 7,
+"text": "esta",
+"start": 19.82,
+"end": 20.0
+},
+{
+"clip": 7,
+"text": "oportunidad.",
+"start": 20.0,
+"end": 20.46
+},
+{
+"clip": 8,
+"text": "Recuerda",
+"start": 20.587,
+"end": 21.081
+},
+{
+"clip": 8,
+"text": "que",
+"start": 21.081,
+"end": 21.097
+},
+{
+"clip": 8,
+"text": "tienes",
+"start": 21.097,
+"end": 21.365
+},
+{
+"clip": 8,
+"text": "hasta",
+"start": 21.365,
+"end": 21.583
+},
+{
+"clip": 8,
+"text": "el",
+"start": 21.583,
+"end": 21.675
+},
+{
+"clip": 8,
+"text": "6",
+"start": 21.675,
+"end": 21.809
+},
+{
+"clip": 8,
+"text": "de",
+"start": 21.809,
+"end": 21.901
+},
+{
+"clip": 8,
+"text": "octubre",
+"start": 21.901,
+"end": 22.219
+},
+{
+"clip": 8,
+"text": "para",
+"start": 22.219,
+"end": 22.444
+},
+{
+"clip": 8,
+"text": "registrarte.",
+"start": 22.444,
+"end": 23.097
+},
+{
+"clip": 9,
+"text": "Asegura",
+"start": 23.274,
+"end": 23.646
+},
+{
+"clip": 9,
+"text": "tu",
+"start": 23.646,
+"end": 23.743
+},
+{
+"clip": 9,
+"text": "lugar",
+"start": 23.743,
+"end": 23.944
+},
+{
+"clip": 9,
+"text": "en",
+"start": 23.944,
+"end": 24.034
+},
+{
+"clip": 9,
+"text": "la",
+"start": 24.034,
+"end": 24.131
+},
+{
+"clip": 9,
+"text": "competencia.",
+"start": 24.131,
+"end": 24.794
+},
+{
+"clip": 10,
+"text": "Te",
+"start": 24.93,
+"end": 25.031
+},
+{
+"clip": 10,
+"text": "dejo",
+"start": 25.031,
+"end": 25.332
+},
+{
+"clip": 10,
+"text": "el",
+"start": 25.332,
+"end": 25.45
+},
+{
+"clip": 10,
+"text": "link",
+"start": 25.45,
+"end": 25.533
+},
+{
+"clip": 10,
+"text": "de",
+"start": 25.533,
+"end": 25.634
+},
+{
+"clip": 10,
+"text": "inscripción",
+"start": 25.634,
+"end": 26.203
+},
+{
+"clip": 10,
+"text": "en",
+"start": 26.203,
+"end": 26.287
+},
+{
+"clip": 10,
+"text": "pantalla",
+"start": 26.287,
+"end": 26.697
+},
+{
+"clip": 10,
+"text": "y",
+"start": 26.697,
+"end": 26.748
+},
+{
+"clip": 10,
+"text": "en",
+"start": 26.748,
+"end": 26.949
+},
+{
+"clip": 10,
+"text": "mi",
+"start": 26.949,
+"end": 27.032
+},
+{
+"clip": 10,
+"text": "biografía.",
+"start": 27.032,
+"end": 27.61
+},
+{
+"clip": 11,
+"text": "Nos",
+"start": 27.754,
+"end": 28.162
+},
+{
+"clip": 11,
+"text": "vemos",
+"start": 28.162,
+"end": 28.162
+},
+{
+"clip": 11,
+"text": "en",
+"start": 28.162,
+"end": 28.262
+},
+{
+"clip": 11,
+"text": "la",
+"start": 28.262,
+"end": 28.362
+},
+{
+"clip": 11,
+"text": "arena.",
+"start": 28.362,
+"end": 28.784
+}
+]

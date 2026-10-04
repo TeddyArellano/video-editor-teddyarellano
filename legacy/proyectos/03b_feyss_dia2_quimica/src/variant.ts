@@ -1,0 +1,1 @@
+export const AREA = 'QUÍMICA · ALIMENTOS · INDUSTRIA';

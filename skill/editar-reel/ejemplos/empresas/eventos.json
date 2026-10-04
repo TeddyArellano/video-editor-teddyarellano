@@ -1,0 +1,127 @@
+{
+ "resaltar": [
+  "TCM",
+  "consultora",
+  "financiera",
+  "contabilidad",
+  "economía",
+  "finanzas",
+  "sistemas",
+  "informática",
+  "matemáticas",
+  "física",
+  "SPIN",
+  "químicos",
+  "producción",
+  "calidad",
+  "ventas",
+  "Linkedin"
+ ],
+ "secciones": {
+  "e1": {
+   "zoom": 1.05,
+   "caras": 2
+  },
+  "e2": {
+   "zoom": 1.05,
+   "caras": 2
+  }
+ },
+ "gancho": {
+  "top": 700,
+  "dur": 2.6,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "¿QUÉ CARRERAS",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 104,
+    "contorno": 0,
+    "align": "left",
+    "anim": "slide",
+    "at": 2
+   },
+   {
+    "tipo": "texto",
+    "texto": "BUSCAN LAS",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 104,
+    "contorno": 0,
+    "align": "right",
+    "anim": "slide",
+    "at": 10
+   },
+   {
+    "tipo": "texto",
+    "texto": "EMPRESAS?",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 124,
+    "color": "#FFE81A",
+    "contorno": 0,
+    "anim": "pop",
+    "at": 18
+   },
+   {
+    "tipo": "pildora",
+    "texto": "FINANZAS · QUÍMICA · SISTEMAS",
+    "size": 28,
+    "at": 28
+   }
+  ]
+ },
+ "etiquetas": [
+  {
+   "en": "e1:TCM",
+   "dur": 2.4,
+   "texto": "EMPRESA 1 DE 2 · TCM"
+  },
+  {
+   "en": "e2:SPIN",
+   "dur": 2.4,
+   "texto": "EMPRESA 2 DE 2 · GRUPO SPIN"
+  }
+ ],
+ "broll": [
+  {
+   "en": "e1:contabilidad",
+   "dur": 3,
+   "src": "broll/tcm.mp4"
+  },
+  {
+   "en": "e2:mexicana",
+   "dur": 3,
+   "src": "broll/spin.mp4"
+  }
+ ],
+ "imagenes": [
+  {
+   "en": "e1:Linkedin",
+   "dur": 6,
+   "src": "qr/tcm.jpg",
+   "pos": "abajo",
+   "ancho": 460,
+   "titulo": "TCM",
+   "texto": "REGÍSTRATE AQUÍ"
+  },
+  {
+   "en": "e2:vacantes",
+   "dur": 5,
+   "src": "qr/spin.jpg",
+   "pos": "abajo",
+   "ancho": 460,
+   "titulo": "GRUPO SPIN",
+   "texto": "MANDA TU CV POR WHATSAPP"
+  }
+ ],
+ "cierre": {
+  "pregunta": "¿CUÁL TE INTERESÓ MÁS?",
+  "cta": "GUÁRDALO Y COMPÁRTELO",
+  "dur": 2.3
+ }
+}

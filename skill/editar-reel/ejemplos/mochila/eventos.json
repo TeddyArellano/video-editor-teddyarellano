@@ -1,0 +1,255 @@
+{
+ "fix": {
+  "lab": "lap",
+  "ponchera": "mochila",
+  "mostrame": "mostrarme"
+ },
+ "secciones": {
+  "intro": {
+   "zoom": 1.0,
+   "caras": 1
+  },
+  "juan": {
+   "zoom": 1.12,
+   "caras": 2,
+   "color": "#2F80ED",
+   "contador": {
+    "label": "1ER SEM.",
+    "color": "#2F80ED"
+   },
+   "sujeto": "izquierda"
+  },
+  "radio": {
+   "zoom": 1.12,
+   "caras": 2,
+   "color": "#EB5757",
+   "contador": {
+    "label": "9NO SEM.",
+    "color": "#EB5757"
+   },
+   "sujeto": "derecha"
+  }
+ },
+ "gancho": {
+  "top": 820,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "¿Qué lleva en su",
+    "fuente": "Permanent Marker",
+    "size": 64,
+    "contorno": 10,
+    "rot": -3,
+    "anim": "slide",
+    "at": 2,
+    "sombra": false
+   },
+   {
+    "tipo": "texto",
+    "texto": "MOCHILA?",
+    "fuente": "Lilita One",
+    "size": 150,
+    "color": "#FFE14D",
+    "contorno": 16,
+    "rot": 2,
+    "anim": "pop",
+    "at": 8
+   },
+   {
+    "tipo": "stickers",
+    "items": [
+     {
+      "texto": "1ER SEMESTRE",
+      "bg": "#2F80ED"
+     },
+     {
+      "texto": "9NO SEMESTRE",
+      "bg": "#EB5757"
+     }
+    ],
+    "vs": "VS",
+    "at": 18
+   },
+   {
+    "tipo": "nota",
+    "texto": "estudiantes de Ing. en Sistemas",
+    "at": 40
+   }
+  ],
+  "sfx": [
+   {
+    "f": 18,
+    "sfx": "pop",
+    "vol": 0.35
+   },
+   {
+    "f": 26,
+    "sfx": "boom",
+    "vol": 0.35
+   },
+   {
+    "f": 32,
+    "sfx": "pop",
+    "vol": 0.35
+   }
+  ]
+ },
+ "nombres": [
+  {
+   "en": "juan:Juan",
+   "dur": 3,
+   "nombre": "JUAN",
+   "sub": "1ER SEMESTRE",
+   "color": "#2F80ED"
+  },
+  {
+   "en": "radio:Radio",
+   "dur": 3,
+   "nombre": "RADIO",
+   "sub": "9NO SEMESTRE",
+   "color": "#EB5757"
+  }
+ ],
+ "transiciones": [
+  {
+   "antes_de": "radio",
+   "texto": "9NO SEMESTRE"
+  }
+ ],
+ "objetos": [
+  "juan:Luigi",
+  "juan:guantes",
+  "juan:mazapán",
+  "juan:cambio",
+  "juan:agujeta",
+  "juan:papel",
+  "juan:Snoopy",
+  "juan:basurita",
+  "juan:pila",
+  "juan:cubito",
+  "juan:paracetamol",
+  "juan:chicles",
+  "juan:inhalador",
+  "juan:antibacterial",
+  "juan:inhalador#1",
+  "juan:inhalador#2",
+  "juan:cubito#1",
+  "juan:naproxeno",
+  "juan:credenciales",
+  "juan:botella",
+  "juan:lapicera",
+  "juan:plumoncitos",
+  "juan:tijeritas",
+  "juan:plumas",
+  "juan:sacapuntas",
+  "juan:lápiz",
+  "juan:calculadora",
+  "juan:correctores",
+  "juan:marcatextos",
+  "juan:plumón",
+  "juan:carpetita",
+  "juan:suetercito",
+  "juan:cargador",
+  "juan:Victus",
+  "radio:lap",
+  "radio:audífonos",
+  "radio:algo",
+  "radio:teléfono",
+  "radio:otra",
+  "radio:aburrida"
+ ],
+ "zooms": [
+  {
+   "en": "juan:Luigi",
+   "dur": 1.7,
+   "cx": 0.38,
+   "cy": 0.54
+  },
+  {
+   "en": "juan:mazapán",
+   "dur": 1.7,
+   "cx": 0.44,
+   "cy": 0.6
+  },
+  {
+   "en": "juan:Snoopy",
+   "dur": 1.7,
+   "cx": 0.38,
+   "cy": 0.5
+  },
+  {
+   "en": "juan:lapicera",
+   "dur": 1.7,
+   "cx": 0.44,
+   "cy": 0.44
+  },
+  {
+   "en": "juan:carpetita",
+   "dur": 1.7,
+   "cx": 0.38,
+   "cy": 0.44
+  },
+  {
+   "en": "juan:lap",
+   "hasta": "juan:Victus",
+   "cx": 0.42,
+   "cy": 0.5
+  },
+  {
+   "en": "radio:audífonos",
+   "dur": 1.7,
+   "cx": 0.53,
+   "cy": 0.45
+  },
+  {
+   "en": "radio:algo",
+   "dur": 1.7,
+   "cx": 0.44,
+   "cy": 0.54
+  },
+  {
+   "en": "radio:otra",
+   "dur": 1.7,
+   "cx": 0.44,
+   "cy": 0.56
+  },
+  {
+   "en": "radio:aburrida",
+   "dur": 1.7,
+   "cx": 0.46,
+   "cy": 0.5
+  }
+ ],
+ "sfx": [
+  {
+   "en": "juan:Luigi",
+   "offset": 0.13,
+   "sfx": "coin",
+   "vol": 0.4
+  },
+  {
+   "en": "juan:aplastado",
+   "offset": 0.15,
+   "sfx": "boing",
+   "vol": 0.4
+  },
+  {
+   "en": "juan:inhalador#2",
+   "offset": 0.13,
+   "sfx": "boom",
+   "vol": 0.45
+  },
+  {
+   "en": "juan:preparados#1",
+   "offset": 0.2,
+   "sfx": "tada",
+   "vol": 0.35
+  },
+  {
+   "en": "juan:Victus",
+   "offset": 0.3,
+   "sfx": "boom",
+   "vol": 0.45
+  }
+ ]
+}

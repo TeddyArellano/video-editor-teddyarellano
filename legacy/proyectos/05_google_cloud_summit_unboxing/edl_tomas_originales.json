@@ -1,0 +1,1913 @@
+[
+ {
+  "sec": "hook",
+  "in": 18.75,
+  "out": 21.45,
+  "words": [
+   [
+    "Google",
+    18.87,
+    19.146
+   ],
+   [
+    "me",
+    19.146,
+    19.264
+   ],
+   [
+    "regaló",
+    19.264,
+    19.539
+   ],
+   [
+    "algunas",
+    19.539,
+    19.854
+   ],
+   [
+    "cositas",
+    19.854,
+    20.169
+   ],
+   [
+    "por",
+    20.169,
+    20.327
+   ],
+   [
+    "ser",
+    20.327,
+    20.484
+   ],
+   [
+    "creador",
+    20.484,
+    20.799
+   ],
+   [
+    "de",
+    20.799,
+    20.917
+   ],
+   [
+    "contenido,",
+    20.917,
+    21.35
+   ]
+  ],
+  "text": "Google me regaló algunas cositas por ser creador de contenido,",
+  "i0": -1,
+  "i1": -1,
+  "frames": 81,
+  "start": 0,
+  "seg_file": 0
+ },
+ {
+  "sec": "hook",
+  "in": 33.46,
+  "out": 34.45,
+  "words": [
+   [
+    "vamos",
+    33.58,
+    33.72
+   ],
+   [
+    "a",
+    33.72,
+    33.84
+   ],
+   [
+    "ver",
+    33.84,
+    33.94
+   ],
+   [
+    "qué",
+    33.94,
+    34.16
+   ],
+   [
+    "son.",
+    34.16,
+    34.4
+   ]
+  ],
+  "text": "vamos a ver qué son.",
+  "i0": -1,
+  "i1": -1,
+  "frames": 30,
+  "start": 81,
+  "seg_file": 1
+ },
+ {
+  "sec": "bolsa1",
+  "in": 52.32,
+  "out": 54.54,
+  "words": [
+   [
+    "Vamos",
+    52.46,
+    52.46
+   ],
+   [
+    "con",
+    52.62,
+    52.62
+   ],
+   [
+    "esta",
+    52.76,
+    52.76
+   ],
+   [
+    "bolsita",
+    52.94,
+    53.14
+   ],
+   [
+    "primero.",
+    53.48,
+    54.28
+   ]
+  ],
+  "text": "Vamos con esta bolsita primero.",
+  "i0": 85,
+  "i1": 89,
+  "frames": 67,
+  "start": 111,
+  "seg_file": 5
+ },
+ {
+  "sec": "bolsa1",
+  "in": 61.02,
+  "out": 62.718,
+  "words": [
+   [
+    "está",
+    61.16,
+    61.16
+   ],
+   [
+    "muy",
+    61.32,
+    61.32
+   ],
+   [
+    "bonita",
+    61.48,
+    61.6
+   ],
+   [
+    "la",
+    61.72,
+    61.72
+   ],
+   [
+    "estética",
+    61.86,
+    62.06
+   ],
+   [
+    "la",
+    62.2,
+    62.2
+   ],
+   [
+    "verdad.",
+    62.48,
+    63.38
+   ]
+  ],
+  "text": "está muy bonita la estética la verdad.",
+  "i0": 101,
+  "i1": 107,
+  "frames": 51,
+  "start": 178,
+  "seg_file": 6
+ },
+ {
+  "sec": "bolsa1",
+  "in": 63.03,
+  "out": 63.55,
+  "words": [],
+  "text": "está muy bonita la estética la verdad.",
+  "i0": 101,
+  "i1": 107,
+  "frames": 16,
+  "start": 229,
+  "seg_file": 7
+ },
+ {
+  "sec": "botella",
+  "in": 72.24,
+  "out": 74.38,
+  "words": [
+   [
+    "Una",
+    72.38,
+    72.38
+   ],
+   [
+    "botellita",
+    72.62,
+    72.96
+   ],
+   [
+    "Google",
+    73.36,
+    73.36
+   ],
+   [
+    "Cloud,",
+    73.8,
+    75.7
+   ]
+  ],
+  "text": "Una botellita Google Cloud,",
+  "i0": 129,
+  "i1": 132,
+  "frames": 64,
+  "start": 245,
+  "seg_file": 8
+ },
+ {
+  "sec": "botella",
+  "in": 74.687,
+  "out": 74.79,
+  "words": [],
+  "text": "Una botellita Google Cloud,",
+  "i0": 129,
+  "i1": 132,
+  "frames": 3,
+  "start": 309,
+  "seg_file": 9
+ },
+ {
+  "sec": "gafete",
+  "in": 88.64,
+  "out": 89.974,
+  "words": [
+   [
+    "Mi",
+    88.78,
+    88.78
+   ],
+   [
+    "gafete",
+    88.88,
+    89.18
+   ],
+   [
+    "del",
+    89.36,
+    89.36
+   ],
+   [
+    "evento.",
+    89.64,
+    90.3
+   ]
+  ],
+  "text": "Mi gafete del evento.",
+  "i0": 147,
+  "i1": 150,
+  "frames": 40,
+  "start": 312,
+  "seg_file": 13
+ },
+ {
+  "sec": "gafete",
+  "in": 90.453,
+  "out": 90.56,
+  "words": [],
+  "text": "Mi gafete del evento.",
+  "i0": 147,
+  "i1": 150,
+  "frames": 3,
+  "start": 352,
+  "seg_file": 14
+ },
+ {
+  "sec": "gafete",
+  "in": 93.72,
+  "out": 95.558,
+  "words": [
+   [
+    "Tiederellano,",
+    93.86,
+    94.56
+   ],
+   [
+    "creador",
+    94.66,
+    94.76
+   ],
+   [
+    "de",
+    94.92,
+    94.92
+   ],
+   [
+    "contenido.",
+    95.28,
+    96.3
+   ]
+  ],
+  "text": "Tiederellano, creador de contenido.",
+  "i0": 155,
+  "i1": 158,
+  "frames": 55,
+  "start": 355,
+  "seg_file": 15
+ },
+ {
+  "sec": "gafete",
+  "in": 96.433,
+  "out": 96.56,
+  "words": [],
+  "text": "Tiederellano, creador de contenido.",
+  "i0": 155,
+  "i1": 158,
+  "frames": 4,
+  "start": 410,
+  "seg_file": 16
+ },
+ {
+  "sec": "organizador",
+  "in": 108.12,
+  "out": 109.77,
+  "words": [
+   [
+    "este",
+    108.26,
+    108.26
+   ],
+   [
+    "es",
+    108.34,
+    108.34
+   ],
+   [
+    "de",
+    108.44,
+    108.44
+   ],
+   [
+    "Google.",
+    108.7,
+    110.18
+   ]
+  ],
+  "text": "este es de Google.",
+  "i0": 176,
+  "i1": 179,
+  "frames": 49,
+  "start": 414,
+  "seg_file": 19
+ },
+ {
+  "sec": "organizador",
+  "in": 113.4,
+  "out": 117.29,
+  "words": [
+   [
+    "como",
+    113.54,
+    113.54
+   ],
+   [
+    "para",
+    113.8,
+    113.8
+   ],
+   [
+    "poner",
+    114.08,
+    114.08
+   ],
+   [
+    "lápices,",
+    114.28,
+    115.12
+   ],
+   [
+    "como",
+    115.32,
+    115.32
+   ],
+   [
+    "para",
+    115.56,
+    115.56
+   ],
+   [
+    "guardar",
+    115.88,
+    116.0
+   ],
+   [
+    "cables,",
+    116.4,
+    117.22
+   ]
+  ],
+  "text": "como para poner lápices, como para guardar cables,",
+  "i0": 184,
+  "i1": 191,
+  "frames": 117,
+  "start": 463,
+  "seg_file": 20
+ },
+ {
+  "sec": "organizador",
+  "in": 130.76,
+  "out": 132.59,
+  "words": [
+   [
+    "Y",
+    130.9,
+    130.9
+   ],
+   [
+    "los",
+    131.06,
+    131.06
+   ],
+   [
+    "clásicos",
+    131.3,
+    131.52
+   ],
+   [
+    "colores",
+    131.76,
+    131.92
+   ],
+   [
+    "de",
+    132.06,
+    132.06
+   ],
+   [
+    "Google.",
+    132.28,
+    135.14
+   ]
+  ],
+  "text": "Y los clásicos colores de Google.",
+  "i0": 230,
+  "i1": 235,
+  "frames": 55,
+  "start": 580,
+  "seg_file": 23
+ },
+ {
+  "sec": "organizador",
+  "in": 132.974,
+  "out": 133.35,
+  "words": [],
+  "text": "Y los clásicos colores de Google.",
+  "i0": 230,
+  "i1": 235,
+  "frames": 11,
+  "start": 635,
+  "seg_file": 24
+ },
+ {
+  "sec": "correa",
+  "in": 144.94,
+  "out": 147.414,
+  "words": [
+   [
+    "Una",
+    145.08,
+    145.08
+   ],
+   [
+    "corredita",
+    145.3,
+    145.5
+   ],
+   [
+    "más",
+    145.68,
+    145.68
+   ],
+   [
+    "para",
+    145.9,
+    145.9
+   ],
+   [
+    "credenciales.",
+    146.12,
+    147.78
+   ]
+  ],
+  "text": "Una corredita más para credenciales.",
+  "i0": 240,
+  "i1": 244,
+  "frames": 74,
+  "start": 646,
+  "seg_file": 25
+ },
+ {
+  "sec": "correa",
+  "in": 147.553,
+  "out": 147.67,
+  "words": [],
+  "text": "Una corredita más para credenciales.",
+  "i0": 240,
+  "i1": 244,
+  "frames": 4,
+  "start": 720,
+  "seg_file": 26
+ },
+ {
+  "sec": "correa",
+  "in": 153.04,
+  "out": 156.92,
+  "words": [
+   [
+    "Me",
+    153.18,
+    153.18
+   ],
+   [
+    "gusta",
+    153.36,
+    153.36
+   ],
+   [
+    "mucho",
+    153.56,
+    153.56
+   ],
+   [
+    "la",
+    153.68,
+    153.68
+   ],
+   [
+    "estética",
+    153.82,
+    154.0
+   ],
+   [
+    "mexicana",
+    154.26,
+    154.48
+   ],
+   [
+    "que",
+    154.64,
+    154.64
+   ],
+   [
+    "le",
+    154.74,
+    154.74
+   ],
+   [
+    "ponen",
+    154.9,
+    155.0
+   ],
+   [
+    "a",
+    155.12,
+    155.12
+   ],
+   [
+    "esta",
+    155.2,
+    155.2
+   ],
+   [
+    "correa.",
+    155.44,
+    155.86
+   ],
+   [
+    "Muy",
+    156.34,
+    156.34
+   ],
+   [
+    "bonita.",
+    156.5,
+    156.66
+   ]
+  ],
+  "text": "Me gusta mucho la estética mexicana que le ponen a esta correa. Muy bonita.",
+  "i0": 261,
+  "i1": 274,
+  "frames": 116,
+  "start": 724,
+  "seg_file": 27
+ },
+ {
+  "sec": "llaveros",
+  "in": 164.1,
+  "out": 166.3,
+  "words": [
+   [
+    "y",
+    164.08,
+    164.08
+   ],
+   [
+    "para",
+    164.08,
+    164.08
+   ],
+   [
+    "completar",
+    164.36,
+    164.48
+   ],
+   [
+    "unos",
+    164.62,
+    164.62
+   ],
+   [
+    "llaveritos,",
+    164.72,
+    165.1
+   ],
+   [
+    "igual",
+    165.32,
+    165.32
+   ],
+   [
+    "de",
+    165.42,
+    165.42
+   ],
+   [
+    "Google.",
+    165.64,
+    166.04
+   ]
+  ],
+  "text": "y para completar unos llaveritos, igual de Google.",
+  "i0": 284,
+  "i1": 291,
+  "frames": 66,
+  "start": 840,
+  "seg_file": 28
+ },
+ {
+  "sec": "llaveros",
+  "in": 169.98,
+  "out": 172.39,
+  "words": [
+   [
+    "Muy",
+    170.06,
+    170.06
+   ],
+   [
+    "tematizados",
+    170.32,
+    170.68
+   ],
+   [
+    "con",
+    170.88,
+    170.88
+   ],
+   [
+    "México.",
+    171.32,
+    173.4
+   ]
+  ],
+  "text": "Muy tematizados con México.",
+  "i0": 296,
+  "i1": 299,
+  "frames": 72,
+  "start": 906,
+  "seg_file": 29
+ },
+ {
+  "sec": "llaveros",
+  "in": 179.28,
+  "out": 181.616,
+  "words": [
+   [
+    "Son",
+    179.42,
+    179.42
+   ],
+   [
+    "como",
+    179.84,
+    179.84
+   ],
+   [
+    "decoraciones",
+    180.08,
+    180.44
+   ],
+   [
+    "con",
+    180.68,
+    180.68
+   ],
+   [
+    "papel",
+    180.94,
+    180.94
+   ],
+   [
+    "picado.",
+    181.16,
+    181.6
+   ]
+  ],
+  "text": "Son como decoraciones con papel picado. Una piñata. Un corazoncito. Y",
+  "i0": 308,
+  "i1": 318,
+  "frames": 70,
+  "start": 978,
+  "seg_file": 30
+ },
+ {
+  "sec": "llaveros",
+  "in": 181.767,
+  "out": 182.676,
+  "words": [
+   [
+    "Una",
+    182.0,
+    182.0
+   ],
+   [
+    "piñata.",
+    182.16,
+    182.96
+   ]
+  ],
+  "text": "Son como decoraciones con papel picado. Una piñata. Un corazoncito. Y",
+  "i0": 308,
+  "i1": 318,
+  "frames": 27,
+  "start": 1048,
+  "seg_file": 31
+ },
+ {
+  "sec": "llaveros",
+  "in": 183.224,
+  "out": 184.84,
+  "words": [
+   [
+    "Un",
+    183.44,
+    183.44
+   ],
+   [
+    "corazoncito.",
+    183.58,
+    184.44
+   ],
+   [
+    "Y",
+    184.58,
+    184.58
+   ]
+  ],
+  "text": "Son como decoraciones con papel picado. Una piñata. Un corazoncito. Y",
+  "i0": 308,
+  "i1": 318,
+  "frames": 48,
+  "start": 1075,
+  "seg_file": 32
+ },
+ {
+  "sec": "llaveros",
+  "in": 185.3,
+  "out": 186.16,
+  "words": [
+   [
+    "Google",
+    185.54,
+    185.54
+   ],
+   [
+    "Cloud.",
+    185.9,
+    185.9
+   ]
+  ],
+  "text": "Google Cloud.",
+  "i0": 319,
+  "i1": 320,
+  "frames": 26,
+  "start": 1123,
+  "seg_file": 33
+ },
+ {
+  "sec": "te",
+  "in": 221.14,
+  "out": 223.31,
+  "words": [
+   [
+    "Y",
+    221.28,
+    221.28
+   ],
+   [
+    "esto",
+    221.52,
+    221.52
+   ],
+   [
+    "es",
+    221.7,
+    221.7
+   ],
+   [
+    "lo",
+    221.8,
+    221.8
+   ],
+   [
+    "más",
+    221.98,
+    221.98
+   ],
+   [
+    "random.",
+    222.24,
+    223.68
+   ]
+  ],
+  "text": "Y esto es lo más random.",
+  "i0": 325,
+  "i1": 330,
+  "frames": 65,
+  "start": 1149,
+  "seg_file": 34
+ },
+ {
+  "sec": "te",
+  "in": 228.0,
+  "out": 229.15,
+  "words": [
+   [
+    "Es",
+    228.14,
+    228.14
+   ],
+   [
+    "un",
+    228.24,
+    228.24
+   ],
+   [
+    "té.",
+    228.4,
+    229.1
+   ]
+  ],
+  "text": "Es un té.",
+  "i0": 343,
+  "i1": 345,
+  "frames": 35,
+  "start": 1214,
+  "seg_file": 35
+ },
+ {
+  "sec": "te",
+  "in": 233.02,
+  "out": 236.12,
+  "words": [
+   [
+    "Este",
+    233.08,
+    233.08
+   ],
+   [
+    "creo",
+    233.22,
+    233.22
+   ],
+   [
+    "que",
+    233.32,
+    233.32
+   ],
+   [
+    "no",
+    233.42,
+    233.42
+   ],
+   [
+    "tiene",
+    233.6,
+    233.6
+   ],
+   [
+    "mucho",
+    233.8,
+    233.8
+   ],
+   [
+    "que",
+    233.94,
+    233.94
+   ],
+   [
+    "ver",
+    234.06,
+    234.06
+   ],
+   [
+    "con",
+    234.22,
+    234.22
+   ],
+   [
+    "Google.",
+    234.46,
+    234.62
+   ],
+   [
+    "Pero",
+    234.8,
+    234.8
+   ],
+   [
+    "se",
+    235.06,
+    235.06
+   ],
+   [
+    "agradece.",
+    235.3,
+    235.86
+   ]
+  ],
+  "text": "Este creo que no tiene mucho que ver con Google. Pero se agradece.",
+  "i0": 357,
+  "i1": 369,
+  "frames": 93,
+  "start": 1249,
+  "seg_file": 36
+ },
+ {
+  "sec": "te",
+  "in": 238.44,
+  "out": 239.92,
+  "words": [
+   [
+    "Para",
+    238.58,
+    238.58
+   ],
+   [
+    "hacerme",
+    238.76,
+    238.88
+   ],
+   [
+    "un",
+    239.02,
+    239.02
+   ],
+   [
+    "té,",
+    239.1,
+    239.12
+   ],
+   [
+    "supongo.",
+    239.34,
+    239.66
+   ]
+  ],
+  "text": "Para hacerme un té, supongo.",
+  "i0": 374,
+  "i1": 378,
+  "frames": 44,
+  "start": 1342,
+  "seg_file": 37
+ },
+ {
+  "sec": "bolsa2",
+  "in": 248.52,
+  "out": 251.35,
+  "words": [
+   [
+    "Vamos",
+    248.66,
+    248.66
+   ],
+   [
+    "con",
+    248.82,
+    248.82
+   ],
+   [
+    "la",
+    248.94,
+    248.94
+   ],
+   [
+    "otra",
+    249.02,
+    249.02
+   ],
+   [
+    "bolsita.",
+    249.18,
+    249.48
+   ],
+   [
+    "Que",
+    249.52,
+    249.52
+   ],
+   [
+    "esta",
+    249.62,
+    249.62
+   ],
+   [
+    "es",
+    249.66,
+    249.66
+   ],
+   [
+    "la",
+    249.72,
+    249.72
+   ],
+   [
+    "que",
+    249.8,
+    249.8
+   ],
+   [
+    "tiene",
+    249.96,
+    249.96
+   ],
+   [
+    "más",
+    250.12,
+    250.12
+   ],
+   [
+    "cosas.",
+    250.36,
+    251.42
+   ]
+  ],
+  "text": "Vamos con la otra bolsita. Que esta es la que tiene más cosas.",
+  "i0": 391,
+  "i1": 403,
+  "frames": 85,
+  "start": 1386,
+  "seg_file": 38
+ },
+ {
+  "sec": "galletas",
+  "in": 256.46,
+  "out": 258.71,
+  "words": [
+   [
+    "Lo",
+    256.6,
+    256.6
+   ],
+   [
+    "primero",
+    256.78,
+    256.78
+   ],
+   [
+    "es",
+    256.88,
+    256.88
+   ],
+   [
+    "esta",
+    256.96,
+    256.96
+   ],
+   [
+    "cajita.",
+    257.14,
+    257.6
+   ],
+   [
+    "Que",
+    257.64,
+    257.64
+   ],
+   [
+    "dice",
+    257.86,
+    257.86
+   ],
+   [
+    "repostería.",
+    258.06,
+    259.0
+   ]
+  ],
+  "text": "Lo primero es esta cajita. Que dice repostería.",
+  "i0": 409,
+  "i1": 416,
+  "frames": 68,
+  "start": 1471,
+  "seg_file": 39
+ },
+ {
+  "sec": "galletas",
+  "in": 258.915,
+  "out": 259.26,
+  "words": [],
+  "text": "Lo primero es esta cajita. Que dice repostería.",
+  "i0": 409,
+  "i1": 416,
+  "frames": 10,
+  "start": 1539,
+  "seg_file": 40
+ },
+ {
+  "sec": "galletas",
+  "in": 271.16,
+  "out": 272.12,
+  "words": [
+   [
+    "Son",
+    271.3,
+    271.3
+   ],
+   [
+    "galletas.",
+    271.5,
+    272.6
+   ]
+  ],
+  "text": "Son galletas.",
+  "i0": 427,
+  "i1": 434,
+  "frames": 29,
+  "start": 1549,
+  "seg_file": "g38"
+ },
+ {
+  "sec": "galletas",
+  "in": 278.9,
+  "out": 280.65,
+  "words": [
+   [
+    "Se",
+    279.04,
+    279.04
+   ],
+   [
+    "ven",
+    279.16,
+    279.16
+   ],
+   [
+    "muy",
+    279.32,
+    279.32
+   ],
+   [
+    "buenas.",
+    279.58,
+    280.84
+   ]
+  ],
+  "text": "Se ven muy buenas.",
+  "i0": 443,
+  "i1": 446,
+  "frames": 52,
+  "start": 1578,
+  "seg_file": 42
+ },
+ {
+  "sec": "galletas",
+  "in": 301.98,
+  "out": 303.58,
+  "words": [
+   [
+    "Ahí",
+    302.12,
+    302.12
+   ],
+   [
+    "después",
+    302.32,
+    302.32
+   ],
+   [
+    "me",
+    302.48,
+    302.48
+   ],
+   [
+    "las",
+    302.62,
+    302.62
+   ],
+   [
+    "como.",
+    302.86,
+    303.32
+   ]
+  ],
+  "text": "Ahí después me las como.",
+  "i0": 476,
+  "i1": 480,
+  "frames": 48,
+  "start": 1630,
+  "seg_file": 43
+ },
+ {
+  "sec": "caja",
+  "in": 338.06,
+  "out": 341.03,
+  "words": [
+   [
+    "Y",
+    338.2,
+    338.2
+   ],
+   [
+    "esta",
+    338.44,
+    338.44
+   ],
+   [
+    "es",
+    338.96,
+    338.96
+   ],
+   [
+    "la",
+    339.06,
+    339.06
+   ],
+   [
+    "cajita",
+    339.22,
+    339.42
+   ],
+   [
+    "más",
+    339.6,
+    339.6
+   ],
+   [
+    "grande",
+    339.86,
+    339.86
+   ],
+   [
+    "que",
+    340.04,
+    340.04
+   ],
+   [
+    "hay.",
+    340.2,
+    341.28
+   ]
+  ],
+  "text": "Y esta es la cajita más grande que hay.",
+  "i0": 510,
+  "i1": 518,
+  "frames": 89,
+  "start": 1678,
+  "seg_file": 44
+ },
+ {
+  "sec": "caja",
+  "in": 342.02,
+  "out": 344.6,
+  "words": [
+   [
+    "Google",
+    342.16,
+    342.16
+   ],
+   [
+    "Cloud.",
+    342.52,
+    342.92
+   ],
+   [
+    "Vamos",
+    343.3,
+    343.3
+   ],
+   [
+    "a",
+    343.4,
+    343.4
+   ],
+   [
+    "ver",
+    343.52,
+    343.52
+   ],
+   [
+    "qué",
+    343.66,
+    343.66
+   ],
+   [
+    "hay.",
+    343.78,
+    344.34
+   ]
+  ],
+  "text": "Google Cloud. Vamos a ver qué hay.",
+  "i0": 519,
+  "i1": 525,
+  "frames": 77,
+  "start": 1767,
+  "seg_file": 45
+ },
+ {
+  "sec": "caja",
+  "in": 360.26,
+  "out": 363.71,
+  "words": [
+   [
+    "Para",
+    360.4,
+    360.4
+   ],
+   [
+    "que",
+    360.52,
+    360.52
+   ],
+   [
+    "te",
+    360.66,
+    360.66
+   ],
+   [
+    "puedas",
+    360.86,
+    360.94
+   ],
+   [
+    "relajar",
+    361.1,
+    361.28
+   ],
+   [
+    "mientras",
+    361.62,
+    361.62
+   ],
+   [
+    "tus",
+    361.86,
+    361.86
+   ],
+   [
+    "agentes",
+    362.02,
+    362.2
+   ],
+   [
+    "trabajan.",
+    362.48,
+    369.2
+   ]
+  ],
+  "text": "Para que te puedas relajar mientras tus agentes trabajan.",
+  "i0": 550,
+  "i1": 558,
+  "frames": 103,
+  "start": 1844,
+  "seg_file": 46
+ },
+ {
+  "sec": "tetera",
+  "in": 374.76,
+  "out": 376.27,
+  "words": [
+   [
+    "Creo",
+    374.9,
+    374.9
+   ],
+   [
+    "que",
+    374.98,
+    374.98
+   ],
+   [
+    "es",
+    375.08,
+    375.08
+   ],
+   [
+    "una",
+    375.22,
+    375.22
+   ],
+   [
+    "tetera.",
+    375.4,
+    376.28
+   ]
+  ],
+  "text": "Creo que es una tetera.",
+  "i0": 562,
+  "i1": 566,
+  "frames": 45,
+  "start": 1947,
+  "seg_file": 47
+ },
+ {
+  "sec": "tetera",
+  "in": 381.08,
+  "out": 383.43,
+  "words": [
+   [
+    "Y",
+    381.22,
+    381.22
+   ],
+   [
+    "sí,",
+    381.36,
+    381.46
+   ],
+   [
+    "creo",
+    381.56,
+    381.56
+   ],
+   [
+    "que",
+    381.7,
+    381.7
+   ],
+   [
+    "justamente",
+    382.04,
+    382.04
+   ],
+   [
+    "es",
+    382.28,
+    382.28
+   ],
+   [
+    "para",
+    382.48,
+    382.48
+   ],
+   [
+    "té.",
+    382.68,
+    383.86
+   ]
+  ],
+  "text": "Y sí, creo que justamente es para té.",
+  "i0": 573,
+  "i1": 580,
+  "frames": 71,
+  "start": 1992,
+  "seg_file": 48
+ },
+ {
+  "sec": "tetera",
+  "in": 385.46,
+  "out": 387.127,
+  "words": [
+   [
+    "Supondré",
+    385.6,
+    385.82
+   ],
+   [
+    "que",
+    385.92,
+    385.92
+   ],
+   [
+    "por",
+    386.06,
+    386.06
+   ],
+   [
+    "eso",
+    386.14,
+    386.14
+   ],
+   [
+    "me",
+    386.26,
+    386.26
+   ],
+   [
+    "dieron",
+    386.34,
+    386.46
+   ],
+   [
+    "el",
+    386.64,
+    386.64
+   ],
+   [
+    "té.",
+    386.8,
+    387.64
+   ]
+  ],
+  "text": "Supondré que por eso me dieron el té.",
+  "i0": 587,
+  "i1": 594,
+  "frames": 50,
+  "start": 2063,
+  "seg_file": 49
+ },
+ {
+  "sec": "tetera",
+  "in": 387.44,
+  "out": 387.55,
+  "words": [],
+  "text": "Supondré que por eso me dieron el té.",
+  "i0": 587,
+  "i1": 594,
+  "frames": 3,
+  "start": 2113,
+  "seg_file": 50
+ },
+ {
+  "sec": "tetera",
+  "in": 389.3,
+  "out": 390.92,
+  "words": [
+   [
+    "Trae",
+    389.44,
+    389.5
+   ],
+   [
+    "para",
+    389.66,
+    389.66
+   ],
+   [
+    "filtrar.",
+    389.92,
+    390.66
+   ]
+  ],
+  "text": "Trae para filtrar.",
+  "i0": 597,
+  "i1": 599,
+  "frames": 49,
+  "start": 2116,
+  "seg_file": 51
+ },
+ {
+  "sec": "tetera",
+  "in": 391.32,
+  "out": 394.39,
+  "words": [
+   [
+    "La",
+    391.46,
+    391.46
+   ],
+   [
+    "tapita.",
+    391.7,
+    392.3
+   ],
+   [
+    "La",
+    392.48,
+    392.48
+   ],
+   [
+    "tetera.",
+    392.64,
+    393.18
+   ],
+   [
+    "Y",
+    393.2,
+    393.2
+   ],
+   [
+    "la",
+    393.34,
+    393.34
+   ],
+   [
+    "taza.",
+    393.48,
+    394.72
+   ]
+  ],
+  "text": "La tapita. La tetera. Y la taza.",
+  "i0": 600,
+  "i1": 606,
+  "frames": 92,
+  "start": 2165,
+  "seg_file": 52
+ },
+ {
+  "sec": "tetera",
+  "in": 397.52,
+  "out": 400.56,
+  "words": [
+   [
+    "Y",
+    397.66,
+    397.66
+   ],
+   [
+    "claro,",
+    397.88,
+    398.0
+   ],
+   [
+    "no",
+    398.04,
+    398.04
+   ],
+   [
+    "puede",
+    398.24,
+    398.24
+   ],
+   [
+    "faltar",
+    398.42,
+    398.58
+   ],
+   [
+    "la",
+    398.68,
+    398.68
+   ],
+   [
+    "base",
+    398.94,
+    398.94
+   ],
+   [
+    "para",
+    399.16,
+    399.16
+   ],
+   [
+    "poner",
+    399.4,
+    399.4
+   ],
+   [
+    "la",
+    399.54,
+    399.54
+   ],
+   [
+    "tacita.",
+    399.72,
+    400.3
+   ]
+  ],
+  "text": "Y claro, no puede faltar la base para poner la tacita.",
+  "i0": 614,
+  "i1": 624,
+  "frames": 91,
+  "start": 2257,
+  "seg_file": 53
+ },
+ {
+  "sec": "tetera",
+  "in": 402.14,
+  "out": 404.29,
+  "words": [
+   [
+    "Con",
+    402.28,
+    402.28
+   ],
+   [
+    "el",
+    402.42,
+    402.42
+   ],
+   [
+    "logo",
+    402.62,
+    402.62
+   ],
+   [
+    "de",
+    402.76,
+    402.76
+   ],
+   [
+    "Google",
+    403.0,
+    403.0
+   ],
+   [
+    "Cloud.",
+    403.3,
+    404.2
+   ]
+  ],
+  "text": "Con el logo de Google Cloud.",
+  "i0": 630,
+  "i1": 635,
+  "frames": 65,
+  "start": 2348,
+  "seg_file": 54
+ },
+ {
+  "sec": "cierre",
+  "in": 406.42,
+  "out": 407.65,
+  "words": [
+   [
+    "Y",
+    406.56,
+    406.56
+   ],
+   [
+    "esos",
+    406.7,
+    406.7
+   ],
+   [
+    "son",
+    406.92,
+    406.92
+   ],
+   [
+    "todos",
+    407.16,
+    407.16
+   ],
+   [
+    "los",
+    407.3,
+    407.3
+   ],
+   [
+    "regalos.",
+    407.46,
+    407.76
+   ]
+  ],
+  "text": "Y esos son todos los regalos.",
+  "i0": 636,
+  "i1": 641,
+  "frames": 37,
+  "start": 2413,
+  "seg_file": 55
+ },
+ {
+  "sec": "cierre",
+  "in": 421.02,
+  "out": 424.2,
+  "words": [
+   [
+    "La",
+    421.16,
+    421.16
+   ],
+   [
+    "verdad,",
+    421.24,
+    421.28
+   ],
+   [
+    "muchas",
+    421.4,
+    421.4
+   ],
+   [
+    "gracias",
+    421.74,
+    421.74
+   ],
+   [
+    "a",
+    421.92,
+    421.92
+   ],
+   [
+    "Google",
+    422.14,
+    422.14
+   ],
+   [
+    "por",
+    422.38,
+    422.38
+   ],
+   [
+    "la",
+    422.48,
+    422.48
+   ],
+   [
+    "invitación",
+    422.64,
+    422.84
+   ],
+   [
+    "y",
+    422.94,
+    422.94
+   ],
+   [
+    "por",
+    423.06,
+    423.06
+   ],
+   [
+    "los",
+    423.22,
+    423.22
+   ],
+   [
+    "regalos.",
+    423.38,
+    423.94
+   ]
+  ],
+  "text": "La verdad, muchas gracias a Google por la invitación y por los regalos.",
+  "i0": 679,
+  "i1": 691,
+  "frames": 95,
+  "start": 2450,
+  "seg_file": 56
+ },
+ {
+  "sec": "cierre",
+  "in": 430.2,
+  "out": 431.4,
+  "words": [
+   [
+    "Pues",
+    430.34,
+    430.34
+   ],
+   [
+    "nada,",
+    430.48,
+    430.56
+   ],
+   [
+    "nos",
+    430.64,
+    430.64
+   ],
+   [
+    "vemos",
+    430.76,
+    430.76
+   ],
+   [
+    "en",
+    430.9,
+    430.9
+   ],
+   [
+    "la",
+    430.94,
+    430.94
+   ],
+   [
+    "próxima.",
+    431.14,
+    431.14
+   ]
+  ],
+  "text": "Pues nada, nos vemos en la próxima.",
+  "i0": 707,
+  "i1": 713,
+  "frames": 36,
+  "start": 2545,
+  "seg_file": 57
+ }
+]

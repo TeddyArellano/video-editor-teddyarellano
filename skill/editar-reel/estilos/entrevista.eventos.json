@@ -1,0 +1,165 @@
+{
+ "_ayuda": "Ejemplo real (FEySS ¿Cuánto esperas ganar?). Una sección por persona (p1..p4); la pregunta solo se oye en p1. Montos en pixel, emoji por tema, etiqueta de carrera, censura de groserías.",
+ "fix": {
+  "cima": "ESIME",
+  "Capotzalco": "Azcapotzalco",
+  "puto": "P***"
+ },
+ "resaltar": [
+  "robótica",
+  "posgrado",
+  "alimentos",
+  "bioprocesos",
+  "Turismo",
+  "fotónica",
+  "textil",
+  "Comunicaciones",
+  "ESIME",
+  "Azcapotzalco"
+ ],
+ "secciones": {
+  "p1": {
+   "zoom": 1.4,
+   "caras": 2
+  },
+  "p2": {
+   "zoom": 1.4,
+   "caras": 2
+  },
+  "p3": {
+   "zoom": 1.4,
+   "caras": 2
+  },
+  "p4": {
+   "zoom": 1.15,
+   "caras": 4
+  }
+ },
+ "gancho": {
+  "top": 700,
+  "dur": 2.0,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "¿CUÁNTO",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 120,
+    "contorno": 0,
+    "align": "left",
+    "anim": "slide",
+    "en": "p1:cuánto"
+   },
+   {
+    "tipo": "texto",
+    "texto": "ESPERAS",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 120,
+    "contorno": 0,
+    "align": "right",
+    "anim": "slide",
+    "en": "p1:esperas"
+   },
+   {
+    "tipo": "texto",
+    "texto": "GANAR AL EGRESAR?",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 88,
+    "color": "#FFE81A",
+    "contorno": 0,
+    "anim": "pop",
+    "en": "p1:ganar"
+   },
+   {
+    "tipo": "pildora",
+    "texto": "FERIA DEL EMPLEO Y SERVICIO SOCIAL 2026",
+    "bg": "#FFE81A",
+    "color": "#111",
+    "size": 26,
+    "at": 24
+   }
+  ]
+ },
+ "montos": [
+  {
+   "en": "p1:25",
+   "dur": 2.6,
+   "texto": "25K MXN"
+  },
+  {
+   "en": "p2:30",
+   "dur": 2.8,
+   "texto": "30K - 40K MXN"
+  },
+  {
+   "en": "p3:14",
+   "dur": 2.4,
+   "texto": "14K MXN"
+  },
+  {
+   "en": "p4:20",
+   "dur": 3.0,
+   "texto": "10K - 30K MXN"
+  }
+ ],
+ "emojis": [
+  {
+   "en": "p1:robótica",
+   "dur": 2.0,
+   "emoji": "🤖"
+  },
+  {
+   "en": "p2:posgrado",
+   "dur": 2.0,
+   "emoji": "🎓"
+  },
+  {
+   "en": "p3:Turismo",
+   "dur": 1.8,
+   "emoji": "✈️"
+  },
+  {
+   "en": "p4:comer",
+   "dur": 1.8,
+   "emoji": "🍔"
+  }
+ ],
+ "etiquetas": [
+  {
+   "en": "p1:Robótica#1",
+   "dur": 2.4,
+   "texto": "ING. ROBÓTICA INDUSTRIAL · ESIME AZC."
+  },
+  {
+   "en": "p2:Estudié",
+   "dur": 3.0,
+   "texto": "ING. EN ALIMENTOS · DOCTORADO"
+  },
+  {
+   "en": "p3:Escuela",
+   "dur": 2.0,
+   "texto": "ESCUELA SUPERIOR DE TURISMO"
+  },
+  {
+   "en": "p4:fotónica",
+   "dur": 3.6,
+   "texto": "FOTÓNICA · TEXTIL · ALIMENTOS · ELECTRÓNICA"
+  }
+ ],
+ "censura": [
+  {
+   "en": "p4:P***",
+   "dur": 0.45
+  }
+ ],
+ "cierre": {
+  "pregunta": "¿Y TÚ CUÁNTO ESPERAS GANAR?",
+  "cta": "COMÉNTALO 👇",
+  "dur": 2.3
+ }
+}

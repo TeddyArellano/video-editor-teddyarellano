@@ -1,0 +1,245 @@
+[
+{
+"start": 0,
+"frames": 200,
+"seg": 0,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 200,
+"frames": 35,
+"seg": 0,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 235,
+"frames": 47,
+"seg": 0,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 282,
+"frames": 271,
+"seg": 1,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 553,
+"frames": 306,
+"seg": 2,
+"zoom": 1.12,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.43
+},
+{
+"start": 859,
+"frames": 21,
+"seg": 2,
+"zoom": 1.12,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.43
+},
+{
+"start": 880,
+"frames": 126,
+"seg": 2,
+"zoom": 1.12,
+"zoomAlt": 1.0,
+"cut": "jump",
+"beep": null,
+"faceY": 0.43
+},
+{
+"start": 1006,
+"frames": 69,
+"seg": 3,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 1075,
+"frames": 181,
+"seg": 3,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 1256,
+"frames": 42,
+"seg": 4,
+"zoom": 1.12,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.43
+},
+{
+"start": 1298,
+"frames": 194,
+"seg": 4,
+"zoom": 1.12,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.43
+},
+{
+"start": 1492,
+"frames": 154,
+"seg": 4,
+"zoom": 1.12,
+"zoomAlt": 1.0,
+"cut": "jump",
+"beep": null,
+"faceY": 0.43
+},
+{
+"start": 1646,
+"frames": 220,
+"seg": 5,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 1866,
+"frames": 175,
+"seg": 5,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2041,
+"frames": 129,
+"seg": 6,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2170,
+"frames": 105,
+"seg": 6,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2275,
+"frames": 105,
+"seg": 7,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2380,
+"frames": 161,
+"seg": 7,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2541,
+"frames": 136,
+"seg": 8,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2677,
+"frames": 139,
+"seg": 8,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2816,
+"frames": 57,
+"seg": 9,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2873,
+"frames": 62,
+"seg": 9,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2935,
+"frames": 31,
+"seg": 10,
+"zoom": 1.45,
+"zoomAlt": 1.0,
+"cut": "new",
+"beep": null,
+"faceY": 0.37
+},
+{
+"start": 2966,
+"frames": 255,
+"seg": 10,
+"zoom": 1.45,
+"zoomAlt": 1.08,
+"cut": "jump",
+"beep": [
+4.34,
+4.81
+],
+"faceY": 0.37
+}
+]

@@ -1,0 +1,1914 @@
+[
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "¿Qué",
+"start": 0.14,
+"end": 1.34
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "carreras",
+"start": 1.86,
+"end": 2.3
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "buscan?",
+"start": 2.3,
+"end": 3.14
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "La",
+"start": 3.14,
+"end": 3.34
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "verdad",
+"start": 3.34,
+"end": 3.48
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "es",
+"start": 3.48,
+"end": 3.58
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "que",
+"start": 3.58,
+"end": 3.88
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "tenemos",
+"start": 3.88,
+"end": 4.46
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "diversidad.",
+"start": 4.46,
+"end": 5.06
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "Pueden",
+"start": 5.06,
+"end": 5.44
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "ser",
+"start": 5.44,
+"end": 5.78
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "áreas",
+"start": 5.78,
+"end": 6.16
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "desde",
+"start": 6.16,
+"end": 6.62
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "económico,",
+"start": 6.62,
+"end": 7.1
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "administrativo,",
+"start": 7.1,
+"end": 8.26
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "financiero,",
+"start": 8.26,
+"end": 9.02
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "negocios,",
+"start": 9.02,
+"end": 10.02
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "la",
+"start": 10.02,
+"end": 10.26
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "parte",
+"start": 10.26,
+"end": 10.44
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "de",
+"start": 10.44,
+"end": 10.92
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "tecnología,",
+"start": 10.92,
+"end": 11.48
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "sobre",
+"start": 11.48,
+"end": 11.76
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "todo",
+"start": 11.76,
+"end": 12.06
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "inteligencia",
+"start": 12.06,
+"end": 12.72
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "artificial,",
+"start": 12.72,
+"end": 13.3
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "manejo",
+"start": 13.3,
+"end": 13.7
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "de",
+"start": 13.7,
+"end": 14.1
+},
+{
+"piece": 0,
+"company": 0,
+"role": "q",
+"text": "datos,",
+"start": 14.1,
+"end": 14.867
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "Somos",
+"start": 15.007,
+"end": 15.287
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "una",
+"start": 15.287,
+"end": 15.687
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "consultoría",
+"start": 15.687,
+"end": 16.167
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "que",
+"start": 16.167,
+"end": 16.287
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "ofrecemos",
+"start": 16.287,
+"end": 17.107
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "servicios",
+"start": 17.107,
+"end": 17.527
+},
+{
+"piece": 1,
+"company": 0,
+"role": "a",
+"text": "integrales,",
+"start": 17.527,
+"end": 17.967
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "principalmente",
+"start": 18.107,
+"end": 18.647
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "tenemos",
+"start": 18.647,
+"end": 19.007
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "nuestro",
+"start": 19.007,
+"end": 19.407
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "programa",
+"start": 19.407,
+"end": 19.627
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "de",
+"start": 19.627,
+"end": 19.947
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "interns",
+"start": 19.947,
+"end": 20.187
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "que",
+"start": 20.187,
+"end": 20.307
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "se",
+"start": 20.307,
+"end": 20.547
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "llama",
+"start": 20.547,
+"end": 20.927
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "Future",
+"start": 20.927,
+"end": 21.227
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "Ready,",
+"start": 21.227,
+"end": 21.747
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "que",
+"start": 21.747,
+"end": 21.847
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "es",
+"start": 21.847,
+"end": 22.087
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "para",
+"start": 22.087,
+"end": 22.387
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "candidatos",
+"start": 22.387,
+"end": 23.207
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "estudiantes",
+"start": 23.207,
+"end": 23.707
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "de",
+"start": 23.707,
+"end": 23.967
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "último",
+"start": 23.967,
+"end": 24.267
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "semestre",
+"start": 24.267,
+"end": 24.807
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "o",
+"start": 24.807,
+"end": 25.047
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "recién",
+"start": 25.047,
+"end": 25.307
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "egresados",
+"start": 25.307,
+"end": 25.887
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "que",
+"start": 25.887,
+"end": 26.027
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "estén",
+"start": 26.027,
+"end": 26.187
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "en",
+"start": 26.187,
+"end": 26.467
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "proceso",
+"start": 26.467,
+"end": 26.647
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "de",
+"start": 26.647,
+"end": 26.827
+},
+{
+"piece": 2,
+"company": 0,
+"role": "a",
+"text": "titulación.",
+"start": 26.827,
+"end": 27.633
+},
+{
+"piece": 3,
+"company": 1,
+"role": "a",
+"text": "Nosotros",
+"start": 27.773,
+"end": 28.193
+},
+{
+"piece": 3,
+"company": 1,
+"role": "a",
+"text": "nos",
+"start": 28.193,
+"end": 28.433
+},
+{
+"piece": 3,
+"company": 1,
+"role": "a",
+"text": "dedicamos",
+"start": 28.433,
+"end": 29.133
+},
+{
+"piece": 3,
+"company": 1,
+"role": "a",
+"text": "al",
+"start": 29.133,
+"end": 29.613
+},
+{
+"piece": 3,
+"company": 1,
+"role": "a",
+"text": "tema",
+"start": 29.613,
+"end": 30.013
+},
+{
+"piece": 3,
+"company": 1,
+"role": "a",
+"text": "de",
+"start": 30.013,
+"end": 30.367
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "telecomunicaciones",
+"start": 30.507,
+"end": 31.707
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "y",
+"start": 31.887,
+"end": 32.447
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "servicios",
+"start": 32.447,
+"end": 32.647
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "de",
+"start": 32.647,
+"end": 32.987
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "TI,",
+"start": 32.987,
+"end": 33.247
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "que",
+"start": 33.247,
+"end": 33.407
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "abarcan",
+"start": 33.407,
+"end": 34.027
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "servicios",
+"start": 34.027,
+"end": 34.207
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "de",
+"start": 34.207,
+"end": 34.327
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "ciberseguridad,",
+"start": 34.327,
+"end": 35.527
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "servicios",
+"start": 35.907,
+"end": 36.167
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "en",
+"start": 36.167,
+"end": 36.287
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "la",
+"start": 36.287,
+"end": 36.467
+},
+{
+"piece": 4,
+"company": 1,
+"role": "a",
+"text": "nube,",
+"start": 36.467,
+"end": 37.667
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "nuestra",
+"start": 37.873,
+"end": 38.053
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "oferta",
+"start": 38.053,
+"end": 38.713
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "laboral",
+"start": 38.713,
+"end": 39.433
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "abarca",
+"start": 39.433,
+"end": 39.873
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "casi",
+"start": 39.873,
+"end": 40.073
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "todas",
+"start": 40.073,
+"end": 40.293
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "las",
+"start": 40.293,
+"end": 40.533
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "carreras.",
+"start": 40.533,
+"end": 41.233
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "El",
+"start": 41.233,
+"end": 41.493
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "core",
+"start": 41.493,
+"end": 41.913
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "principal",
+"start": 41.913,
+"end": 42.093
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "de",
+"start": 42.093,
+"end": 42.193
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "la",
+"start": 42.193,
+"end": 42.633
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "empresa",
+"start": 42.633,
+"end": 43.153
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "son",
+"start": 43.153,
+"end": 43.493
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "temas",
+"start": 43.493,
+"end": 43.673
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "de",
+"start": 43.673,
+"end": 43.913
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "ingeniería,",
+"start": 43.913,
+"end": 45.053
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "sistemas",
+"start": 45.053,
+"end": 45.533
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "computacionales,",
+"start": 45.533,
+"end": 46.733
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "tenemos",
+"start": 47.153,
+"end": 47.733
+},
+{
+"piece": 5,
+"company": 1,
+"role": "a",
+"text": "también",
+"start": 47.733,
+"end": 48.333
+},
+{
+"piece": 6,
+"company": 1,
+"role": "a",
+"text": "electrónica,",
+"start": 48.473,
+"end": 49.313
+},
+{
+"piece": 6,
+"company": 1,
+"role": "a",
+"text": "comunicaciones.",
+"start": 49.313,
+"end": 50.367
+},
+{
+"piece": 7,
+"company": 2,
+"role": "a",
+"text": "Sngular",
+"start": 50.507,
+"end": 50.927
+},
+{
+"piece": 7,
+"company": 2,
+"role": "a",
+"text": "es",
+"start": 50.927,
+"end": 51.107
+},
+{
+"piece": 7,
+"company": 2,
+"role": "a",
+"text": "una",
+"start": 51.107,
+"end": 51.547
+},
+{
+"piece": 7,
+"company": 2,
+"role": "a",
+"text": "consultora",
+"start": 51.547,
+"end": 52.187
+},
+{
+"piece": 7,
+"company": 2,
+"role": "a",
+"text": "española,",
+"start": 52.187,
+"end": 52.767
+},
+{
+"piece": 8,
+"company": 2,
+"role": "a",
+"text": "la",
+"start": 52.907,
+"end": 53.267
+},
+{
+"piece": 8,
+"company": 2,
+"role": "a",
+"text": "mayoría",
+"start": 53.267,
+"end": 53.527
+},
+{
+"piece": 8,
+"company": 2,
+"role": "a",
+"text": "de",
+"start": 53.527,
+"end": 53.887
+},
+{
+"piece": 8,
+"company": 2,
+"role": "a",
+"text": "las",
+"start": 53.887,
+"end": 54.3
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "vacantes",
+"start": 54.44,
+"end": 54.8
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "que",
+"start": 54.8,
+"end": 55.14
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "nosotros",
+"start": 55.14,
+"end": 55.44
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "buscamos",
+"start": 55.44,
+"end": 55.88
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "en",
+"start": 55.88,
+"end": 56.12
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "Sngular",
+"start": 56.12,
+"end": 57.08
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "tienen",
+"start": 57.08,
+"end": 57.38
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "una",
+"start": 57.38,
+"end": 57.78
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "base",
+"start": 57.78,
+"end": 58.12
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "que",
+"start": 58.12,
+"end": 58.4
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "es",
+"start": 58.4,
+"end": 58.7
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "de",
+"start": 58.7,
+"end": 59.06
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "tecnologías",
+"start": 59.06,
+"end": 59.48
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "de",
+"start": 59.48,
+"end": 59.58
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "la",
+"start": 59.58,
+"end": 60.02
+},
+{
+"piece": 9,
+"company": 2,
+"role": "a",
+"text": "información,",
+"start": 60.02,
+"end": 60.267
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "ingeniería",
+"start": 60.407,
+"end": 60.787
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "en",
+"start": 60.787,
+"end": 61.167
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "sistemas,",
+"start": 61.167,
+"end": 61.627
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "ingeniería",
+"start": 61.627,
+"end": 62.027
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "en",
+"start": 62.027,
+"end": 62.307
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "informática,",
+"start": 62.307,
+"end": 63.507
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "también",
+"start": 63.807,
+"end": 64.187
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "pueden",
+"start": 64.187,
+"end": 64.547
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "entrar",
+"start": 64.547,
+"end": 64.827
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "ingenierías",
+"start": 64.827,
+"end": 65.907
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "en",
+"start": 65.907,
+"end": 66.027
+},
+{
+"piece": 10,
+"company": 2,
+"role": "a",
+"text": "mecatrónica,",
+"start": 66.027,
+"end": 67.227
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "también",
+"start": 67.773,
+"end": 68.093
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "existen",
+"start": 68.093,
+"end": 68.393
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "vacantes",
+"start": 68.393,
+"end": 69.033
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "como",
+"start": 69.033,
+"end": 69.853
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "ingenieros",
+"start": 69.853,
+"end": 70.213
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "de",
+"start": 70.213,
+"end": 70.573
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "datos,",
+"start": 70.573,
+"end": 71.013
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "analistas",
+"start": 71.013,
+"end": 71.453
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "de",
+"start": 71.453,
+"end": 71.853
+},
+{
+"piece": 11,
+"company": 2,
+"role": "a",
+"text": "datos,",
+"start": 71.853,
+"end": 72.367
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "Nosotros",
+"start": 72.507,
+"end": 72.987
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "somos",
+"start": 72.987,
+"end": 73.187
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "e-global,",
+"start": 73.187,
+"end": 73.787
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "somos",
+"start": 73.787,
+"end": 74.087
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "una",
+"start": 74.087,
+"end": 74.407
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "cámara",
+"start": 74.407,
+"end": 74.587
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "de",
+"start": 74.587,
+"end": 74.947
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "compensación,",
+"start": 74.947,
+"end": 76.107
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "vemos",
+"start": 76.107,
+"end": 76.347
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "toda",
+"start": 76.347,
+"end": 76.527
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "la",
+"start": 76.527,
+"end": 76.807
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "parte",
+"start": 76.807,
+"end": 77.087
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "transaccional",
+"start": 77.087,
+"end": 77.747
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "y",
+"start": 77.747,
+"end": 78.007
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "medios",
+"start": 78.007,
+"end": 78.167
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "de",
+"start": 78.167,
+"end": 78.307
+},
+{
+"piece": 12,
+"company": 3,
+"role": "a",
+"text": "pago.",
+"start": 78.307,
+"end": 79.1
+},
+{
+"piece": 13,
+"company": 3,
+"role": "a",
+"text": "nosotros",
+"start": 79.24,
+"end": 79.6
+},
+{
+"piece": 13,
+"company": 3,
+"role": "a",
+"text": "buscamos",
+"start": 79.6,
+"end": 80.72
+},
+{
+"piece": 13,
+"company": 3,
+"role": "a",
+"text": "principalmente",
+"start": 80.72,
+"end": 81.667
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "personas",
+"start": 81.807,
+"end": 82.247
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "especializadas",
+"start": 82.247,
+"end": 82.747
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "en",
+"start": 82.747,
+"end": 82.987
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "temas",
+"start": 82.987,
+"end": 83.167
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "de",
+"start": 83.167,
+"end": 83.687
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "sistemas,",
+"start": 83.687,
+"end": 84.167
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "computación,",
+"start": 84.167,
+"end": 85.027
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "TI,",
+"start": 85.027,
+"end": 85.647
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "ya",
+"start": 85.647,
+"end": 85.787
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "que",
+"start": 85.787,
+"end": 85.887
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "el",
+"start": 85.887,
+"end": 86.187
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "mayor",
+"start": 86.187,
+"end": 86.407
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "core",
+"start": 86.407,
+"end": 86.527
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "de",
+"start": 86.527,
+"end": 86.647
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "la",
+"start": 86.647,
+"end": 86.987
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "empresa",
+"start": 86.987,
+"end": 87.447
+},
+{
+"piece": 14,
+"company": 3,
+"role": "a",
+"text": "es",
+"start": 87.447,
+"end": 87.8
+},
+{
+"piece": 15,
+"company": 3,
+"role": "a",
+"text": "tecnología.",
+"start": 87.94,
+"end": 89.14
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "Tenemos",
+"start": 89.473,
+"end": 89.713
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "becarios",
+"start": 89.713,
+"end": 90.133
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "de",
+"start": 90.133,
+"end": 90.353
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "medio",
+"start": 90.353,
+"end": 90.613
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "tiempo",
+"start": 90.613,
+"end": 90.753
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "y",
+"start": 90.753,
+"end": 90.973
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "tiempo",
+"start": 90.973,
+"end": 91.493
+},
+{
+"piece": 16,
+"company": 3,
+"role": "a",
+"text": "completo.",
+"start": 91.493,
+"end": 92.367
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "TCM",
+"start": 92.507,
+"end": 93.047
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "es",
+"start": 93.047,
+"end": 93.227
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "una",
+"start": 93.227,
+"end": 93.647
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "consultora",
+"start": 93.647,
+"end": 94.087
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "financiera",
+"start": 94.087,
+"end": 94.787
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "que",
+"start": 94.787,
+"end": 94.927
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "se",
+"start": 94.927,
+"end": 95.107
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "encarga",
+"start": 95.107,
+"end": 95.547
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "de",
+"start": 95.547,
+"end": 95.847
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "brindar",
+"start": 95.847,
+"end": 96.707
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "servicios",
+"start": 96.707,
+"end": 97.047
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "y",
+"start": 97.047,
+"end": 97.427
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "productos",
+"start": 97.427,
+"end": 97.767
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "tecnológicos",
+"start": 97.767,
+"end": 98.847
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "para",
+"start": 98.847,
+"end": 99.087
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "entidades",
+"start": 99.087,
+"end": 100.207
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "bancarias",
+"start": 100.207,
+"end": 101.227
+},
+{
+"piece": 17,
+"company": 4,
+"role": "a",
+"text": "principalmente.",
+"start": 101.227,
+"end": 102.067
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "estamos",
+"start": 102.187,
+"end": 102.887
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "buscando",
+"start": 102.887,
+"end": 103.787
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "principalmente",
+"start": 103.787,
+"end": 104.207
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "para",
+"start": 104.207,
+"end": 104.467
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "las",
+"start": 104.467,
+"end": 104.727
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "carreras",
+"start": 104.727,
+"end": 105.387
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "de",
+"start": 105.387,
+"end": 105.907
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "contabilidad,",
+"start": 105.907,
+"end": 107.107
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "economía,",
+"start": 107.427,
+"end": 108.407
+},
+{
+"piece": 18,
+"company": 4,
+"role": "a",
+"text": "finanzas,",
+"start": 108.407,
+"end": 108.933
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "También",
+"start": 109.073,
+"end": 109.693
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "para",
+"start": 109.693,
+"end": 110.113
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "las",
+"start": 110.113,
+"end": 110.413
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "carreras",
+"start": 110.413,
+"end": 111.233
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "de",
+"start": 111.233,
+"end": 111.913
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "sistemas",
+"start": 111.913,
+"end": 112.293
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "computacionales,",
+"start": 112.293,
+"end": 113.493
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "informática,",
+"start": 113.833,
+"end": 114.833
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "ingenierías,",
+"start": 114.833,
+"end": 116.033
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "matemáticas,",
+"start": 116.413,
+"end": 117.533
+},
+{
+"piece": 19,
+"company": 4,
+"role": "a",
+"text": "física,",
+"start": 117.533,
+"end": 117.967
+}
+]

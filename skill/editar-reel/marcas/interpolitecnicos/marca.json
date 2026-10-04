@@ -1,0 +1,7 @@
+{
+  "nombre": "Interpolitécnicos Esports",
+  "descripcion": "Torneo de esports del IPN: guinda #8C1D40 y dorado #FFC83D, banner oficial y QR de inscripción.",
+  "colores": {"pildora": "#8C1D40", "a": "#8C1D40", "b": "#FFC83D", "acento": "#FFC83D"},
+  "logos": {"interpolitecnicos": "logo.png", "qr_inscripcion": "qr_inscripcion.png"},
+  "creador": "TEDDY ARELLANO · CREADOR DE CONTENIDO"
+}

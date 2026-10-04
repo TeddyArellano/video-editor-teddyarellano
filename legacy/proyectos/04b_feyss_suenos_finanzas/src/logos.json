@@ -1,0 +1,37 @@
+[
+ {
+  "key": "bbva",
+  "seg": 5,
+  "at": 4.2
+ },
+ {
+  "key": "deloitte",
+  "seg": 5,
+  "at": 5.633
+ },
+ {
+  "key": "kpmg",
+  "seg": 5,
+  "at": 6.233
+ },
+ {
+  "key": "gbm",
+  "seg": 6,
+  "at": 15.3
+ },
+ {
+  "key": "bbva",
+  "seg": 7,
+  "at": 24.467
+ },
+ {
+  "key": "secihti",
+  "seg": 8,
+  "at": 35.3
+ },
+ {
+  "key": "sabritas",
+  "seg": 10,
+  "at": 45.0
+ }
+]

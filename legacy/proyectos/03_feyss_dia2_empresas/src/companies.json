@@ -1,0 +1,65 @@
+[
+ {
+  "name": "JARRITOS",
+  "key": "jarritos",
+  "start": 0,
+  "end": 775,
+  "gain": 0.881
+ },
+ {
+  "name": "PwC",
+  "key": "pwc",
+  "start": 775,
+  "end": 1514,
+  "gain": 0.933
+ },
+ {
+  "name": "AXTEL",
+  "key": "axtel",
+  "start": 1514,
+  "end": 2196,
+  "gain": 0.716
+ },
+ {
+  "name": "GRUPO INIX",
+  "key": "inix",
+  "start": 2196,
+  "end": 2902,
+  "gain": 0.881
+ },
+ {
+  "name": "SNGULAR",
+  "key": "sngular",
+  "start": 2902,
+  "end": 3562,
+  "gain": 0.966
+ },
+ {
+  "name": "E-GLOBAL",
+  "key": "eglobal",
+  "start": 3562,
+  "end": 4162,
+  "gain": 0.841
+ },
+ {
+  "name": "TCM PARTNERS",
+  "key": "tcm",
+  "start": 4162,
+  "end": 4930,
+  "gain": 0.851
+ },
+ {
+  "name": "ALS GLOBAL",
+  "key": "als",
+  "start": 4930,
+  "end": 5688,
+  "gain": 1.084
+ },
+ {
+  "name": "GRUPO SPIN",
+  "key": "spin",
+  "start": 5688,
+  "end": 6287,
+  "gain": 0.692
+ }
+]

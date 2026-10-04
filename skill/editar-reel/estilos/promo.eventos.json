@@ -1,0 +1,156 @@
+{
+ "_ayuda": "Ejemplo real (promo Interpolitécnicos). Logos de juegos con  reel logos; QR de la marca (public/marca/qr_inscripcion.png) desde 'link' hasta el final; calendario en la fecha; música: synth_musica.py public/music.wav --dur <s> --drop <s>.",
+ "secciones": {
+  "main": {
+   "zoom": 1.35,
+   "caras": 1
+  }
+ },
+ "gancho": {
+  "top": 820,
+  "dur": 2.3,
+  "decoracion": "gamer",
+  "elementos": [
+   {
+    "tipo": "imagen",
+    "src": "marca/interpolitecnicos.png",
+    "ancho": 500,
+    "at": 2
+   },
+   {
+    "tipo": "texto",
+    "texto": "TORNEO DE ESPORTS",
+    "fuente": "Anton",
+    "size": 104,
+    "color": "#FFC83D",
+    "contorno": 10,
+    "anim": "pop",
+    "at": 10,
+    "mt": 18
+   },
+   {
+    "tipo": "pildora",
+    "texto": "▶ PRESS START",
+    "at": 22
+   }
+  ],
+  "sfx": [
+   {
+    "f": 3,
+    "sfx": "glitch",
+    "vol": 0.3
+   },
+   {
+    "f": 10,
+    "sfx": "impact",
+    "vol": 0.35
+   }
+  ]
+ },
+ "etiquetas": [
+  {
+   "en": "inscripciones",
+   "dur": 2.6,
+   "texto": "¡INSCRIPCIONES ABIERTAS!"
+  }
+ ],
+ "calendario": [
+  {
+   "en": "6",
+   "hasta": "registrarte",
+   "dia": "6",
+   "mes": "OCTUBRE",
+   "texto": "FECHA LÍMITE"
+  }
+ ],
+ "imagenes": [
+  {
+   "en": "Marvel",
+   "hasta": "Overwatch",
+   "src": "logos/marvelrivals.png",
+   "pos": "arriba",
+   "ancho": 440,
+   "tarjeta": true
+  },
+  {
+   "en": "Overwatch",
+   "hasta": "League",
+   "src": "logos/overwatch2.png",
+   "pos": "arriba",
+   "ancho": 440,
+   "tarjeta": true
+  },
+  {
+   "en": "League",
+   "hasta": "Brawl",
+   "src": "logos/leagueoflegends.png",
+   "pos": "arriba",
+   "ancho": 440,
+   "tarjeta": true
+  },
+  {
+   "en": "Brawl",
+   "hasta": "Valorant",
+   "src": "logos/brawlstars.png",
+   "pos": "arriba",
+   "ancho": 440,
+   "tarjeta": true
+  },
+  {
+   "en": "Valorant",
+   "hasta": "Rocket",
+   "src": "logos/valorant.png",
+   "pos": "arriba",
+   "ancho": 440,
+   "tarjeta": true
+  },
+  {
+   "en": "Rocket",
+   "hasta": "listos",
+   "src": "logos/rocketleague.png",
+   "pos": "arriba",
+   "ancho": 440,
+   "tarjeta": true
+  },
+  {
+   "en": "link",
+   "hasta": 999,
+   "src": "marca/qr_inscripcion.png",
+   "pos": "abajo",
+   "ancho": 440,
+   "titulo": "INTERPOLITÉCNICOS 2026",
+   "texto": "INSCRÍBETE AQUÍ"
+  }
+ ],
+ "resaltar": [
+  "Interpolitécnicos",
+  "2026",
+  "gloria",
+  "6",
+  "octubre",
+  "arena"
+ ],
+ "sfx": [
+  {
+   "en": "gloria",
+   "offset": 0.2,
+   "sfx": "impact",
+   "vol": 0.3
+  },
+  {
+   "en": "arena",
+   "offset": 0.3,
+   "sfx": "impact",
+   "vol": 0.35
+  }
+ ],
+ "cierre": {
+  "pregunta": "NOS VEMOS EN LA ARENA",
+  "cta": "LINK EN MI BIO",
+  "dur": 2.0
+ },
+ "musica": {
+  "src": "music.wav",
+  "vol": 0.12
+ }
+}

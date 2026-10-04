@@ -1,0 +1,37 @@
+[
+ {
+  "name": "PwC",
+  "key": "pwc",
+  "start": 0,
+  "end": 829,
+  "gain": 0.933
+ },
+ {
+  "name": "AXTEL",
+  "key": "axtel",
+  "start": 829,
+  "end": 1511,
+  "gain": 0.716
+ },
+ {
+  "name": "SNGULAR",
+  "key": "sngular",
+  "start": 1511,
+  "end": 2171,
+  "gain": 0.966
+ },
+ {
+  "name": "E-GLOBAL",
+  "key": "eglobal",
+  "start": 2171,
+  "end": 2771,
+  "gain": 0.841
+ },
+ {
+  "name": "TCM PARTNERS",
+  "key": "tcm",
+  "start": 2771,
+  "end": 3539,
+  "gain": 0.851
+ }
+]

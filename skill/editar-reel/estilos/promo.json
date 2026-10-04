@@ -1,0 +1,13 @@
+{
+  "nombre": "promo",
+  "descripcion": "Promo a cámara de un evento (Interpolitécnicos Esports). Anton + Montserrat, guinda/dorado, logos oficiales al mencionarlos, QR de inscripción, música original suave debajo de la voz.",
+  "colores": {"acento": "#FFC83D", "texto": "#FFFFFF", "contorno": "#000000", "a": "#8C1D40", "b": "#FFC83D", "pildora": "#8C1D40"},
+  "subtitulos": {"fuente": "Montserrat", "peso": 900, "size": 76, "top": 1150, "contorno": 11, "maxPalabras": 3, "maxChars": 16, "mayus": true},
+  "camara": {"empuje": 0.05, "ancla_y": 0.36, "zoom_objeto": 1.4, "caras": 1},
+  "contador": {"titulo": "", "fuente": "Anton", "fuente_num": "Anton"},
+  "nombre": {"fuente": "Anton", "sub_fuente": "Montserrat"},
+  "etiqueta": {"fuente": "Anton", "peso": 400, "size": 52, "top": 1330, "bg": "#8C1D40", "color": "#FFC83D"},
+  "transicion": {"fuente": "Anton", "texto_fuente": "Anton"},
+  "cierre": {"fuente": "Anton"},
+  "sfx_auto": {"objeto": null, "zoom": "whoosh2", "zoom_vol": 0.15, "transicion": "whoosh", "aparece": "impact", "aparece_vol": 0.25}
+}

@@ -1,0 +1,1229 @@
+[
+ {
+  "company": 0,
+  "name": "JARRITOS",
+  "src": "9707",
+  "in": 2.04,
+  "out": 15.02,
+  "role": "q",
+  "words": [
+   [
+    "¿qué",
+    2.18,
+    2.28
+   ],
+   [
+    "carreras",
+    2.52,
+    2.68
+   ],
+   [
+    "busca?",
+    2.98,
+    3.28
+   ],
+   [
+    "Estamos",
+    3.82,
+    3.82
+   ],
+   [
+    "buscando",
+    4.42,
+    4.42
+   ],
+   [
+    "ingenieros",
+    4.68,
+    5.02
+   ],
+   [
+    "mecatrónicos,",
+    5.18,
+    6.94
+   ],
+   [
+    "ingenieros",
+    7.08,
+    7.34
+   ],
+   [
+    "en",
+    7.52,
+    7.52
+   ],
+   [
+    "alimentos,",
+    8.1,
+    8.36
+   ],
+   [
+    "biotecnólogos,",
+    8.44,
+    9.38
+   ],
+   [
+    "químicos,",
+    9.54,
+    10.86
+   ],
+   [
+    "ingeniería",
+    11.0,
+    11.22
+   ],
+   [
+    "en",
+    11.36,
+    11.36
+   ],
+   [
+    "control",
+    11.6,
+    11.6
+   ],
+   [
+    "y",
+    11.76,
+    11.76
+   ],
+   [
+    "automatización,",
+    11.98,
+    12.84
+   ],
+   [
+    "ingenieros",
+    12.9,
+    13.26
+   ],
+   [
+    "mecánicos.",
+    13.5,
+    14.26
+   ]
+  ],
+  "text": "¿qué carreras busca? Estamos buscando ingenieros mecatrónicos, ingenieros en alimentos, biotecnólogos, químicos, ingeniería en control y automatización, ingenieros mecánicos.",
+  "frames": 389,
+  "start": 0
+ },
+ {
+  "company": 0,
+  "name": "JARRITOS",
+  "src": "9707",
+  "in": 16.22,
+  "out": 22.87,
+  "role": "a",
+  "words": [
+   [
+    "también",
+    16.36,
+    16.36
+   ],
+   [
+    "viene",
+    16.64,
+    16.64
+   ],
+   [
+    "lo",
+    16.78,
+    16.78
+   ],
+   [
+    "que",
+    16.88,
+    16.88
+   ],
+   [
+    "es",
+    17.0,
+    17.0
+   ],
+   [
+    "la",
+    17.18,
+    17.18
+   ],
+   [
+    "licenciatura",
+    17.4,
+    17.78
+   ],
+   [
+    "en",
+    18.0,
+    18.0
+   ],
+   [
+    "contabilidad",
+    18.2,
+    18.88
+   ],
+   [
+    "o",
+    19.66,
+    19.66
+   ],
+   [
+    "administración.",
+    20.22,
+    22.5
+   ]
+  ],
+  "text": "también viene lo que es la licenciatura en contabilidad o administración.",
+  "frames": 200,
+  "start": 389
+ },
+ {
+  "company": 0,
+  "name": "JARRITOS",
+  "src": "9707",
+  "in": 24.66,
+  "out": 28.98,
+  "role": "a",
+  "words": [
+   [
+    "Nosotros",
+    24.8,
+    25.08
+   ],
+   [
+    "fabricamos",
+    25.8,
+    26.16
+   ],
+   [
+    "productos",
+    26.82,
+    26.82
+   ],
+   [
+    "de",
+    27.36,
+    27.36
+   ],
+   [
+    "bebida,",
+    27.78,
+    28.34
+   ],
+   [
+    "como",
+    28.36,
+    28.36
+   ],
+   [
+    "bien",
+    28.52,
+    28.52
+   ]
+  ],
+  "text": "Nosotros fabricamos productos de bebida, como bien",
+  "frames": 130,
+  "start": 589
+ },
+ {
+  "company": 0,
+  "name": "JARRITOS",
+  "src": "9707",
+  "in": 29.38,
+  "out": 31.25,
+  "role": "a",
+  "words": [
+   [
+    "la",
+    29.52,
+    29.52
+   ],
+   [
+    "conocen,",
+    29.76,
+    30.12
+   ],
+   [
+    "Jarritos,",
+    30.26,
+    31.16
+   ]
+  ],
+  "text": "la conocen, Jarritos,",
+  "frames": 56,
+  "start": 719
+ },
+ {
+  "company": 1,
+  "name": "GRUPO INIX",
+  "src": "9711",
+  "in": 33.64,
+  "out": 39.21,
+  "role": "a",
+  "words": [
+   [
+    "Nosotros",
+    33.78,
+    33.96
+   ],
+   [
+    "nos",
+    34.14,
+    34.14
+   ],
+   [
+    "dedicamos",
+    34.38,
+    34.62
+   ],
+   [
+    "a",
+    34.78,
+    34.78
+   ],
+   [
+    "lo",
+    34.9,
+    34.9
+   ],
+   [
+    "que",
+    34.98,
+    34.98
+   ],
+   [
+    "es",
+    35.06,
+    35.06
+   ],
+   [
+    "la",
+    35.14,
+    35.14
+   ],
+   [
+    "fabricación",
+    35.46,
+    35.68
+   ],
+   [
+    "y",
+    35.82,
+    35.82
+   ],
+   [
+    "distribución",
+    36.08,
+    36.36
+   ],
+   [
+    "de",
+    36.5,
+    36.5
+   ],
+   [
+    "desechables",
+    36.66,
+    36.98
+   ],
+   [
+    "para",
+    37.22,
+    37.22
+   ],
+   [
+    "alimentos.",
+    37.64,
+    37.84
+   ],
+   [
+    "Nos",
+    37.96,
+    37.96
+   ],
+   [
+    "llamamos",
+    38.14,
+    38.42
+   ],
+   [
+    "INIX",
+    38.76,
+    38.98
+   ]
+  ],
+  "text": "Nosotros nos dedicamos a lo que es la fabricación y distribución de desechables para alimentos. Nos llamamos INIX",
+  "frames": 167,
+  "start": 775
+ },
+ {
+  "company": 1,
+  "name": "GRUPO INIX",
+  "src": "9711",
+  "in": 41.92,
+  "out": 48.61,
+  "role": "a",
+  "words": [
+   [
+    "nosotros",
+    42.06,
+    42.06
+   ],
+   [
+    "hacemos",
+    42.46,
+    42.46
+   ],
+   [
+    "todo",
+    42.68,
+    42.68
+   ],
+   [
+    "lo",
+    42.82,
+    42.82
+   ],
+   [
+    "que",
+    42.9,
+    42.9
+   ],
+   [
+    "son",
+    43.08,
+    43.08
+   ],
+   [
+    "los",
+    43.24,
+    43.24
+   ],
+   [
+    "domos",
+    43.38,
+    43.48
+   ],
+   [
+    "de",
+    43.56,
+    43.56
+   ],
+   [
+    "los",
+    43.7,
+    43.7
+   ],
+   [
+    "pasteles",
+    43.92,
+    44.08
+   ],
+   [
+    "de",
+    44.22,
+    44.22
+   ],
+   [
+    "la",
+    44.32,
+    44.32
+   ],
+   [
+    "Esperanza,",
+    44.56,
+    45.0
+   ],
+   [
+    "del",
+    45.08,
+    45.08
+   ],
+   [
+    "bollo,",
+    45.3,
+    45.5
+   ],
+   [
+    "del",
+    45.58,
+    45.58
+   ],
+   [
+    "globo,",
+    45.78,
+    46.08
+   ],
+   [
+    "el",
+    46.18,
+    46.18
+   ],
+   [
+    "envase",
+    46.34,
+    46.46
+   ],
+   [
+    "de",
+    46.6,
+    46.6
+   ],
+   [
+    "la",
+    46.7,
+    46.7
+   ],
+   [
+    "bebida",
+    46.86,
+    46.98
+   ],
+   [
+    "fría",
+    47.14,
+    47.22
+   ],
+   [
+    "de",
+    47.38,
+    47.38
+   ],
+   [
+    "Starbucks.",
+    47.62,
+    48.7
+   ]
+  ],
+  "text": "nosotros hacemos todo lo que son los domos de los pasteles de la Esperanza, del bollo, del globo, el envase de la bebida fría de Starbucks.",
+  "frames": 201,
+  "start": 942
+ },
+ {
+  "company": 1,
+  "name": "GRUPO INIX",
+  "src": "9711",
+  "in": 7.56,
+  "out": 12.09,
+  "role": "a",
+  "words": [
+   [
+    "En",
+    7.62,
+    7.62
+   ],
+   [
+    "la",
+    7.68,
+    7.68
+   ],
+   [
+    "parte",
+    7.88,
+    7.88
+   ],
+   [
+    "de",
+    8.0,
+    8.0
+   ],
+   [
+    "ingeniería",
+    8.14,
+    8.44
+   ],
+   [
+    "pueden",
+    8.68,
+    8.68
+   ],
+   [
+    "ser",
+    8.86,
+    8.86
+   ],
+   [
+    "ingenieros",
+    9.06,
+    9.28
+   ],
+   [
+    "en",
+    9.42,
+    9.42
+   ],
+   [
+    "mecatrónica,",
+    9.52,
+    10.16
+   ],
+   [
+    "mecánica,",
+    10.42,
+    10.96
+   ],
+   [
+    "química",
+    11.14,
+    11.64
+   ]
+  ],
+  "text": "En la parte de ingeniería pueden ser ingenieros en mecatrónica, mecánica, química",
+  "frames": 136,
+  "start": 1143
+ },
+ {
+  "company": 1,
+  "name": "GRUPO INIX",
+  "src": "9711",
+  "in": 17.76,
+  "out": 24.49,
+  "role": "a",
+  "words": [
+   [
+    "Y",
+    17.9,
+    17.9
+   ],
+   [
+    "en",
+    18.0,
+    18.0
+   ],
+   [
+    "la",
+    18.08,
+    18.08
+   ],
+   [
+    "parte",
+    18.32,
+    18.32
+   ],
+   [
+    "administrativa",
+    18.56,
+    19.14
+   ],
+   [
+    "puede",
+    19.46,
+    19.46
+   ],
+   [
+    "ser",
+    19.98,
+    19.98
+   ],
+   [
+    "negocios",
+    20.42,
+    20.6
+   ],
+   [
+    "internacionales,",
+    21.02,
+    21.8
+   ],
+   [
+    "psicología",
+    21.92,
+    22.18
+   ],
+   [
+    "para",
+    22.36,
+    22.36
+   ],
+   [
+    "recursos",
+    22.76,
+    22.76
+   ],
+   [
+    "humanos,",
+    23.18,
+    23.54
+   ],
+   [
+    "contadores.",
+    23.74,
+    24.54
+   ]
+  ],
+  "text": "Y en la parte administrativa puede ser negocios internacionales, psicología para recursos humanos, contadores.",
+  "frames": 202,
+  "start": 1279
+ },
+ {
+  "company": 2,
+  "name": "ALS GLOBAL",
+  "src": "9714",
+  "in": 3.46,
+  "out": 8.92,
+  "role": "a",
+  "words": [
+   [
+    "nosotros",
+    3.6,
+    3.6
+   ],
+   [
+    "somos",
+    3.88,
+    3.88
+   ],
+   [
+    "ALS,",
+    4.14,
+    4.76
+   ],
+   [
+    "somos",
+    4.98,
+    4.98
+   ],
+   [
+    "una",
+    5.4,
+    5.4
+   ],
+   [
+    "empresa",
+    6.1,
+    6.1
+   ],
+   [
+    "que",
+    6.24,
+    6.24
+   ],
+   [
+    "se",
+    6.36,
+    6.36
+   ],
+   [
+    "dedica",
+    6.58,
+    6.78
+   ],
+   [
+    "al",
+    6.98,
+    6.98
+   ],
+   [
+    "proceso",
+    7.32,
+    7.32
+   ],
+   [
+    "analítico",
+    7.56,
+    7.98
+   ],
+   [
+    "de",
+    8.56,
+    8.56
+   ]
+  ],
+  "text": "nosotros somos ALS, somos una empresa que se dedica al proceso analítico de",
+  "frames": 164,
+  "start": 1481
+ },
+ {
+  "company": 2,
+  "name": "ALS GLOBAL",
+  "src": "9714",
+  "in": 9.32,
+  "out": 15.7,
+  "role": "a",
+  "words": [
+   [
+    "medicamentos,",
+    9.46,
+    9.94
+   ],
+   [
+    "dispositivos",
+    10.14,
+    10.52
+   ],
+   [
+    "médicos,",
+    10.76,
+    11.32
+   ],
+   [
+    "equipo",
+    11.56,
+    11.56
+   ],
+   [
+    "de",
+    11.72,
+    11.72
+   ],
+   [
+    "laboratorio",
+    11.92,
+    12.3
+   ],
+   [
+    "y",
+    13.0,
+    13.0
+   ],
+   [
+    "principalmente",
+    13.64,
+    13.64
+   ],
+   [
+    "buscamos",
+    14.08,
+    14.38
+   ],
+   [
+    "químicos",
+    14.6,
+    15.04
+   ]
+  ],
+  "text": "medicamentos, dispositivos médicos, equipo de laboratorio y principalmente buscamos químicos",
+  "frames": 191,
+  "start": 1645
+ },
+ {
+  "company": 2,
+  "name": "ALS GLOBAL",
+  "src": "9714",
+  "in": 16.12,
+  "out": 19.58,
+  "role": "a",
+  "words": [
+   [
+    "de",
+    16.26,
+    16.26
+   ],
+   [
+    "carreras",
+    16.5,
+    16.74
+   ],
+   [
+    "como",
+    17.18,
+    17.18
+   ],
+   [
+    "ingeniería",
+    17.46,
+    17.68
+   ],
+   [
+    "química,",
+    17.84,
+    18.92
+   ]
+  ],
+  "text": "de carreras como ingeniería química,",
+  "frames": 104,
+  "start": 1836
+ },
+ {
+  "company": 2,
+  "name": "ALS GLOBAL",
+  "src": "9714",
+  "in": 20.1,
+  "out": 30.08,
+  "role": "a",
+  "words": [
+   [
+    "QFI,",
+    20.24,
+    21.58
+   ],
+   [
+    "QFB,",
+    22.08,
+    22.9
+   ],
+   [
+    "biotecnólogos,",
+    23.06,
+    24.86
+   ],
+   [
+    "IQs,",
+    25.22,
+    26.1
+   ],
+   [
+    "o",
+    26.26,
+    26.26
+   ],
+   [
+    "sea,",
+    26.36,
+    26.46
+   ],
+   [
+    "todo",
+    26.66,
+    26.66
+   ],
+   [
+    "lo",
+    26.78,
+    26.78
+   ],
+   [
+    "que",
+    26.86,
+    26.86
+   ],
+   [
+    "tenga",
+    27.06,
+    27.06
+   ],
+   [
+    "que",
+    27.22,
+    27.22
+   ],
+   [
+    "ver",
+    27.34,
+    27.34
+   ],
+   [
+    "con",
+    27.52,
+    27.52
+   ],
+   [
+    "química",
+    27.68,
+    27.92
+   ],
+   [
+    "son",
+    28.16,
+    28.16
+   ],
+   [
+    "bienvenidos",
+    28.36,
+    28.6
+   ],
+   [
+    "al",
+    28.76,
+    28.76
+   ],
+   [
+    "laboratorio.",
+    28.96,
+    29.22
+   ]
+  ],
+  "text": "QFI, QFB, biotecnólogos, IQs, o sea, todo lo que tenga que ver con química son bienvenidos al laboratorio.",
+  "frames": 299,
+  "start": 1940
+ },
+ {
+  "company": 3,
+  "name": "GRUPO SPIN",
+  "src": "9704",
+  "in": 7.44,
+  "out": 19.21,
+  "role": "a",
+  "words": [
+   [
+    "nosotros",
+    7.48,
+    7.48
+   ],
+   [
+    "venimos",
+    7.8,
+    8.0
+   ],
+   [
+    "de",
+    8.26,
+    8.26
+   ],
+   [
+    "Grupo",
+    8.58,
+    8.72
+   ],
+   [
+    "SPIN,",
+    8.9,
+    9.18
+   ],
+   [
+    "somos",
+    9.74,
+    9.74
+   ],
+   [
+    "una",
+    9.98,
+    9.98
+   ],
+   [
+    "empresa",
+    10.3,
+    10.3
+   ],
+   [
+    "con",
+    10.56,
+    10.56
+   ],
+   [
+    "más",
+    10.76,
+    10.76
+   ],
+   [
+    "de",
+    10.88,
+    10.88
+   ],
+   [
+    "50",
+    11.22,
+    11.22
+   ],
+   [
+    "años",
+    11.6,
+    11.6
+   ],
+   [
+    "en",
+    11.8,
+    11.8
+   ],
+   [
+    "el",
+    11.92,
+    11.92
+   ],
+   [
+    "mercado,",
+    12.28,
+    12.5
+   ],
+   [
+    "somos",
+    12.62,
+    12.62
+   ],
+   [
+    "una",
+    12.8,
+    12.8
+   ],
+   [
+    "empresa",
+    13.08,
+    13.08
+   ],
+   [
+    "mexicana,",
+    13.38,
+    14.02
+   ],
+   [
+    "y",
+    14.48,
+    14.48
+   ],
+   [
+    "nos",
+    14.64,
+    14.64
+   ],
+   [
+    "dedicamos",
+    14.88,
+    15.16
+   ],
+   [
+    "a",
+    15.32,
+    15.32
+   ],
+   [
+    "todo",
+    15.48,
+    15.48
+   ],
+   [
+    "lo",
+    15.62,
+    15.62
+   ],
+   [
+    "que",
+    15.72,
+    15.72
+   ],
+   [
+    "es",
+    15.84,
+    15.84
+   ],
+   [
+    "el",
+    15.96,
+    15.96
+   ],
+   [
+    "tratamiento",
+    16.18,
+    16.58
+   ],
+   [
+    "de",
+    16.84,
+    16.84
+   ],
+   [
+    "aguas,",
+    17.06,
+    17.7
+   ],
+   [
+    "productos",
+    18.26,
+    18.26
+   ],
+   [
+    "químicos,",
+    18.6,
+    19.3
+   ]
+  ],
+  "text": "nosotros venimos de Grupo SPIN, somos una empresa con más de 50 años en el mercado, somos una empresa mexicana, y nos dedicamos a todo lo que es el tratamiento de aguas, productos químicos,",
+  "frames": 353,
+  "start": 2239
+ },
+ {
+  "company": 3,
+  "name": "GRUPO SPIN",
+  "src": "9704",
+  "in": 23.2,
+  "out": 31.41,
+  "role": "a",
+  "words": [
+   [
+    "principalmente",
+    23.34,
+    23.34
+   ],
+   [
+    "reclutamos",
+    23.82,
+    24.2
+   ],
+   [
+    "lo",
+    24.38,
+    24.38
+   ],
+   [
+    "que",
+    24.48,
+    24.48
+   ],
+   [
+    "son",
+    24.66,
+    24.66
+   ],
+   [
+    "ingenieros",
+    24.9,
+    25.24
+   ],
+   [
+    "químicos,",
+    25.44,
+    25.84
+   ],
+   [
+    "y",
+    26.46,
+    26.46
+   ],
+   [
+    "actualmente",
+    26.84,
+    27.06
+   ],
+   [
+    "tenemos",
+    27.46,
+    27.46
+   ],
+   [
+    "vacantes",
+    27.86,
+    28.06
+   ],
+   [
+    "en",
+    28.26,
+    28.26
+   ],
+   [
+    "el",
+    28.36,
+    28.36
+   ],
+   [
+    "área",
+    28.52,
+    28.52
+   ],
+   [
+    "de",
+    28.68,
+    28.68
+   ],
+   [
+    "producción,",
+    29.14,
+    29.42
+   ],
+   [
+    "calidad",
+    30.04,
+    30.04
+   ],
+   [
+    "y",
+    30.32,
+    30.32
+   ],
+   [
+    "ventas.",
+    30.56,
+    30.8
+   ]
+  ],
+  "text": "principalmente reclutamos lo que son ingenieros químicos, y actualmente tenemos vacantes en el área de producción, calidad y ventas.",
+  "frames": 246,
+  "start": 2592
+ }
+]

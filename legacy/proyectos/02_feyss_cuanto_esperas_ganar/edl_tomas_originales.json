@@ -1,0 +1,1159 @@
+[
+ {
+  "clip": 1,
+  "in": 9.44,
+  "out": 11.325,
+  "role": "q",
+  "words": [
+   [
+    "¿Cuánto",
+    9.6,
+    9.94
+   ],
+   [
+    "esperas",
+    10.14,
+    10.22
+   ],
+   [
+    "ganar",
+    10.4,
+    10.52
+   ],
+   [
+    "al",
+    10.62,
+    10.62
+   ],
+   [
+    "egresar?",
+    10.76,
+    11.24
+   ]
+  ],
+  "text": "¿Cuánto esperas ganar al egresar?",
+  "frames": 57,
+  "start": 0
+ },
+ {
+  "clip": 1,
+  "in": 11.325,
+  "out": 13.725,
+  "role": "a",
+  "words": [
+   [
+    "Arriba",
+    11.48,
+    11.68
+   ],
+   [
+    "de",
+    11.88,
+    11.88
+   ],
+   [
+    "30",
+    12.22,
+    12.22
+   ],
+   [
+    "mil,",
+    12.48,
+    12.58
+   ],
+   [
+    "40",
+    12.8,
+    12.8
+   ],
+   [
+    "mil",
+    13.02,
+    13.02
+   ],
+   [
+    "pesos.",
+    13.28,
+    13.66
+   ]
+  ],
+  "text": "Arriba de 30 mil, 40 mil pesos.",
+  "frames": 72,
+  "start": 57
+ },
+ {
+  "clip": 1,
+  "in": 13.725,
+  "out": 14.825,
+  "role": "q",
+  "words": [
+   [
+    "¿Por",
+    13.88,
+    14.0
+   ],
+   [
+    "qué?",
+    14.14,
+    14.58
+   ]
+  ],
+  "text": "¿Por qué?",
+  "frames": 33,
+  "start": 129
+ },
+ {
+  "clip": 1,
+  "in": 14.825,
+  "out": 16.45,
+  "role": "a",
+  "words": [
+   [
+    "Porque",
+    14.98,
+    14.98
+   ],
+   [
+    "ya",
+    15.14,
+    15.14
+   ],
+   [
+    "tengo",
+    15.38,
+    15.38
+   ],
+   [
+    "estudios",
+    15.54,
+    15.6
+   ],
+   [
+    "de",
+    15.72,
+    15.72
+   ],
+   [
+    "posgrado,",
+    15.84,
+    16.34
+   ]
+  ],
+  "text": "Porque ya tengo estudios de posgrado,",
+  "frames": 49,
+  "start": 162
+ },
+ {
+  "clip": 1,
+  "in": 18.52,
+  "out": 19.79,
+  "role": "a",
+  "words": [
+   [
+    "tengo",
+    18.6,
+    18.6
+   ],
+   [
+    "experiencia",
+    18.88,
+    18.88
+   ],
+   [
+    "en",
+    19.04,
+    19.04
+   ],
+   [
+    "la",
+    19.08,
+    19.08
+   ],
+   [
+    "industria,",
+    19.2,
+    19.62
+   ]
+  ],
+  "text": "tengo experiencia en la industria,",
+  "frames": 38,
+  "start": 211
+ },
+ {
+  "clip": 1,
+  "in": 20.98,
+  "out": 22.305,
+  "role": "q",
+  "words": [
+   [
+    "¿Qué",
+    21.14,
+    21.24
+   ],
+   [
+    "estudias?",
+    21.44,
+    22.08
+   ]
+  ],
+  "text": "¿Qué estudias?",
+  "frames": 40,
+  "start": 249
+ },
+ {
+  "clip": 1,
+  "in": 22.305,
+  "out": 23.87,
+  "role": "a",
+  "words": [
+   [
+    "Estudié",
+    22.46,
+    22.7
+   ],
+   [
+    "ingeniero",
+    22.92,
+    23.02
+   ],
+   [
+    "de",
+    23.12,
+    23.12
+   ],
+   [
+    "alimentos,",
+    23.44,
+    23.9
+   ]
+  ],
+  "text": "Estudié ingeniero de alimentos,",
+  "frames": 47,
+  "start": 289
+ },
+ {
+  "clip": 1,
+  "in": 25.32,
+  "out": 29.24,
+  "role": "a",
+  "words": [
+   [
+    "y",
+    25.44,
+    25.44
+   ],
+   [
+    "actualmente",
+    25.62,
+    25.92
+   ],
+   [
+    "un",
+    26.22,
+    26.22
+   ],
+   [
+    "doctorado",
+    26.44,
+    26.68
+   ],
+   [
+    "en",
+    26.9,
+    26.9
+   ],
+   [
+    "ciencias",
+    27.02,
+    27.14
+   ],
+   [
+    "en",
+    27.28,
+    27.28
+   ],
+   [
+    "bioprocesos.",
+    27.36,
+    28.36
+   ]
+  ],
+  "text": "y actualmente un doctorado en ciencias en bioprocesos.",
+  "frames": 118,
+  "start": 336
+ },
+ {
+  "clip": 2,
+  "in": 1.56,
+  "out": 3.525,
+  "role": "q",
+  "words": [
+   [
+    "¿Cuánto",
+    1.72,
+    2.04
+   ],
+   [
+    "esperas",
+    2.26,
+    2.36
+   ],
+   [
+    "ganar",
+    2.54,
+    2.66
+   ],
+   [
+    "al",
+    2.76,
+    2.76
+   ],
+   [
+    "egresar?",
+    2.9,
+    3.36
+   ]
+  ],
+  "text": "¿Cuánto esperas ganar al egresar?",
+  "frames": 59,
+  "start": 454
+ },
+ {
+  "clip": 2,
+  "in": 3.525,
+  "out": 5.865,
+  "role": "a",
+  "words": [
+   [
+    "Yo",
+    3.68,
+    3.68
+   ],
+   [
+    "creo",
+    3.86,
+    3.86
+   ],
+   [
+    "que",
+    4.0,
+    4.0
+   ],
+   [
+    "unos",
+    4.32,
+    4.32
+   ],
+   [
+    "25",
+    5.06,
+    5.06
+   ],
+   [
+    "mil.",
+    5.38,
+    5.72
+   ]
+  ],
+  "text": "Yo creo que unos 25 mil.",
+  "frames": 70,
+  "start": 513
+ },
+ {
+  "clip": 2,
+  "in": 5.865,
+  "out": 7.085,
+  "role": "q",
+  "words": [
+   [
+    "¿Por",
+    6.02,
+    6.16
+   ],
+   [
+    "qué?",
+    6.28,
+    6.84
+   ]
+  ],
+  "text": "¿Por qué?",
+  "frames": 37,
+  "start": 583
+ },
+ {
+  "clip": 2,
+  "in": 7.085,
+  "out": 10.39,
+  "role": "a",
+  "words": [
+   [
+    "Porque",
+    7.24,
+    7.24
+   ],
+   [
+    "en",
+    7.66,
+    7.66
+   ],
+   [
+    "la",
+    7.78,
+    7.78
+   ],
+   [
+    "parte",
+    7.9,
+    7.9
+   ],
+   [
+    "de",
+    8.08,
+    8.08
+   ],
+   [
+    "robótica,",
+    8.24,
+    8.7
+   ],
+   [
+    "sí",
+    8.9,
+    8.9
+   ],
+   [
+    "vi",
+    9.0,
+    9.0
+   ],
+   [
+    "que",
+    9.06,
+    9.06
+   ],
+   [
+    "hay",
+    9.16,
+    9.16
+   ],
+   [
+    "mucho",
+    9.34,
+    9.34
+   ],
+   [
+    "campo",
+    9.54,
+    9.54
+   ],
+   [
+    "laboral",
+    9.82,
+    10.06
+   ]
+  ],
+  "text": "Porque en la parte de robótica, sí vi que hay mucho campo laboral",
+  "frames": 99,
+  "start": 620
+ },
+ {
+  "clip": 2,
+  "in": 16.88,
+  "out": 18.365,
+  "role": "q",
+  "words": [
+   [
+    "¿De",
+    17.0,
+    17.12
+   ],
+   [
+    "qué",
+    17.24,
+    17.24
+   ],
+   [
+    "carrera",
+    17.46,
+    17.6
+   ],
+   [
+    "eres?",
+    17.84,
+    18.1
+   ]
+  ],
+  "text": "¿De qué carrera eres?",
+  "frames": 45,
+  "start": 719
+ },
+ {
+  "clip": 2,
+  "in": 18.365,
+  "out": 22.47,
+  "role": "a",
+  "words": [
+   [
+    "Soy",
+    18.52,
+    18.52
+   ],
+   [
+    "de",
+    18.66,
+    18.66
+   ],
+   [
+    "Ingeniería",
+    18.72,
+    19.02
+   ],
+   [
+    "en",
+    19.1,
+    19.1
+   ],
+   [
+    "Robótica",
+    19.2,
+    19.42
+   ],
+   [
+    "Industrial",
+    19.76,
+    19.76
+   ],
+   [
+    "en",
+    20.14,
+    20.14
+   ],
+   [
+    "la",
+    20.24,
+    20.24
+   ],
+   [
+    "CIMAS",
+    20.34,
+    20.48
+   ],
+   [
+    "Capotzalco.",
+    20.64,
+    22.18
+   ]
+  ],
+  "text": "Soy de Ingeniería en Robótica Industrial en la CIMAS Capotzalco.",
+  "frames": 123,
+  "start": 764
+ },
+ {
+  "clip": 3,
+  "in": 4.7,
+  "out": 6.945,
+  "role": "q",
+  "words": [
+   [
+    "¿Cuánto",
+    4.86,
+    5.08
+   ],
+   [
+    "piensas",
+    5.18,
+    5.34
+   ],
+   [
+    "ganar",
+    5.52,
+    5.64
+   ],
+   [
+    "al",
+    5.76,
+    5.76
+   ],
+   [
+    "egresar?",
+    5.9,
+    6.62
+   ]
+  ],
+  "text": "¿Cuánto piensas ganar al egresar?",
+  "frames": 67,
+  "start": 887
+ },
+ {
+  "clip": 3,
+  "in": 6.945,
+  "out": 8.085,
+  "role": "a",
+  "words": [
+   [
+    "Como",
+    7.1,
+    7.1
+   ],
+   [
+    "catorce",
+    7.3,
+    7.58
+   ],
+   [
+    "mil.",
+    7.78,
+    7.98
+   ]
+  ],
+  "text": "Como catorce mil.",
+  "frames": 34,
+  "start": 954
+ },
+ {
+  "clip": 3,
+  "in": 8.085,
+  "out": 9.305,
+  "role": "q",
+  "words": [
+   [
+    "¿Por",
+    8.24,
+    8.36
+   ],
+   [
+    "qué?",
+    8.5,
+    9.04
+   ]
+  ],
+  "text": "¿Por qué?",
+  "frames": 37,
+  "start": 988
+ },
+ {
+  "clip": 3,
+  "in": 9.305,
+  "out": 13.65,
+  "role": "a",
+  "words": [
+   [
+    "Porque",
+    9.46,
+    9.46
+   ],
+   [
+    "tal",
+    9.8,
+    9.8
+   ],
+   [
+    "vez",
+    10.02,
+    10.02
+   ],
+   [
+    "no",
+    10.42,
+    10.42
+   ],
+   [
+    "es",
+    10.82,
+    10.82
+   ],
+   [
+    "algo",
+    11.16,
+    11.16
+   ],
+   [
+    "que...",
+    11.5,
+    12.14
+   ],
+   [
+    "una",
+    12.5,
+    12.5
+   ],
+   [
+    "profesión",
+    12.78,
+    12.98
+   ],
+   [
+    "tan",
+    13.22,
+    13.22
+   ]
+  ],
+  "text": "Porque tal vez no es algo que... una profesión tan",
+  "frames": 130,
+  "start": 1025
+ },
+ {
+  "clip": 3,
+  "in": 13.9,
+  "out": 20.41,
+  "role": "a",
+  "words": [
+   [
+    "avanzada,",
+    14.06,
+    14.46
+   ],
+   [
+    "pero",
+    14.66,
+    14.66
+   ],
+   [
+    "es",
+    14.96,
+    14.96
+   ],
+   [
+    "un",
+    15.14,
+    15.14
+   ],
+   [
+    "salario",
+    15.52,
+    15.68
+   ],
+   [
+    "considerable.",
+    16.16,
+    16.82
+   ],
+   [
+    "¿De",
+    16.96,
+    17.04
+   ],
+   [
+    "qué",
+    17.16,
+    17.16
+   ],
+   [
+    "escuela",
+    17.38,
+    17.38
+   ],
+   [
+    "eres?",
+    17.64,
+    17.84
+   ],
+   [
+    "De",
+    18.02,
+    18.02
+   ],
+   [
+    "la",
+    18.1,
+    18.1
+   ],
+   [
+    "Escuela",
+    18.22,
+    18.3
+   ],
+   [
+    "Superior",
+    18.6,
+    18.6
+   ],
+   [
+    "de",
+    18.74,
+    18.74
+   ],
+   [
+    "Turismo.",
+    18.84,
+    20.22
+   ]
+  ],
+  "text": "avanzada, pero es un salario considerable. ¿De qué escuela eres? De la Escuela Superior de Turismo.",
+  "frames": 195,
+  "start": 1155
+ },
+ {
+  "clip": 4,
+  "in": 20.24,
+  "out": 22.66,
+  "role": "q",
+  "words": [
+   [
+    "¿Cuántos",
+    20.4,
+    20.58
+   ],
+   [
+    "esperan",
+    20.78,
+    20.9
+   ],
+   [
+    "ganar",
+    21.06,
+    21.16
+   ],
+   [
+    "al",
+    21.26,
+    21.26
+   ],
+   [
+    "egresar?",
+    21.4,
+    21.98
+   ]
+  ],
+  "text": "¿Cuántos esperan ganar al egresar?",
+  "frames": 73,
+  "start": 1350
+ },
+ {
+  "clip": 4,
+  "in": 23.22,
+  "out": 25.3,
+  "role": "a",
+  "words": [
+   [
+    "Como",
+    23.38,
+    23.38
+   ],
+   [
+    "unos",
+    23.84,
+    23.84
+   ],
+   [
+    "veinte",
+    24.1,
+    24.28
+   ],
+   [
+    "mil.",
+    24.56,
+    24.82
+   ]
+  ],
+  "text": "Como unos veinte mil.",
+  "frames": 62,
+  "start": 1423
+ },
+ {
+  "clip": 4,
+  "in": 25.52,
+  "out": 33.625,
+  "role": "a",
+  "words": [
+   [
+    "Unos",
+    25.68,
+    25.82
+   ],
+   [
+    "diez",
+    26.02,
+    26.02
+   ],
+   [
+    "mil,",
+    26.4,
+    26.56
+   ],
+   [
+    "once.",
+    26.78,
+    27.8
+   ],
+   [
+    "Veinte",
+    28.02,
+    28.12
+   ],
+   [
+    "mil,",
+    28.34,
+    28.42
+   ],
+   [
+    "veinte",
+    28.48,
+    28.56
+   ],
+   [
+    "mil.",
+    28.76,
+    29.38
+   ],
+   [
+    "Unos",
+    29.9,
+    30.64
+   ],
+   [
+    "treinta,",
+    30.92,
+    31.4
+   ],
+   [
+    "algo",
+    31.8,
+    31.8
+   ],
+   [
+    "diez,",
+    32.08,
+    32.24
+   ],
+   [
+    "una",
+    32.62,
+    32.62
+   ],
+   [
+    "casita.",
+    32.9,
+    33.48
+   ]
+  ],
+  "text": "Unos diez mil, once. Veinte mil, veinte mil. Unos treinta, algo diez, una casita.",
+  "frames": 243,
+  "start": 1485
+ },
+ {
+  "clip": 4,
+  "in": 33.625,
+  "out": 35.225,
+  "role": "q",
+  "words": [
+   [
+    "¿Por",
+    33.78,
+    33.9
+   ],
+   [
+    "qué?",
+    34.06,
+    34.76
+   ]
+  ],
+  "text": "¿Por qué?",
+  "frames": 48,
+  "start": 1728
+ },
+ {
+  "clip": 4,
+  "in": 35.225,
+  "out": 36.97,
+  "role": "a",
+  "words": [
+   [
+    "Porque",
+    35.38,
+    35.38
+   ],
+   [
+    "lo",
+    35.5,
+    35.5
+   ],
+   [
+    "vale.",
+    35.74,
+    36.92
+   ]
+  ],
+  "text": "Porque lo vale.",
+  "frames": 52,
+  "start": 1776
+ },
+ {
+  "clip": 4,
+  "in": 43.22,
+  "out": 45.62,
+  "role": "a",
+  "words": [
+   [
+    "Necesitamos",
+    43.38,
+    43.84
+   ],
+   [
+    "comer",
+    44.16,
+    44.16
+   ],
+   [
+    "hermano.",
+    44.4,
+    44.94
+   ]
+  ],
+  "text": "Necesitamos comer hermano.",
+  "frames": 72,
+  "start": 1828
+ },
+ {
+  "clip": 4,
+  "in": 45.8,
+  "out": 49.385,
+  "role": "a",
+  "words": [
+   [
+    "Porque",
+    46.18,
+    46.18
+   ],
+   [
+    "me",
+    46.5,
+    46.5
+   ],
+   [
+    "estoy",
+    46.62,
+    46.62
+   ],
+   [
+    "preparando",
+    46.9,
+    47.08
+   ],
+   [
+    "para",
+    47.3,
+    47.3
+   ],
+   [
+    "el",
+    47.4,
+    47.4
+   ],
+   [
+    "puto",
+    47.58,
+    47.64
+   ],
+   [
+    "sueño,",
+    47.86,
+    48.12
+   ],
+   [
+    "justamente.",
+    48.7,
+    48.98
+   ]
+  ],
+  "text": "Porque me estoy preparando para el puto sueño, justamente.",
+  "frames": 108,
+  "start": 1900,
+  "beep": [
+   1.6,
+   1.86
+  ]
+ },
+ {
+  "clip": 4,
+  "in": 49.385,
+  "out": 50.925,
+  "role": "q",
+  "words": [
+   [
+    "¿Y",
+    49.54,
+    49.62
+   ],
+   [
+    "de",
+    49.76,
+    49.76
+   ],
+   [
+    "qué",
+    49.9,
+    49.9
+   ],
+   [
+    "carrera",
+    50.1,
+    50.24
+   ],
+   [
+    "son?",
+    50.48,
+    50.74
+   ]
+  ],
+  "text": "¿Y de qué carrera son?",
+  "frames": 46,
+  "start": 2008
+ },
+ {
+  "clip": 4,
+  "in": 50.925,
+  "out": 58.1,
+  "role": "a",
+  "words": [
+   [
+    "Ingeniería",
+    51.08,
+    51.42
+   ],
+   [
+    "fotónica.",
+    51.64,
+    52.1
+   ],
+   [
+    "Ingeniería",
+    52.88,
+    53.14
+   ],
+   [
+    "textil.",
+    53.36,
+    54.0
+   ],
+   [
+    "Ingeniería",
+    54.48,
+    54.8
+   ],
+   [
+    "de",
+    54.9,
+    54.9
+   ],
+   [
+    "alimentos.",
+    55.3,
+    55.76
+   ],
+   [
+    "Comunicaciones",
+    56.22,
+    56.66
+   ],
+   [
+    "electrónica.",
+    56.94,
+    58.36
+   ]
+  ],
+  "text": "Ingeniería fotónica. Ingeniería textil. Ingeniería de alimentos. Comunicaciones electrónica.",
+  "frames": 215,
+  "start": 2054
+ }
+]

@@ -1,0 +1,102 @@
+[
+ {
+  "key": "aws",
+  "seg": 0,
+  "at": 4.48
+ },
+ {
+  "key": "google",
+  "seg": 0,
+  "at": 6.26
+ },
+ {
+  "key": "boston",
+  "seg": 1,
+  "at": 13.66
+ },
+ {
+  "key": "tesla",
+  "seg": 2,
+  "at": 19.113
+ },
+ {
+  "key": "siemens",
+  "seg": 2,
+  "at": 23.013
+ },
+ {
+  "key": "gm",
+  "seg": 2,
+  "at": 23.733
+ },
+ {
+  "key": "lego",
+  "seg": 2,
+  "at": 25.853
+ },
+ {
+  "key": "festo",
+  "seg": 2,
+  "at": 27.173
+ },
+ {
+  "key": "samsung",
+  "seg": 3,
+  "at": 35.253
+ },
+ {
+  "key": "televisa",
+  "seg": 4,
+  "at": 42.007
+ },
+ {
+  "key": "cocacola",
+  "seg": 4,
+  "at": 46.427
+ },
+ {
+  "key": "femsa",
+  "seg": 4,
+  "at": 46.887
+ },
+ {
+  "key": "microsoft",
+  "seg": 4,
+  "at": 48.927
+ },
+ {
+  "key": "bbva",
+  "seg": 5,
+  "at": 57.167
+ },
+ {
+  "key": "deloitte",
+  "seg": 5,
+  "at": 58.587
+ },
+ {
+  "key": "kpmg",
+  "seg": 5,
+  "at": 59.187
+ },
+ {
+  "key": "gbm",
+  "seg": 6,
+  "at": 68.273
+ },
+ {
+  "key": "bbva",
+  "seg": 7,
+  "at": 77.433
+ },
+ {
+  "key": "secihti",
+  "seg": 8,
+  "at": 88.26
+ },
+ {
+  "key": "sabritas",
+  "seg": 10,
+  "at": 97.973
+ }
+]
