@@ -1,0 +1,350 @@
+{
+ "fix": {
+  "Multuroquetry": "Vultur Rocketry",
+  "Silicon,": "Iluikatl,",
+  "Airspace,": "Aerospace,",
+  "chantas,": "llantas,",
+  "mas": "más",
+  "Hoy": "Uy,",
+  "rondando": "rondando",
+  "qarteam.sem": "@qrteam.cem"
+ },
+ "resaltar": [
+  "Space",
+  "Karani,",
+  "Cuauhtémoc",
+  "Vultur",
+  "Hypernova",
+  "Quantum",
+  "Robotics,",
+  "Laika",
+  "Sirius",
+  "Iluikatl,",
+  "Orbital",
+  "Propulsión",
+  "UNAM,",
+  "mil",
+  "pesos",
+  "pesos,",
+  "Semana",
+  "Mundial",
+  "Espacio",
+  "dinero"
+ ],
+ "enfasis": [
+  "teddy:dinero",
+  "karani:explotó",
+  "cuauhtemoc:aduanas",
+  "vultur:motor",
+  "hypernova:equivocarnos"
+ ],
+ "secciones": {
+  "teddy": {
+   "zoom": 1.4,
+   "caras": 1
+  },
+  "intro": {
+   "zoom": 1.1,
+   "caras": 2
+  },
+  "karani": {
+   "zoom": 1.15,
+   "caras": 2
+  },
+  "cuauhtemoc": {
+   "zoom": 1.15,
+   "caras": 2
+  },
+  "vultur": {
+   "zoom": 1.15,
+   "caras": 2
+  },
+  "hypernova": {
+   "zoom": 1.15,
+   "caras": 2
+  },
+  "quantum": {
+   "zoom": 1.1,
+   "caras": 2
+  }
+ },
+ "gancho": {
+  "top": 330,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "¿CUÁNTO HAN",
+    "fuente": "Anton",
+    "size": 150,
+    "contorno": 0,
+    "anim": "slide",
+    "align": "left",
+    "en": "intro:cuánto"
+   },
+   {
+    "tipo": "texto",
+    "texto": "INVERTIDO",
+    "fuente": "Anton",
+    "size": 190,
+    "color": "#FFD60A",
+    "contorno": 0,
+    "anim": "pop",
+    "en": "intro:invertido"
+   },
+   {
+    "tipo": "texto",
+    "texto": "EN SU PROYECTO?",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 84,
+    "contorno": 0,
+    "anim": "rise",
+    "align": "right",
+    "en": "intro:su"
+   },
+   {
+    "tipo": "pildora",
+    "texto": "PARTE 1",
+    "bg": "#FFD60A",
+    "color": "#111",
+    "size": 40,
+    "en": "intro:proyecto?",
+    "mt": 30
+   }
+  ],
+  "dur": 8.55
+ },
+ "montos": [
+  {
+   "en": "karani:18",
+   "dur": 2.4,
+   "texto": "$18K - $20K",
+   "sub": "MXN"
+  },
+  {
+   "en": "cuauhtemoc:30",
+   "dur": 2.4,
+   "texto": "$30,000",
+   "sub": "MXN"
+  },
+  {
+   "en": "vultur:80",
+   "dur": 2.4,
+   "texto": "$80,000",
+   "sub": "MXN"
+  },
+  {
+   "en": "hypernova:100",
+   "dur": 2.4,
+   "texto": "$100,000",
+   "sub": "MXN"
+  },
+  {
+   "en": "quantum:100",
+   "dur": 2.3,
+   "texto": "+$100,000",
+   "sub": "MXN"
+  },
+  {
+   "en": "quantum:92",
+   "dur": 2.0,
+   "texto": "$92,000",
+   "sub": "ESTA TEMPORADA",
+   "size": 150
+  }
+ ],
+ "etiquetas": [
+  {
+   "en": "cuauhtemoc:metal,",
+   "dur": 3.4,
+   "texto": "20K CHASIS · 10K ELECTRÓNICA"
+  },
+  {
+   "en": "vultur:estructura",
+   "dur": 2.4,
+   "texto": "40K ESTRUCTURA · 30K MOTOR"
+  },
+  {
+   "en": "vultur:aviónica,",
+   "dur": 1.0,
+   "texto": "15K AVIÓNICA"
+  }
+ ],
+ "emojis": [
+  {
+   "en": "karani:explotó",
+   "dur": 1.6,
+   "emoji": "💥"
+  }
+ ],
+ "imagenes": [
+  {
+   "en": "karani:Space",
+   "dur": 2.07,
+   "src": "perfiles/karani.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": "cuauhtemoc:prueba",
+   "dur": 2.03,
+   "src": "perfiles/cuauhtemoc.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": "vultur:Vultur",
+   "dur": 2.83,
+   "src": "perfiles/vultur.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": "hypernova:Nosotros#1",
+   "dur": 3.43,
+   "src": "perfiles/hypernova.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": "quantum:Nosotros",
+   "dur": 3.6,
+   "src": "perfiles/quantum.jpg",
+   "pos": "centro",
+   "ancho": 880
+  }
+ ],
+ "broll": [
+  {
+   "en": "karani:fabricación",
+   "dur": 2.4,
+   "src": "broll/karani.mp4"
+  },
+  {
+   "en": "cuauhtemoc:metal,",
+   "dur": 2.4,
+   "src": "broll/cuauh_rover.mp4"
+  },
+  {
+   "en": "vultur:estructura",
+   "dur": 2.6,
+   "src": "broll/vultur.mp4"
+  },
+  {
+   "en": "hypernova:instrumentos",
+   "dur": 2.6,
+   "src": "broll/hyper_pcb.mp4"
+  },
+  {
+   "en": "hypernova:equivocarnos",
+   "dur": 2.0,
+   "src": "broll/hyper_banner.mp4"
+  },
+  {
+   "en": "quantum:temporada",
+   "dur": 2.2,
+   "src": "broll/quantum.mp4"
+  }
+ ],
+ "sfx": [
+  {
+   "en": "karani:18",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "cuauhtemoc:30",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "vultur:80",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "hypernova:100",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "quantum:100",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "karani:explotó",
+   "offset": 0.0,
+   "sfx": "boom",
+   "vol": 0.25
+  },
+  {
+   "en": 0.1,
+   "sfx": "whoosh",
+   "vol": 0.35
+  },
+  {
+   "en": "teddy:Semana",
+   "offset": -0.1,
+   "sfx": "pop",
+   "vol": 0.3
+  },
+  {
+   "en": "intro:cuánto",
+   "offset": -0.85,
+   "sfx": "riser",
+   "vol": 0.3,
+   "dur": 0.8
+  },
+  {
+   "en": "intro:cuánto",
+   "offset": -0.1,
+   "sfx": "whoosh",
+   "vol": 0.4
+  },
+  {
+   "en": "teddy:Espacio",
+   "offset": -0.1,
+   "sfx": "impact",
+   "vol": 0.22
+  },
+  {
+   "en": "teddy:dinero",
+   "offset": -0.05,
+   "sfx": "cash",
+   "vol": 0.55
+  },
+  {
+   "en": "teddy:dinero",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.4
+  },
+  {
+   "en": "teddy:dinero",
+   "offset": 0.3,
+   "sfx": "coin",
+   "vol": 0.3
+  }
+ ],
+ "intro_espacio": {
+  "sec": "teddy",
+  "titulo": [
+   "SEMANA MUNDIAL",
+   "DEL ESPACIO"
+  ],
+  "hud": "ROCKET REVOLUTION",
+  "en": [
+   "teddy:Semana",
+   "teddy:Espacio",
+   "teddy:Vamos"
+  ],
+  "monedas": "teddy:dinero"
+ }
+}

@@ -1,0 +1,56 @@
+{
+ "resaltar": [],
+ "secciones": {
+  "simple": {
+   "zoom": 1.5,
+   "caras": 1
+  },
+  "notion": {
+   "zoom": 1.5,
+   "caras": 1
+  },
+  "terminal": {
+   "zoom": 1.5,
+   "caras": 1
+  },
+  "notas": {
+   "zoom": 1.5,
+   "caras": 1
+  },
+  "vlogs": {
+   "zoom": 1.5,
+   "caras": 1
+  },
+  "guiones": {
+   "zoom": 1.5,
+   "caras": 1
+  },
+  "cierre": {
+   "zoom": 1.5,
+   "caras": 1
+  }
+ },
+ "gancho": {
+  "top": 330,
+  "dur": 3.4,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "x",
+    "at": 2
+   }
+  ],
+  "sfx": [
+   {
+    "f": 4,
+    "sfx": "whoosh",
+    "vol": 0.2
+   }
+  ]
+ },
+ "cierre": {
+  "pregunta": "@teddyarellano",
+  "cta": "SÍGUEME",
+  "dur": 2.0
+ }
+}

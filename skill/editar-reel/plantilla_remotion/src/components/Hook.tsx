@@ -7,7 +7,7 @@
 // Todo centrado en x = 540 dentro de la zona segura. Sin subtítulos mientras dura el gancho.
 import React from 'react';
 import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {D, E, HookEl, SIDE, W, clamp, fitSize, font, stroke} from '../theme';
+import {HOOK_START, D, E, HookEl, SIDE, W, clamp, fitSize, font, stroke} from '../theme';
 
 const Line: React.FC<{el: HookEl; at: number}> = ({el, at}) => {
   const frame = useCurrentFrame();
@@ -139,12 +139,21 @@ const Box: React.FC<{el: HookEl; at: number}> = ({el, at}) => {
 export const Hook: React.FC<{capa?: 'todo' | 'detras' | 'delante'}> = ({capa = 'todo'}) => {
   const frame = useCurrentFrame();
   const h = D.hook;
-  if (!h || frame >= D.hookEnd + 8) return null;
+  if (!h || frame < HOOK_START || frame >= D.hookEnd + 8) return null;
   const out = interpolate(frame, [D.hookEnd - 4, D.hookEnd + 8], [1, 0], clamp);
   return (
     <AbsoluteFill style={{opacity: out}}>
+      {/* elementos con "top": posición absoluta (p. ej. logo arriba de la cabeza; Brigadas Otoño 2026) */}
+      {h.elementos.map((el, i) =>
+        el.top === undefined ? null : (
+          <div key={'abs' + i} style={{position: 'absolute', top: el.top, left: 0, width: W, display: 'flex', justifyContent: 'center'}}>
+            <Box el={{...el, mt: 0}} at={el.at ?? 2} />
+          </div>
+        ),
+      )}
       <div style={{position: 'absolute', top: h.top ?? 820, left: SIDE, width: W - 2 * SIDE, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         {h.elementos.map((el, i) => {
+          if (el.top !== undefined) return null;
           const at = el.at ?? 2 + i * 8;
           const visible = capa === 'todo' || (capa === 'delante') === !!el.delante;
           const node = el.tipo === 'texto' ? <Line el={el} at={at} /> : el.tipo === 'stickers' ? <Stickers el={el} at={at} /> : <Box el={el} at={at} />;

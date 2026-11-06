@@ -7,6 +7,11 @@ Limpios (entrevistas, unboxing, promo):
 Comedia (humor, TikTok):
   ding (contador), boom (tipo vine boom), scratch (disco rayado), crickets (grillos), coin (moneda 8-bit),
   boing, tada, ffwd (adelantar cinta → cámara rápida), trombone (trombón triste)
+Vlog / tensión (IEEE ESCOM):
+  shutter (obturador de cámara, ráfagas de fotos), tension_reloj (tic-tac que se acelera + zumbido, 1.3 s),
+  succion (barrido en reversa que termina en seco, 0.55 s), braam (golpe grave de tráiler + sub que cae, 1.9 s)
+Teclado (AWS SCD):
+  tecla1–tecla4 (tecla mecánica; 2 por letra al "escribir" un comentario), tecla_enter (enviar)
 """
 import os
 import sys
@@ -102,4 +107,40 @@ for i, (f, at, ln) in enumerate(((392, 0, 0.35), (370, 0.38, 0.35), (349, 0.76, 
     ff = f * (1 + (0.03 * np.sin(2 * np.pi * 6 * np.clip(tt, 0, None)) if i == 3 else 0))
     x += on * sum(np.sin(2 * np.pi * np.cumsum(np.where(on, ff, 0)) / SR * h) * (0.5 ** h) for h in (1, 2, 3, 4)) * np.exp(-np.clip(tt, 0, None) * 1.5)
 save('trombone', lp(x, 2500), 0.6)
+
+# ---- vlog / tensión
+t = T(0.35)
+def _click(t0, amp, dec):
+    x = np.zeros_like(t); m = t >= t0; tt = t[m] - t0
+    n = np.convolve(rng.standard_normal(m.sum()), np.ones(4) / 4, 'same')
+    x[m] = amp * n * np.exp(-tt / dec) + amp * 0.6 * np.sin(2 * np.pi * 1800 * tt) * np.exp(-tt / (dec * 0.6)); return x
+save('shutter', _click(0, 0.9, 0.006) + _click(0.012, 0.4, 0.03) + _click(0.085, 0.8, 0.007) + _click(0.095, 0.3, 0.025), 0.9)
+D = 1.3; t = T(D); x = np.zeros_like(t); tk, k, iv = 0.0, 0, 0.27
+while tk < D - 0.02:
+    n0 = int(tk * SR); tt = np.arange(int(0.035 * SR)) / SR
+    c = (np.sin(2 * np.pi * (2600 if k % 2 == 0 else 1900) * tt) * 0.7 + rng.standard_normal(len(tt)) * 0.5) * np.exp(-tt / 0.006)
+    e = min(len(x), n0 + len(tt)); x[n0:e] += (0.55 + 0.45 * tk / D) * c[:e - n0]
+    tk += iv; iv = max(0.085, iv * 0.86); k += 1
+save('tension_reloj', x + (np.sin(2 * np.pi * 55 * t) + 0.5 * np.sin(2 * np.pi * 110.4 * t)) * (0.08 + 0.32 * (t / D) ** 2) * (1 + 0.25 * np.sin(2 * np.pi * 6 * t)), 0.8)
+D = 0.55; t = T(D); x = rng.standard_normal(len(t)) * (t / D) ** 2.5; y = np.zeros_like(x)
+for i, ch in enumerate(np.array_split(np.arange(len(x)), 20)):
+    y[ch] = lp(x, 300 + 7000 * ((i + 1) / 20) ** 2)[ch]
+save('succion', y, 0.75)
+D = 1.9; t = T(D); saw = lambda f: 2 * ((f * t) % 1) - 1
+br = np.tanh(sum(saw(f * d) for f in (49, 73.5, 98) for d in (0.993, 1.0, 1.007)) * 0.6) * np.minimum(1, t / 0.015) * np.exp(-t / 0.75)
+sub = np.sin(2 * np.pi * np.cumsum(62 * np.exp(-t / 0.5) + 34) / SR) * np.exp(-t / 0.65) * 1.3
+save('braam', lp(br, 700) + sub + rng.standard_normal(len(t)) * np.exp(-t / 0.018) * 0.9, 0.95)
 print('sfx ok →', OUT, sorted(os.listdir(OUT)))
+
+# Teclado mecánico (AWS Student Community Day: caja de comentario que escribe "AMAZON").
+# Chasquido agudo del switch + "thock" grave de la tecla tocando fondo + rebote. tecla1–4 varían; tecla_enter es más fuerte.
+def _tecla(seed, fuerte=False):
+    r = np.random.default_rng(seed); t = T(0.14 if fuerte else 0.09); n = len(t)
+    click = bp(r.standard_normal(n), 2500, 9000) * np.exp(-t / 0.004)
+    thock = np.sin(2 * np.pi * (180 + r.uniform(-25, 25)) * t) * np.exp(-t / (0.03 if fuerte else 0.018))
+    body = bp(r.standard_normal(n), 400, 1800) * np.exp(-t / 0.012)
+    d = int(SR * r.uniform(0.018, 0.03)); reb = np.zeros(n); reb[d:] = (bp(r.standard_normal(n), 3000, 8000) * np.exp(-t / 0.002))[:n - d] * 0.35
+    return click * 0.9 + thock * (1.0 if fuerte else 0.55) + body * 0.5 + reb
+for i in range(4):
+    save(f'tecla{i + 1}', _tecla(11 + i), 0.9)
+save('tecla_enter', _tecla(99, fuerte=True), 0.9)

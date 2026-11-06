@@ -21,7 +21,7 @@ fi
 
 # 3) Python venv
 if [ ! -x "$TK/venv/bin/python" ]; then python3 -m venv "$TK/venv"; fi
-"$TK/venv/bin/pip" install -q --upgrade pip numpy scipy pillow
+"$TK/venv/bin/pip" install -q --upgrade pip numpy scipy pillow opencv-python-headless  # opencv: scripts/desub.py
 
 # 4) herramientas Swift (Apple Vision / AVFoundation)
 for f in "$SKILL"/swift/*.swift; do

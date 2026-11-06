@@ -12,6 +12,12 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   // Corrige lo que Whisper escuchó mal. Se aplica palabra por palabra, conservando la puntuación.
   "fix": {"lab": "lap", "iGlobal": "e-global", "catorce": "14", "pendejo": "P***"},
 
+  // ÉNFASIS: palabras que el narrador carga o que llevan el sentido de la frase. Salen SOLAS en el subtítulo, ~2× más grandes,
+  // en color acento, caen con rebote y giro, con rayitas de acento estilo cómic. Opcional: un SFX pequeño (vol ~0.15).
+  // Candidatas acústicas con `reel enfasis -p P`: elige ~1 cada 3–5 s, solo palabras con sentido (no artículos ni "y"/"tuve"),
+  // y suma las clave del guion aunque se digan suave (nombre del evento, tema, remate). En IEEE ESCOM fueron 15 en 57 s.
+  "enfasis": ["que:IEEE", "que:no#1", {"en": "ieee:grande", "sfx": "impact", "vol": 0.16}, {"en": "cierre:pronto", "sfx": "pop", "vol": 0.18}],
+
   // Palabras extra a pintar en color acento en los subtítulos (los objetos ya se resaltan solos).
   "resaltar": ["ESCOM", "Google", "30K"],
 
@@ -51,8 +57,10 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   // Píldora centrada bajo los subtítulos (carrera, escuela, "EMPRESA 1 DE 5", dato).
   "etiquetas": [{"en": "p1:ESCOM", "dur": 3, "texto": "ING. EN SISTEMAS · ESCOM", "color": "#7B1E3C"}],
 
-  // Monto en pixel verde con máquina de escribir y SFX cash (encima de las cabezas; se ajusta al ancho). top/size/color opcionales.
-  "montos": [{"en": "p1:25", "dur": 2.6, "texto": "25K MXN"}, {"en": "p2:30", "dur": 2.8, "texto": "30K - 40K MXN"}],
+  // Monto (SFX cash automático). estilo.json → "monto": {"estilo": "golpe"} = cifra GRANDE verde con golpe 2.6→1, sacudida,
+  // destello y ráfaga de billetes/monedas (Rocket Revolution; la favorita) · "pixel" = verde pixel con máquina de escribir (FEySS).
+  // sub = sello amarillo debajo ("MXN", "ESTA TEMPORADA"). top/size/color opcionales. Súmale "coin" 0.3 en sfx con offset 0.05.
+  "montos": [{"en": "p1:25", "dur": 2.6, "texto": "$25,000", "sub": "MXN"}, {"en": "p2:110", "dur": 2.6, "texto": "$110K - $130K", "sub": "MXN"}],
 
   // Sticker emoji en tarjeta blanca arriba al centro (entrevistas a estudiantes). texto opcional debajo.
   "emojis": [{"en": "p1:robótica", "dur": 2, "emoji": "🤖"}],
@@ -75,6 +83,8 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   "transiciones": [{"antes_de": "radio", "texto": "9NO SEMESTRE", "color_a": "#2F80ED", "color_b": "#EB5757"}],
 
   // Logos (arriba/centro) o tarjeta QR (abajo; los subtítulos suben solos mientras se ve).
+  // PERFILES DE INSTAGRAM: src "perfiles/<equipo>.jpg" (captura completa tal cual) → sale CENTRADA en x e y con pop simple y sin
+  // subtítulos; usa "pos": "centro", "ancho": 880 y un "dur" que termine ANTES de la siguiente sección (calcúlalo con data.json → secs).
   "imagenes": [
     {"en": "p2:Google", "dur": 2.5, "src": "logos/google.png", "pos": "arriba", "ancho": 380, "tarjeta": true},
     {"en": "e1:registrarte", "dur": 6, "src": "qr/nestle.jpg", "pos": "abajo", "ancho": 500, "titulo": "NESTLÉ", "texto": "ESCANEA PARA POSTULARTE"}
@@ -86,7 +96,13 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   // Censura: beep sobre la palabra (pon también "fix": {"palabra": "P***"}).
   "censura": [{"en": "juan:pendejo", "dur": 0.6}],
 
-  // Cierre opcional (solo entrevistas): último cuadro desenfocado + pregunta + CTA. Los videos de humor NO llevan cierre.
+  // Intro espacial 3D sobre la intro del creador (sección antes de la pregunta). Ver SKILL.md §2a y ejemplos/rocket/.
+  // en = anclas de [línea 1, línea 2, hud]; monedas = ancla donde salen las monedas 3D ($) por los lados. planeta/cohete/warp opcionales (true).
+  "intro_espacio": {"sec": "teddy", "titulo": ["SEMANA MUNDIAL", "DEL ESPACIO"], "hud": "ROCKET REVOLUTION",
+                    "en": ["teddy:Semana", "teddy:Espacio", "teddy:Vamos"], "monedas": "teddy:dinero"},
+  // Con intro del creador SIN 3D: "gancho": {"tras_intro": true, ...} (el gancho empieza en la 2a sección y antes hay subtítulos).
+
+  // Cierre opcional (solo entrevistas; el creador lo quitó en Rocket Revolution: no lo uses salvo que lo pida): último cuadro desenfocado + pregunta + CTA. Los videos de humor NO llevan cierre.
   "cierre": {"pregunta": "¿Y TÚ CUÁNTO ESPERAS GANAR?", "cta": "COMÉNTALO 👇", "dur": 2.3},
 
   // Música (solo promos): genera con  python scripts/synth_musica.py P/public/music.wav --dur <s>
@@ -117,4 +133,4 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   `ffmpeg -ss <inicio> -t <dur> -i sdr.mp4 -an -vf "fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920" -c:v libx264 -crf 17 P/public/broll/x.mp4`
 
 ## Qué genera `reel datos` → `src/data.json`
-`n`, `words` (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. Los componentes en `src/components/` leen solo esto y `estilo.json`.
+`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. Los componentes en `src/components/` leen solo esto y `estilo.json`.

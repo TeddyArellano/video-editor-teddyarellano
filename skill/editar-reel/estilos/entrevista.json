@@ -1,13 +1,63 @@
 {
-  "nombre": "entrevista",
+  "nombre": {
+    "fuente": "Montserrat",
+    "sub_fuente": "Montserrat"
+  },
   "descripcion": "Entrevistas en serie a estudiantes/personas (FEySS: ¿Cuánto esperas ganar?, ¿Empresa de tus sueños?). Montserrat, palabras clave amarillas, etiquetas guinda de carrera/escuela, logos o montos, cierre con pregunta.",
-  "colores": {"acento": "#FFE81A", "texto": "#FFFFFF", "contorno": "#000000", "a": "#7B1E3C", "b": "#FFE81A", "pildora": "#7B1E3C"},
-  "subtitulos": {"fuente": "Montserrat", "peso": 800, "size": 74, "top": 1140, "contorno": 11, "maxPalabras": 3, "maxChars": 16, "mayus": true, "sombra": "0 4px 10px rgba(0,0,0,0.5)"},
-  "camara": {"empuje": 0.025, "ancla_y": 0.38, "zoom_objeto": 1.35},
-  "contador": {"titulo": "PERSONAS", "fuente": "Montserrat", "fuente_num": "Montserrat"},
-  "nombre": {"fuente": "Montserrat", "sub_fuente": "Montserrat"},
-  "etiqueta": {"fuente": "Montserrat", "peso": 900, "size": 36, "top": 1330, "bg": "#7B1E3C", "color": "#FFFFFF"},
-  "transicion": {"fuente": "Montserrat", "texto_fuente": "Montserrat"},
-  "cierre": {"fuente": "Montserrat", "peso": 900, "italic": true},
-  "sfx_auto": {"objeto": null, "zoom": null, "transicion": "whoosh", "aparece": "pop", "aparece_vol": 0.3}
+  "colores": {
+    "acento": "#FFE81A",
+    "texto": "#FFFFFF",
+    "contorno": "#000000",
+    "a": "#7B1E3C",
+    "b": "#FFE81A",
+    "pildora": "#7B1E3C"
+  },
+  "subtitulos": {
+    "fuente": "Montserrat",
+    "peso": 800,
+    "size": 74,
+    "top": 1140,
+    "contorno": 11,
+    "maxPalabras": 3,
+    "maxChars": 16,
+    "mayus": true,
+    "sombra": "0 4px 10px rgba(0,0,0,0.5)"
+  },
+  "camara": {
+    "empuje": 0.025,
+    "ancla_y": 0.38,
+    "zoom_objeto": 1.35
+  },
+  "contador": {
+    "titulo": "PERSONAS",
+    "fuente": "Montserrat",
+    "fuente_num": "Montserrat"
+  },
+  "etiqueta": {
+    "fuente": "Montserrat",
+    "peso": 900,
+    "size": 36,
+    "top": 1330,
+    "bg": "#7B1E3C",
+    "color": "#FFFFFF"
+  },
+  "transicion": {
+    "fuente": "Montserrat",
+    "texto_fuente": "Montserrat"
+  },
+  "cierre": {
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true
+  },
+  "sfx_auto": {
+    "objeto": null,
+    "zoom": null,
+    "transicion": "whoosh",
+    "aparece": "pop",
+    "aparece_vol": 0.3
+  },
+  "monto": {
+    "estilo": "golpe"
+  }
 }

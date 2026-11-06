@@ -1,0 +1,62 @@
+{
+  "nombre": {
+    "fuente": "Montserrat",
+    "sub_fuente": "Montserrat"
+  },
+  "descripcion": "Unboxing / vlog a cámara de una persona (Google Cloud Summit). Gancho grande con letras que suben DETRÁS de la persona (reel recorte), zooms suaves al producto, SFX sutiles, sin música.",
+  "colores": {
+    "acento": "#FFD60A",
+    "texto": "#FFFFFF",
+    "contorno": "#111111",
+    "a": "#FF9900",
+    "b": "#FFD60A",
+    "pildora": "#FF9900"
+  },
+  "subtitulos": {
+    "fuente": "Montserrat",
+    "peso": 800,
+    "size": 52,
+    "top": 1150,
+    "contorno": 3,
+    "maxPalabras": 5,
+    "maxChars": 26,
+    "mayus": false,
+    "sombra": "0 3px 10px rgba(0,0,0,0.85)",
+    "bloque": true
+  },
+  "camara": {
+    "empuje": 0,
+    "ancla_y": 0.36,
+    "zoom_objeto": 1.45,
+    "caras": 1
+  },
+  "contador": {
+    "titulo": "",
+    "fuente": "Montserrat",
+    "fuente_num": "Montserrat"
+  },
+  "etiqueta": {
+    "fuente": "Poppins",
+    "peso": 800,
+    "size": 46,
+    "top": 1330,
+    "bg": "#FFFFFF",
+    "color": "#202124"
+  },
+  "transicion": {
+    "fuente": "Montserrat",
+    "texto_fuente": "Montserrat"
+  },
+  "cierre": {
+    "fuente": "Montserrat",
+    "peso": 900
+  },
+  "sfx_auto": {
+    "objeto": null,
+    "zoom": null,
+    "zoom_vol": 0.14,
+    "transicion": "whoosh",
+    "aparece": null,
+    "aparece_vol": 0.25
+  }
+}

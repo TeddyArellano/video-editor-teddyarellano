@@ -1,0 +1,58 @@
+{
+ "nombre": "vlog",
+ "descripcion": "Vlog con voz en off (IEEE ESCOM): narración en audio aparte + clips del evento encima, gancho de tipografía cinética, fotos en ráfaga, globo, B/N cómico. Subtítulos con palabras clave en amarillo.",
+ "colores": {
+  "acento": "#FFD60A",
+  "texto": "#FFFFFF",
+  "contorno": "#111111",
+  "a": "#00629B",
+  "b": "#7E57C2",
+  "pildora": "#5C67D9"
+ },
+ "subtitulos": {
+  "fuente": "Montserrat",
+  "peso": 900,
+  "size": 74,
+  "top": 1180,
+  "contorno": 11,
+  "maxPalabras": 3,
+  "maxChars": 16,
+  "mayus": true,
+  "sombra": "0 4px 10px rgba(0,0,0,0.5)"
+ },
+ "camara": {
+  "empuje": 0.04,
+  "ancla_y": 0.36,
+  "zoom_objeto": 1.45,
+  "caras": 1
+ },
+ "contador": {
+  "titulo": "",
+  "fuente": "Montserrat",
+  "fuente_num": "Montserrat"
+ },
+ "etiqueta": {
+  "fuente": "Poppins",
+  "peso": 800,
+  "size": 40,
+  "top": 1390,
+  "bg": "#FFFFFF",
+  "color": "#202124"
+ },
+ "transicion": {
+  "fuente": "Montserrat",
+  "texto_fuente": "Montserrat"
+ },
+ "cierre": {
+  "fuente": "Montserrat",
+  "peso": 900
+ },
+ "sfx_auto": {
+  "objeto": null,
+  "zoom": "whoosh2",
+  "zoom_vol": 0.14,
+  "transicion": "whoosh",
+  "aparece": "pop",
+  "aparece_vol": 0.25
+ }
+}

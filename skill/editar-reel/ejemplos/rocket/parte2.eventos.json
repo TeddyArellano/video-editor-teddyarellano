@@ -1,0 +1,309 @@
+{
+ "fix": {
+  "Multuroquetry": "Vultur Rocketry",
+  "Silicon,": "Iluikatl,",
+  "Airspace,": "Aerospace,",
+  "chantas,": "llantas,",
+  "mas": "más",
+  "Hoy": "Uy,",
+  "rondando": "rondando",
+  "qarteam.sem": "@qrteam.cem"
+ },
+ "resaltar": [
+  "Space",
+  "Karani,",
+  "Cuauhtémoc",
+  "Vultur",
+  "Hypernova",
+  "Quantum",
+  "Robotics,",
+  "Laika",
+  "Sirius",
+  "Iluikatl,",
+  "Orbital",
+  "Propulsión",
+  "UNAM,",
+  "mil",
+  "pesos",
+  "pesos,",
+  "Semana",
+  "Mundial",
+  "Espacio",
+  "dinero"
+ ],
+ "enfasis": [
+  "teddy:dinero",
+  "laika:Brasil",
+  "iluikatl:nitroso,",
+  "propulsion:patrocinadores,"
+ ],
+ "secciones": {
+  "teddy": {
+   "zoom": 1.4,
+   "caras": 1
+  },
+  "intro": {
+   "zoom": 1.1,
+   "caras": 2
+  },
+  "laika": {
+   "zoom": 1.1,
+   "caras": 2
+  },
+  "iluikatl": {
+   "zoom": 1.15,
+   "caras": 2
+  },
+  "orbital": {
+   "zoom": 1.15,
+   "caras": 2
+  },
+  "propulsion": {
+   "zoom": 1.15,
+   "caras": 2
+  }
+ },
+ "gancho": {
+  "top": 330,
+  "elementos": [
+   {
+    "tipo": "texto",
+    "texto": "¿CUÁNTO HAN",
+    "fuente": "Anton",
+    "size": 150,
+    "contorno": 0,
+    "anim": "slide",
+    "align": "left",
+    "en": "intro:cuánto"
+   },
+   {
+    "tipo": "texto",
+    "texto": "INVERTIDO",
+    "fuente": "Anton",
+    "size": 190,
+    "color": "#FFD60A",
+    "contorno": 0,
+    "anim": "pop",
+    "en": "intro:invertido"
+   },
+   {
+    "tipo": "texto",
+    "texto": "EN SU PROYECTO?",
+    "fuente": "Montserrat",
+    "peso": 900,
+    "italic": true,
+    "size": 84,
+    "contorno": 0,
+    "anim": "rise",
+    "align": "right",
+    "en": "intro:su"
+   },
+   {
+    "tipo": "pildora",
+    "texto": "PARTE 2",
+    "bg": "#FFD60A",
+    "color": "#111",
+    "size": 40,
+    "en": "intro:proyecto?",
+    "mt": 30
+   }
+  ],
+  "dur": 8.55
+ },
+ "montos": [
+  {
+   "en": "laika:110",
+   "dur": 2.6,
+   "texto": "$110K - $130K",
+   "sub": "MXN"
+  },
+  {
+   "en": "iluikatl:150",
+   "dur": 2.6,
+   "texto": "$150K - $180K",
+   "sub": "MXN"
+  },
+  {
+   "en": "orbital:150",
+   "dur": 2.6,
+   "texto": "$150K - $200K",
+   "sub": "MXN"
+  },
+  {
+   "en": "propulsion:300",
+   "dur": 2.8,
+   "texto": "$300,000",
+   "sub": "MXN",
+   "size": 210
+  }
+ ],
+ "etiquetas": [
+  {
+   "en": "iluikatl:recarga",
+   "dur": 2.6,
+   "texto": "~12K POR RECARGA DE NITROSO"
+  },
+  {
+   "en": "iluikatl:fibra",
+   "dur": 3.0,
+   "texto": "FIBRA DE CARBONO: ~20K"
+  },
+  {
+   "en": "propulsion:patrocinadores,",
+   "dur": 2.6,
+   "texto": "SIN CONTAR PATROCINADORES"
+  }
+ ],
+ "emojis": [
+  {
+   "en": "laika:Brasil,",
+   "dur": 1.8,
+   "emoji": "🇧🇷"
+  }
+ ],
+ "imagenes": [
+  {
+   "en": "laika:Nosotros#1",
+   "dur": 3.6,
+   "src": "perfiles/laika.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": {
+    "palabra": "Nosotros",
+    "sec": "iluikatl",
+    "offset": -1.0
+   },
+   "dur": 1.93,
+   "src": "perfiles/iluikatl.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": "orbital:Nosotros",
+   "dur": 2.0,
+   "src": "perfiles/orbital.jpg",
+   "pos": "centro",
+   "ancho": 880
+  },
+  {
+   "en": "propulsion:nosotros",
+   "dur": 3.47,
+   "src": "perfiles/propulsion.jpg",
+   "pos": "centro",
+   "ancho": 880
+  }
+ ],
+ "broll": [
+  {
+   "en": "iluikatl:oxidante,",
+   "dur": 2.6,
+   "src": "broll/iluikatl.mp4"
+  },
+  {
+   "en": "propulsion:Sierra",
+   "dur": 1.6,
+   "src": "broll/prop_cohete.mp4"
+  },
+  {
+   "en": "propulsion:entonces",
+   "dur": 1.6,
+   "src": "broll/prop_teddy.mp4"
+  }
+ ],
+ "sfx": [
+  {
+   "en": "laika:110",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "iluikatl:150",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "orbital:150",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.3
+  },
+  {
+   "en": "propulsion:300",
+   "offset": -0.05,
+   "sfx": "impact",
+   "vol": 0.3
+  },
+  {
+   "en": "propulsion:300",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.35
+  },
+  {
+   "en": 0.1,
+   "sfx": "whoosh",
+   "vol": 0.35
+  },
+  {
+   "en": "teddy:Semana",
+   "offset": -0.1,
+   "sfx": "pop",
+   "vol": 0.3
+  },
+  {
+   "en": "intro:cuánto",
+   "offset": -0.85,
+   "sfx": "riser",
+   "vol": 0.3,
+   "dur": 0.8
+  },
+  {
+   "en": "intro:cuánto",
+   "offset": -0.1,
+   "sfx": "whoosh",
+   "vol": 0.4
+  },
+  {
+   "en": "teddy:Espacio",
+   "offset": -0.1,
+   "sfx": "impact",
+   "vol": 0.22
+  },
+  {
+   "en": "teddy:dinero",
+   "offset": -0.05,
+   "sfx": "cash",
+   "vol": 0.55
+  },
+  {
+   "en": "teddy:dinero",
+   "offset": 0.05,
+   "sfx": "coin",
+   "vol": 0.4
+  },
+  {
+   "en": "teddy:dinero",
+   "offset": 0.3,
+   "sfx": "coin",
+   "vol": 0.3
+  }
+ ],
+ "intro_espacio": {
+  "sec": "teddy",
+  "titulo": [
+   "SEMANA MUNDIAL",
+   "DEL ESPACIO"
+  ],
+  "hud": "ROCKET REVOLUTION",
+  "en": [
+   "teddy:Semana",
+   "teddy:Espacio",
+   "teddy:Vamos"
+  ],
+  "monedas": "teddy:dinero"
+ }
+}

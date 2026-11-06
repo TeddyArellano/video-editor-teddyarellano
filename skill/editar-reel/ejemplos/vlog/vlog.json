@@ -1,0 +1,333 @@
+{
+ "montaje": [
+  [
+   "IMG_9664",
+   12.6,
+   "P0"
+  ],
+  [
+   "IMG_9677",
+   4.4,
+   "P1"
+  ],
+  [
+   "IMG_9656",
+   2.4,
+   "P1+1.9"
+  ],
+  [
+   "IMG_9655",
+   0.3,
+   "P2"
+  ],
+  [
+   "IMG_9657",
+   0.5,
+   "P3"
+  ],
+  [
+   "IMG_9663",
+   20.0,
+   "P4"
+  ],
+  [
+   "IMG_9668",
+   1.5,
+   "P5+3.4"
+  ],
+  [
+   "IMG_9670",
+   1.1,
+   "P6"
+  ],
+  [
+   "IMG_9676",
+   1.0,
+   "P6+2.65"
+  ],
+  [
+   "IMG_9666",
+   9.0,
+   "P7"
+  ],
+  [
+   "IMG_9665",
+   39.0,
+   "P8"
+  ],
+  [
+   "IMG_9658",
+   36.0,
+   "P9"
+  ],
+  [
+   "IMG_9667",
+   2.4,
+   "P9+2.6"
+  ],
+  [
+   "IMG_9685",
+   21.0,
+   "P10"
+  ],
+  [
+   "IMG_9687",
+   3.4,
+   "P10+2.03"
+  ],
+  [
+   "IMG_9686",
+   4.8,
+   "P11"
+  ],
+  [
+   "IMG_9659",
+   84.0,
+   "P12"
+  ],
+  [
+   "IMG_9685",
+   7.0,
+   "P13"
+  ],
+  [
+   "IMG_9685",
+   22.4,
+   "P14"
+  ],
+  [
+   "IMG_9679",
+   9.0,
+   "P15"
+  ],
+  [
+   "IMG_9677",
+   14.6,
+   "P16"
+  ],
+  [
+   "IMG_9685",
+   29.4,
+   "P16+2.17"
+  ]
+ ],
+ "palabras_extra": [
+  {
+   "texto": "donde",
+   "t": 65.75,
+   "fin": 66.08
+  },
+  {
+   "texto": "les",
+   "t": 66.08,
+   "fin": 66.27
+  },
+  {
+   "texto": "compartí",
+   "t": 66.27,
+   "fin": 66.5
+  },
+  {
+   "texto": "escuela.",
+   "t": 27.2,
+   "fin": 27.35
+  },
+  {
+   "texto": "mundo.",
+   "t": 38.42,
+   "fin": 38.55
+  }
+ ],
+ "gancho": {
+  "variante": "limpio",
+  "lead": 3,
+  "escenas": [
+   {
+    "top": 930,
+    "lineas": [
+     {
+      "t": "ESTA",
+      "en": 0,
+      "rol": "chico",
+      "color": "key",
+      "desde": "izq",
+      "size": 130
+     },
+     {
+      "t": "COMUNIDAD",
+      "en": 0.1,
+      "rol": "grande"
+     },
+     {
+      "t": "ESTUDIANTIL",
+      "en": "gancho:estudiantil",
+      "rol": "acento",
+      "color": "acc",
+      "desde": "der",
+      "rot": -5,
+      "mt": -18,
+      "size": 130
+     }
+    ]
+   },
+   {
+    "top": 930,
+    "lineas": [
+     {
+      "t": "ESTUVO",
+      "en": "gancho:estuvo",
+      "rol": "chico",
+      "desde": "arriba",
+      "size": 150
+     },
+     {
+      "t": "INACTIVA",
+      "en": "gancho:inactiva",
+      "rol": "grande",
+      "color": "acc",
+      "sombra": "sh2"
+     },
+     {
+      "t": "POR...",
+      "en": "gancho:por",
+      "rol": "chico",
+      "color": "key",
+      "desde": "izq",
+      "rot": -6,
+      "mt": 4,
+      "size": 162
+     }
+    ]
+   },
+   {
+    "top": 780,
+    "lineas": [
+     {
+      "t": "15",
+      "en": "gancho:15",
+      "rol": "numero",
+      "color": "key",
+      "mt": -40
+     },
+     {
+      "t": "AÑOS",
+      "en": "gancho:años",
+      "rol": "medio",
+      "desde": "der",
+      "rot": -4,
+      "mt": -130,
+      "sombra": "sh2"
+     }
+    ]
+   },
+   {
+    "top": 900,
+    "lineas": [
+     {
+      "t": "y por fin...",
+      "en": "gancho:y",
+      "rol": "script",
+      "desde": "arriba"
+     },
+     {
+      "t": "¡REAC",
+      "en": "gancho:reactivando",
+      "rol": "grande",
+      "color": "key",
+      "mt": 6
+     },
+     {
+      "t": "TIVADA!",
+      "en": "gancho:reactivando+0.07",
+      "rol": "grande",
+      "color": "key"
+     }
+    ]
+   }
+  ],
+  "zooms": [
+   0,
+   "gancho:estuvo",
+   "gancho:inactiva",
+   "gancho:15",
+   "gancho:y",
+   "gancho:reactivando"
+  ],
+  "golpes": [
+   {
+    "en": 0,
+    "flash": 0.45
+   },
+   {
+    "en": "gancho:15",
+    "flash": 0.55,
+    "sacudida": 26
+   },
+   {
+    "en": "gancho:reactivando",
+    "flash": 0.95,
+    "sacudida": 18
+   }
+  ],
+  "particulas": "gancho:reactivando",
+  "franja": {
+   "t": "IEEE ESCOM",
+   "en": "gancho:reactivando+0.17"
+  }
+ },
+ "fotos": [
+  {
+   "desde": "ieee:fin",
+   "hasta": "charla:Tuve-0.1",
+   "fotos": [
+    "f16",
+    "f22"
+   ]
+  },
+  {
+   "desde": "evento:Además-0.05",
+   "hasta": "evento:con+0.15",
+   "fotos": [
+    "f06",
+    "f09",
+    "f14"
+   ]
+  },
+  {
+   "desde": "cierre:Son",
+   "hasta": "cierre:Espero-0.05",
+   "fotos": [
+    "f10",
+    "f02",
+    "f18"
+   ]
+  },
+  {
+   "desde": "cierre:verlos",
+   "hasta": "cierre:Sigan#1-0.05",
+   "fotos": [
+    "f07",
+    "f11",
+    "f21"
+   ]
+  }
+ ],
+ "bn": [
+  {
+   "desde": "que:y",
+   "hasta": "ieee:IEEE"
+  }
+ ],
+ "globo": {
+  "desde": "ieee:comunidad",
+  "arcos": "ieee:mundo",
+  "pines": "ieee:presencia",
+  "birretes": "ieee:universidades",
+  "hasta": "ieee:y#1",
+  "origen": [
+   -99.1,
+   19.4
+  ],
+  "centro": -115
+ }
+}

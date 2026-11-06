@@ -1,0 +1,11 @@
+{"piezas": [
+ {"src": "IMG_2056", "de": 17, "a": 38, "sec": "simple", "quitar": [30,31,32,33,34]},
+ {"src": "IMG_2047", "de": 114, "a": 149, "sec": "notion", "quitar": [123]},
+ {"src": "IMG_2048", "de": 69, "a": 92, "sec": "notion", "quitar": [70, 80]},
+ {"src": "IMG_2044", "de": 0, "a": 36, "sec": "terminal"},
+ {"src": "IMG_2045", "de": 0, "a": 27, "sec": "notas"},
+ {"src": "IMG_2042", "de": 1, "a": 40, "sec": "vlogs", "quitar": [10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,32,33]},
+ {"src": "IMG_2058", "de": 10, "a": 44, "sec": "guiones", "quitar": [24,25,26]},
+ {"src": "IMG_2056", "de": 39, "a": 47, "sec": "cierre"},
+ {"src": "IMG_2056", "de": 57, "a": 63, "sec": "cierre"}
+]}

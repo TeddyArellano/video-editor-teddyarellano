@@ -1,0 +1,191 @@
+{
+ "fix": {
+  "IEEE-ESCOM.": "IEEE ESCOM."
+ },
+ "resaltar": [
+  "IEEE",
+  "ESCOM",
+  "IEEE?",
+  "ESCOM.",
+  "15",
+  "años",
+  "reactivando",
+  "Teddy",
+  "escuela",
+  "Notion",
+  "Women",
+  "Engineering",
+  "GitHub",
+  "speaker",
+  "principal",
+  "comunidades",
+  "increíble"
+ ],
+ "secciones": {
+  "gancho": {
+   "zoom": 1.3,
+   "caras": 1
+  },
+  "intro": {
+   "zoom": 1.12,
+   "caras": 1
+  },
+  "que": {
+   "zoom": 1.0
+  },
+  "ieee": {
+   "zoom": 1.0
+  },
+  "charla": {
+   "zoom": 1.0
+  },
+  "evento": {
+   "zoom": 1.0
+  },
+  "cierre": {
+   "zoom": 1.0
+  }
+ },
+ "gancho": {
+  "dur": 5.3,
+  "elementos": [],
+  "sfx": [
+   {
+    "f": 3,
+    "sfx": "whoosh",
+    "vol": 0.18
+   },
+   {
+    "f": 25,
+    "sfx": "pop",
+    "vol": 0.28
+   },
+   {
+    "f": 109,
+    "sfx": "riser",
+    "vol": 0.22
+   },
+   {
+    "f": 141,
+    "sfx": "impact",
+    "vol": 0.42
+   },
+   {
+    "f": 143,
+    "sfx": "ding",
+    "vol": 0.22
+   }
+  ]
+ },
+ "nombres": [],
+ "emojis": [
+  {
+   "en": "que:formato",
+   "dur": 1.9,
+   "emoji": "❌",
+   "texto": "NO ES EL FORMATO DE CITAS"
+  }
+ ],
+ "imagenes": [
+  {
+   "en": "ieee:IEEE",
+   "dur": 3.8,
+   "src": "logos/ieee.png",
+   "pos": "arriba",
+   "ancho": 560,
+   "tarjeta": false
+  },
+  {
+   "en": "Notion",
+   "hasta": "Women",
+   "src": "perfiles/notion.jpg",
+   "pos": "centro",
+   "ancho": 860,
+   "tarjeta": false
+  },
+  {
+   "en": "Women",
+   "hasta": "GitHub",
+   "src": "perfiles/wie.jpg",
+   "pos": "centro",
+   "ancho": 860,
+   "tarjeta": false
+  },
+  {
+   "en": "GitHub",
+   "dur": 1.5,
+   "src": "perfiles/github.jpg",
+   "pos": "centro",
+   "ancho": 860,
+   "tarjeta": false
+  },
+  {
+   "en": "cierre:etiquetado",
+   "hasta": "cierre:Son",
+   "src": "perfiles/ieee.jpg",
+   "pos": "centro",
+   "ancho": 860,
+   "tarjeta": false
+  }
+ ],
+ "etiquetas": [
+  {
+   "en": "charla:charla",
+   "dur": 3.6,
+   "texto": "LA IMPORTANCIA DE FORMAR PARTE DE COMUNIDADES",
+   "color": "#5C67D9"
+  }
+ ],
+ "zooms": [
+  {
+   "en": "speaker",
+   "offset": -0.2,
+   "hasta": "charla:Les",
+   "cx": 0.5,
+   "cy": 0.4,
+   "z": 1.3
+  }
+ ],
+ "sfx": [
+  {
+   "en": "que:y",
+   "offset": 0.05,
+   "sfx": "scratch",
+   "vol": 0.3,
+   "dur": 1.0
+  },
+  {
+   "en": "principal",
+   "offset": 0.5,
+   "sfx": "ding",
+   "vol": 0.25
+  },
+  {
+   "en": "cierre:vemos",
+   "offset": 0.45,
+   "sfx": "pop",
+   "vol": 0.25
+  },
+  {
+   "en": "gancho:estuvo",
+   "offset": -0.15,
+   "sfx": "tension_reloj",
+   "vol": 0.32,
+   "dur": 1.3
+  },
+  {
+   "en": "gancho:15",
+   "offset": -0.65,
+   "sfx": "succion",
+   "vol": 0.32,
+   "dur": 0.55
+  },
+  {
+   "en": "gancho:15",
+   "offset": -0.1,
+   "sfx": "braam",
+   "vol": 0.55,
+   "dur": 1.9
+  }
+ ]
+}

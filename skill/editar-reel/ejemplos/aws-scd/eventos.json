@@ -1,0 +1,274 @@
+{
+ "fix": {
+  "Batis": "Bátiz",
+  "hackathon": "hackatón",
+  "CVs": "CVs"
+ },
+ "resaltar": [],
+ "secciones": {
+  "intro": {
+   "zoom": 1.25,
+   "caras": 1
+  },
+  "evento": {
+   "zoom": 1.25,
+   "caras": 1
+  },
+  "niveles": {
+   "zoom": 1.25,
+   "caras": 1
+  },
+  "actividades": {
+   "zoom": 1.25,
+   "caras": 1
+  },
+  "gratis": {
+   "zoom": 1.25,
+   "caras": 1
+  },
+  "fecha": {
+   "zoom": 1.25,
+   "caras": 1
+  },
+  "cierre": {
+   "zoom": 1.25,
+   "caras": 1
+  }
+ },
+ "sfx": [
+  {
+   "en": "intro:Amazon",
+   "sfx": "pop",
+   "vol": 0.25,
+   "offset": -0.1
+  },
+  {
+   "en": "intro:llega",
+   "sfx": "pop",
+   "vol": 0.25,
+   "offset": -0.1
+  },
+  {
+   "en": "intro:ciudad",
+   "sfx": "impact",
+   "vol": 0.3,
+   "offset": -0.12
+  },
+  {
+   "en": "intro:ciudad",
+   "sfx": "whoosh2",
+   "vol": 0.22,
+   "offset": -0.05
+  },
+  {
+   "en": "intro:ciudad",
+   "sfx": "glitch",
+   "vol": 0.4,
+   "offset": 0.07
+  },
+  {
+   "en": "evento:Hablo",
+   "sfx": "whoosh",
+   "vol": 0.22,
+   "offset": -0.1
+  },
+  {
+   "en": "evento:Hablo",
+   "sfx": "pop",
+   "vol": 0.22,
+   "offset": 0.15
+  },
+  {
+   "en": "evento:AWS",
+   "sfx": "whoosh2",
+   "vol": 0.2,
+   "offset": 0
+  },
+  {
+   "en": "niveles:domines",
+   "sfx": "pop",
+   "vol": 0.25,
+   "offset": -0.1
+  },
+  {
+   "en": "niveles:Build",
+   "sfx": "whoosh",
+   "vol": 0.22,
+   "offset": -0.1
+  },
+  {
+   "en": "niveles:Build",
+   "sfx": "pop",
+   "vol": 0.22,
+   "offset": 0.15
+  },
+  {
+   "en": "niveles:hackatón",
+   "sfx": "whoosh",
+   "vol": 0.22,
+   "offset": -0.1
+  },
+  {
+   "en": "niveles:hackatón",
+   "sfx": "pop",
+   "vol": 0.22,
+   "offset": 0.15
+  },
+  {
+   "en": "actividades:fotos",
+   "sfx": "whoosh2",
+   "vol": 0.18,
+   "offset": 0
+  },
+  {
+   "en": "gratis:gratuito",
+   "sfx": "impact",
+   "vol": 0.4,
+   "offset": -0.33
+  },
+  {
+   "en": "gratis:gratuito",
+   "sfx": "ding",
+   "vol": 0.25,
+   "offset": -0.2
+  },
+  {
+   "en": "fecha:4",
+   "sfx": "whoosh",
+   "vol": 0.22,
+   "offset": -0.1
+  },
+  {
+   "en": "fecha:4",
+   "sfx": "pop",
+   "vol": 0.22,
+   "offset": 0.15
+  },
+  {
+   "en": "fecha:noviembre",
+   "sfx": "whoosh",
+   "vol": 0.2,
+   "offset": -0.1
+  },
+  {
+   "en": "fecha:noviembre",
+   "sfx": "pop",
+   "vol": 0.2,
+   "offset": 0.15
+  },
+  {
+   "en": "fecha:mítico",
+   "sfx": "whoosh",
+   "vol": 0.25,
+   "offset": -0.13
+  },
+  {
+   "en": "fecha:mítico",
+   "sfx": "pop",
+   "vol": 0.22,
+   "offset": 0.12
+  },
+  {
+   "en": "cierre:Nos",
+   "sfx": "whoosh",
+   "vol": 0.2,
+   "offset": -0.1
+  },
+  {
+   "en": "cierre:Nos",
+   "sfx": "pop",
+   "vol": 0.2,
+   "offset": 0.15
+  },
+  {
+   "en": 32.2,
+   "sfx": "whoosh",
+   "vol": 0.28
+  },
+  {
+   "en": 32.233,
+   "sfx": "shutter",
+   "vol": 0.3
+  },
+  {
+   "en": 37.2,
+   "sfx": "whoosh",
+   "vol": 0.25
+  },
+  {
+   "en": 37.4,
+   "sfx": "pop",
+   "vol": 0.25
+  },
+  {
+   "en": 38.933,
+   "sfx": "tecla1",
+   "vol": 0.5
+  },
+  {
+   "en": 39.0,
+   "sfx": "tecla3",
+   "vol": 0.32
+  },
+  {
+   "en": 39.1,
+   "sfx": "tecla2",
+   "vol": 0.5
+  },
+  {
+   "en": 39.167,
+   "sfx": "tecla4",
+   "vol": 0.32
+  },
+  {
+   "en": 39.267,
+   "sfx": "tecla3",
+   "vol": 0.5
+  },
+  {
+   "en": 39.333,
+   "sfx": "tecla1",
+   "vol": 0.32
+  },
+  {
+   "en": 39.4,
+   "sfx": "tecla4",
+   "vol": 0.5
+  },
+  {
+   "en": 39.467,
+   "sfx": "tecla2",
+   "vol": 0.32
+  },
+  {
+   "en": 39.567,
+   "sfx": "tecla1",
+   "vol": 0.5
+  },
+  {
+   "en": 39.633,
+   "sfx": "tecla3",
+   "vol": 0.32
+  },
+  {
+   "en": 39.733,
+   "sfx": "tecla2",
+   "vol": 0.5
+  },
+  {
+   "en": 39.8,
+   "sfx": "tecla4",
+   "vol": 0.32
+  },
+  {
+   "en": 39.867,
+   "sfx": "tecla_enter",
+   "vol": 0.6
+  },
+  {
+   "en": 39.9,
+   "sfx": "pop",
+   "vol": 0.22
+  }
+ ]
+}

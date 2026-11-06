@@ -57,6 +57,37 @@ Para agregar otra fuente: impórtala en `src/theme.ts → FONTS` del proyecto (o
 - **Música original** (`synth_musica.py`) ~13 LU debajo de la voz, con drop y golpe final.
 - Si el creador tropieza ("no se pi… no te pierdas"), se recorta y queda solo la versión limpia.
 
+## referencia: "AWS Student Community Day CDMX 2026" (estilo copiado de un video)
+Ejemplo y código en `ejemplos/aws-scd/`. Base `unboxing` + componentes propios (`RefEstilo.tsx`).
+- **Fuentes y colores:** Bungee para lo grande (stickers, franja, GRATIS, REGÍSTRATE) y Montserrat 800 para los subtítulos. Colores del kit de marca: naranja + navy.
+- **Gancho (~2 s):**
+  - stickers inclinados palabra por palabra ("AMAZON" −11°, "LLEGA" +13°);
+  - franja naranja con "A CDMX";
+  - logo AWS blanco con glitch + SFX `glitch`;
+  - el Ángel saliendo detrás de la persona.
+- **Subtítulos:** minúsculas, frase completa de golpe (`"bloque": true`), 52 px, sombra suave, top 1150 (pecho). Se ocultan durante el comentario.
+- **Logos:** grandes y arriba, asomando sobre la cabeza (logo del evento, LinkedIn, IPN detrás). Al final va AWS, no Amazon.
+- **"GRATIS" gigante:** Bungee 150 con degradado, relieve, brillo, golpe, destello y chispas.
+- **Pegatinas de marca detrás de la persona,** en diagonal 45°/135°, simétricas y con SFX: xolos, pan de muerto, café, nube pixel.
+- **Foto del lugar** a pantalla completa al nombrarlo.
+- **Cierre:**
+  - QR de registro arriba (el creador señala hacia arriba), que se va en "o comenta";
+  - caja de comentario escribiendo "AMAZON" con teclado mecánico y enter.
+
+## vlog: "IEEE ESCOM Vlog" (voz en off + clips)
+- **Flujo propio:** `referencia/vlog.md` (`scripts/vlog.py preparar | montaje | datos`); ejemplo en `ejemplos/vlog/`.
+- **Gancho cinético** (`GanchoCinetico.tsx`, configurado en `edicion/vlog.json`):
+  - 3–4 escenas palabra por palabra, entradas de 3 cuadros al ritmo de la voz, golpes de zoom de cámara, sacudida + destello en la palabra fuerte, confeti y franja final;
+  - paleta **limpio** (blanco + #FFD60A, Anton + Montserrat 900 itálica); otras disponibles: neon, electrico, calido.
+- **Subtítulos:** Montserrat 900, palabras clave en amarillo #FFD60A. **Etiquetas:** trazo de marcador periwinkle.
+- **Apoyos:**
+  - fotos del evento en ráfaga (< 1 s, sin marco);
+  - capturas de perfiles de Instagram al nombrar a cada comunidad;
+  - logos sin tarjeta;
+  - globo terráqueo animado;
+  - B/N cómico puntual.
+- **SFX:** tensión en la cifra del gancho (`tension_reloj` → `succion` → `braam`), `riser` → `impact` + `ding` en el remate, `scratch` en el chiste, obturador en las fotos.
+
 ## Crear un estilo nuevo
 1. Copia el estilo más parecido: `estilos/<nuevo>.json` y `estilos/<nuevo>.eventos.json`.
 2. Ajusta los `colores` (acento = palabras clave; a/b = personas o secciones; pildora = etiquetas), los `subtitulos` (fuente, tamaño, top 1120–1190), la `camara` (empuje, zoom_objeto) y los `sfx_auto`.

@@ -1,0 +1,139 @@
+{
+ "piezas": [
+  {
+   "src": "IMG_0837",
+   "de": 0,
+   "a": 9,
+   "sec": "teddy",
+   "gain_db": -2.0
+  },
+  {
+   "src": "IMG_0837",
+   "de": 32,
+   "a": 43,
+   "sec": "teddy",
+   "gain_db": -2.0
+  },
+  {
+   "src": "IMG_0811",
+   "de": 0,
+   "a": 5,
+   "sec": "intro",
+   "gain_db": -2.0
+  },
+  {
+   "src": "IMG_0826",
+   "de": 7,
+   "a": 21,
+   "sec": "propulsion",
+   "quitar": [
+    10,
+    11
+   ],
+   "gain_db": 2.0
+  },
+  {
+   "src": "IMG_0826",
+   "de": 22,
+   "a": 26,
+   "sec": "propulsion",
+   "gain_db": 2.0
+  },
+  {
+   "src": "IMG_0826",
+   "de": 42,
+   "a": 47,
+   "sec": "propulsion",
+   "gain_db": 2.0
+  },
+  {
+   "src": "IMG_0826",
+   "de": 94,
+   "a": 106,
+   "sec": "propulsion",
+   "gain_db": 2.0
+  },
+  {
+   "src": "IMG_0818",
+   "de": 8,
+   "a": 38,
+   "sec": "laika"
+  },
+  {
+   "src": "IMG_0818",
+   "de": 43,
+   "a": 53,
+   "sec": "laika"
+  },
+  {
+   "src": "IMG_0818",
+   "de": 79,
+   "a": 83,
+   "sec": "laika"
+  },
+  {
+   "src": "IMG_0818",
+   "de": 91,
+   "a": 96,
+   "sec": "laika"
+  },
+  {
+   "src": "IMG_0823",
+   "de": 8,
+   "a": 13,
+   "sec": "iluikatl"
+  },
+  {
+   "src": "IMG_0823",
+   "de": 15,
+   "a": 28,
+   "sec": "iluikatl"
+  },
+  {
+   "src": "IMG_0823",
+   "de": 77,
+   "a": 92,
+   "sec": "iluikatl",
+   "quitar": [
+    79,
+    80,
+    81,
+    88,
+    89
+   ]
+  },
+  {
+   "src": "IMG_0823",
+   "de": 174,
+   "a": 189,
+   "sec": "iluikatl"
+  },
+  {
+   "src": "IMG_0823",
+   "de": 208,
+   "a": 210,
+   "sec": "iluikatl"
+  },
+  {
+   "src": "IMG_0799",
+   "de": 6,
+   "a": 14,
+   "sec": "orbital",
+   "gain_db": -3.0
+  },
+  {
+   "src": "IMG_0799",
+   "de": 26,
+   "a": 33,
+   "sec": "orbital",
+   "gain_db": -3.0
+  },
+  {
+   "src": "IMG_0799",
+   "de": 43,
+   "a": 47,
+   "sec": "orbital",
+   "gain_db": -3.0
+  }
+ ]
+}

@@ -2,13 +2,23 @@
   "name": "reel",
   "private": true,
   "type": "module",
-  "scripts": {"studio": "remotion studio src/index.ts", "render": "remotion render src/index.ts Reel out.mp4 --color-space=bt709"},
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Reel out.mp4 --color-space=bt709"
+  },
   "dependencies": {
     "@remotion/cli": "4.0.529",
     "@remotion/google-fonts": "4.0.529",
     "remotion": "4.0.529",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "@remotion/three": "4.0.529",
+    "three": "0.178.0",
+    "@react-three/fiber": "9.8.1"
   },
-  "devDependencies": {"@types/react": "19.2.2", "typescript": "5.9.3"}
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3",
+    "@types/three": "0.178.0"
+  }
 }

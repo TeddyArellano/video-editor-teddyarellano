@@ -1,0 +1,83 @@
+{
+ "piezas": [
+  {
+   "src": "VOZ",
+   "de": 0,
+   "a": 13,
+   "sec": "gancho"
+  },
+  {
+   "src": "VOZ",
+   "de": 14,
+   "a": 28,
+   "sec": "intro"
+  },
+  {
+   "src": "VOZ",
+   "de": 29,
+   "a": 32,
+   "sec": "que"
+  },
+  {
+   "src": "VOZ",
+   "de": 43,
+   "a": 57,
+   "sec": "que"
+  },
+  {
+   "src": "VOZ",
+   "de": 58,
+   "a": 76,
+   "sec": "ieee"
+  },
+  {
+   "src": "VOZ",
+   "de": 77,
+   "a": 89,
+   "sec": "ieee"
+  },
+  {
+   "src": "VOZ",
+   "de": 106,
+   "a": 128,
+   "sec": "charla"
+  },
+  {
+   "src": "VOZ",
+   "de": 132,
+   "a": 144,
+   "sec": "charla",
+   "mas_inicio": 0.95
+  },
+  {
+   "src": "VOZ",
+   "de": 145,
+   "a": 157,
+   "sec": "evento"
+  },
+  {
+   "src": "VOZ",
+   "de": 166,
+   "a": 167,
+   "sec": "evento"
+  },
+  {
+   "src": "VOZ",
+   "de": 168,
+   "a": 182,
+   "sec": "cierre"
+  },
+  {
+   "src": "VOZ",
+   "de": 200,
+   "a": 203,
+   "sec": "cierre"
+  },
+  {
+   "src": "VOZ",
+   "de": 214,
+   "a": 228,
+   "sec": "cierre"
+  }
+ ]
+}

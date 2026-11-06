@@ -11,7 +11,8 @@ let args = CommandLine.arguments
 let src = AVURLAsset(url: URL(fileURLWithPath: args[1]))
 let cropX = args.count > 3 ? (Double(args[3]) ?? 0.5) : 0.5
 let track = src.tracks(withMediaType: .video)[0]
-let OW = 1440.0, OH = 2560.0
+// REEL_SDR_W (opcional): ancho de salida; 2160 = SDR 4K para zooms fuertes. Por defecto 1440.
+let OW = Double(ProcessInfo.processInfo.environment["REEL_SDR_W"] ?? "1440") ?? 1440.0, OH = (OW * 16 / 9).rounded()
 let comp = AVMutableVideoComposition(propertiesOf: src)
 comp.renderSize = CGSize(width: OW, height: OH)
 comp.colorPrimaries = AVVideoColorPrimaries_ITU_R_709_2

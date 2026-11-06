@@ -1,0 +1,258 @@
+{
+ "fix": {},
+ "resaltar": [
+  "Google",
+  "LearnLM",
+  "NotebookLM",
+  "Workspace",
+  "Docs",
+  "Slides",
+  "Drive",
+  "IA",
+  "podcast",
+  "estudiante",
+  "tres",
+  "joya",
+  "tutor",
+  "cero"
+ ],
+ "secciones": {
+  "gancho": {
+   "zoom": 1.2,
+   "caras": 1
+  },
+  "problema": {
+   "zoom": 1.0
+  },
+  "intro": {
+   "zoom": 1.0
+  },
+  "learn": {
+   "zoom": 1.0
+  },
+  "notebook": {
+   "zoom": 1.0
+  },
+  "workspace": {
+   "zoom": 1.0
+  },
+  "cierre": {
+   "zoom": 1.1,
+   "caras": 1
+  },
+  "cta": {
+   "zoom": 1.05,
+   "caras": 1
+  }
+ },
+ "gancho": {
+  "dur": 5.0,
+  "elementos": [],
+  "sfx": []
+ },
+ "nombres": [],
+ "emojis": [],
+ "imagenes": [
+  {
+   "en": "workspace:Docs",
+   "hasta": "workspace:Slides",
+   "src": "logos/googledocs.png",
+   "pos": "arriba",
+   "ancho": 230,
+   "tarjeta": false
+  },
+  {
+   "en": "workspace:Slides",
+   "hasta": "workspace:pero",
+   "src": "logos/googleslides.png",
+   "pos": "arriba",
+   "ancho": 260,
+   "tarjeta": false
+  },
+  {
+   "en": "workspace:Google#1",
+   "hasta": "workspace:ensayo",
+   "src": "logos/googledocs.png",
+   "pos": "arriba",
+   "ancho": 230,
+   "tarjeta": false
+  },
+  {
+   "en": "workspace:Drive",
+   "dur": 1.3,
+   "src": "logos/googledrive.png",
+   "pos": "arriba",
+   "ancho": 270,
+   "tarjeta": false
+  },
+  {
+   "en": "intro:Google",
+   "dur": 1.8,
+   "src": "logos/google.png",
+   "pos": "arriba",
+   "ancho": 460,
+   "tarjeta": false
+  }
+ ],
+ "etiquetas": [],
+ "zooms": [],
+ "sfx": [
+  {
+   "en": "problema:copiar",
+   "offset": 0,
+   "sfx": "tecla1",
+   "vol": 0.45
+  },
+  {
+   "en": "problema:copiar",
+   "offset": 0.12,
+   "sfx": "tecla3",
+   "vol": 0.45
+  },
+  {
+   "en": "problema:pegar",
+   "offset": 0,
+   "sfx": "tecla2",
+   "vol": 0.45
+  },
+  {
+   "en": "problema:pegar",
+   "offset": 0.12,
+   "sfx": "tecla_enter",
+   "vol": 0.5
+  },
+  {
+   "en": "learn:Número",
+   "offset": -0.15,
+   "sfx": "whoosh",
+   "vol": 0.3
+  },
+  {
+   "en": "notebook:Número",
+   "offset": -0.15,
+   "sfx": "whoosh",
+   "vol": 0.3
+  },
+  {
+   "en": "workspace:Número",
+   "offset": -0.15,
+   "sfx": "whoosh",
+   "vol": 0.3
+  },
+  {
+   "en": "gancho:El",
+   "offset": 0.0,
+   "sfx": "whoosh",
+   "vol": 0.16
+  },
+  {
+   "en": "gancho:estudiar",
+   "offset": 0.0,
+   "sfx": "pop",
+   "vol": 0.22
+  },
+  {
+   "en": "cierre:vemos",
+   "offset": 0.3,
+   "sfx": "pop",
+   "vol": 0.22
+  },
+  {
+   "en": "learn:Número",
+   "offset": 0.25,
+   "sfx": "impact",
+   "vol": 0.3
+  },
+  {
+   "en": "notebook:Número",
+   "offset": 0.25,
+   "sfx": "impact",
+   "vol": 0.3
+  },
+  {
+   "en": "workspace:Número",
+   "offset": 0.25,
+   "sfx": "impact",
+   "vol": 0.3
+  },
+  {
+   "en": "workspace:Docs",
+   "offset": 0,
+   "sfx": "pop",
+   "vol": 0.2
+  },
+  {
+   "en": "workspace:Slides",
+   "offset": 0,
+   "sfx": "pop",
+   "vol": 0.2
+  },
+  {
+   "en": "workspace:Drive",
+   "offset": 0,
+   "sfx": "pop",
+   "vol": 0.2
+  },
+  {
+   "en": "intro:aprender",
+   "offset": 0.0,
+   "sfx": "pop",
+   "vol": 0.24
+  },
+  {
+   "en": "intro:destacar",
+   "offset": 0.0,
+   "sfx": "impact",
+   "vol": 0.3
+  },
+  {
+   "en": "intro:destacar",
+   "offset": 0.08,
+   "sfx": "ding",
+   "vol": 0.16
+  },
+  {
+   "en": "cta:Comenta",
+   "offset": -0.04,
+   "sfx": "teclear",
+   "vol": 0.5,
+   "dur": 1.6
+  }
+ ],
+ "enfasis": [
+  "cta:estudiante",
+  {
+   "en": "problema:pegar"
+  },
+  "intro:tres",
+  "intro:aprender",
+  "intro:destacar",
+  "learn:educación",
+  {
+   "en": "learn:personal",
+   "sfx": "whoosh2",
+   "vol": 0.12
+  },
+  "learn:porqué",
+  "learn:tarea",
+  {
+   "en": "notebook:joya",
+   "sfx": "ding",
+   "vol": 0.14
+  },
+  "notebook:inteligente",
+  {
+   "en": "notebook:podcast",
+   "sfx": "whoosh2",
+   "vol": 0.12
+  },
+  "notebook:inventada",
+  "workspace:integrada",
+  {
+   "en": "workspace:segundos",
+   "sfx": "whoosh2",
+   "vol": 0.12
+  },
+  "workspace:ti"
+ ]
+}

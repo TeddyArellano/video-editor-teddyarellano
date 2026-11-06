@@ -23,6 +23,7 @@ Comandos (en orden de uso):
   cuadricula -p P t1 t2 …         cuadros con cuadrícula 0.1 para centrar a mano
   recorte -p P [--frames 120]     recortes de la persona para gancho "detrás" → public/hookfg/
   revisar -p P f1 f2 …            stills de Remotion con zona segura y centro → edicion/revision/
+  enfasis -p P [--umbral 0.55]   SUGERENCIAS: palabras con énfasis en la voz (volumen/tono/duración) → eventos.enfasis
   render -p P [--borrador] [--nota "..."] [--salida x.mp4]   borrador rápido o final verificado (con versiones)
   extras -p P [--frame N]         subtítulos .srt + portada .jpg junto al video
   revision -p P [--video-url U --artifact A]   página de revisión con notas por código de tiempo
@@ -52,6 +53,8 @@ BIN = TK / 'bin'
 MODEL = TK / 'models' / 'ggml-large-v3-turbo.bin'
 NODE_MODULES = TK / 'remotion' / 'node_modules'
 FPS, SR, W, H = 30, 48000, 1080, 1920
+CUT_W = int(os.environ.get('REEL_CUT_W', '1440'))  # ancho del corte (cut.mp4); 2160 = corte 4K para zooms fuertes sin pixelarse
+CUT_H = CUT_W * 16 // 9
 VIDEO_EXT = {'.mov', '.mp4', '.m4v'}
 IMG_EXT = {'.heic', '.jpg', '.jpeg', '.png'}
 
@@ -124,7 +127,17 @@ class Proyecto:
         sys.exit(f"✗ no encuentro el clip {stem} en {self.fuentes}")
 
     def sdr(self, stem):
-        return self.cache / 'sdr' / f'{stem}.mp4'
+        """SDR del clip: el de la caché del proyecto (proyectos viejos) o el global, compartido por todos los proyectos
+        que usan el mismo archivo fuente (así `dividir` o una copia del proyecto nunca caen al HDR crudo, que se ve gris)."""
+        own = self.cache / 'sdr' / f'{stem}.mp4'
+        if own.exists() and own.stat().st_size > 0:
+            return own
+        return self.sdr_global(stem)
+
+    def sdr_global(self, stem):
+        src = next((f for f in self.fuentes.iterdir() if f.stem == stem and f.suffix.lower() in VIDEO_EXT), None)
+        key = hashlib.md5(str(src.resolve() if src else self.fuentes / stem).encode()).hexdigest()[:12]
+        return TK / 'cache' / 'sdr_global' / f'{stem}_{key}.mp4'
 
     def palabras(self, stem):
         return jload(self.ed / 'palabras' / f'{stem}.json')
@@ -338,12 +351,12 @@ def cmd_sdr(a):
     pr = Proyecto(a.proyecto)
     inv = jload(pr.ed / 'inventario.json')['videos']
     clips = a.clips or [x['clip'] for x in inv if x['hdr']]
-    (pr.cache / 'sdr').mkdir(exist_ok=True)
+    (TK / 'cache' / 'sdr_global').mkdir(parents=True, exist_ok=True)
 
     def one(stem):
-        out = pr.sdr(stem)
-        if out.exists() and out.stat().st_size > 0:
+        if pr.sdr(stem).exists() and pr.sdr(stem).stat().st_size > 0:
             return f"{stem}: ya estaba"
+        out = pr.sdr_global(stem)
         r = subprocess.run([BIN / 'hdr_a_sdr', pr.fuente(stem), out, str(pr.recorte_x(stem))], capture_output=True, text=True)
         return f"{stem}: {r.stdout.strip() or r.stderr.strip()}"
 
@@ -566,8 +579,9 @@ def cmd_edl(a):
 
 # ---------------------------------------------------------------- cortar (master sincronizado + tighten)
 def piece_files(pr, p):
+    # la clave incluye si hay SDR: si no, un tramo armado con el HDR original se reusaría aunque luego se corra `reel sdr` (se veía gris)
     key = hashlib.md5(json.dumps(['v2', p['src'], p['in'], p['out'], p['speed'], p.get('gain_db', 0), p['frames'],
-                                  pr.cfg.get('audio_externo', {}).get(p['src']), pr.recorte_x(p['src'])]).encode()).hexdigest()[:12]
+                                  pr.cfg.get('audio_externo', {}).get(p['src']), pr.recorte_x(p['src']), pr.sdr(p['src']).exists()] + ([CUT_W] if CUT_W != 1440 else [])).encode()).hexdigest()[:12]
     d = pr.cache / 'seg'
     d.mkdir(exist_ok=True)
     return d / f'{key}.mp4', d / f'{key}.wav'
@@ -584,13 +598,13 @@ def build_piece(pr, p):
             vin, vf = sdr, f"setpts=PTS/{sp},fps={FPS}"
         else:
             rx = pr.recorte_x(p['src'])
-            vin, vf = pr.fuente(p['src']), (f"setpts=PTS/{sp},fps={FPS},scale=1440:2560:force_original_aspect_ratio=increase:flags=lanczos,"
-                                            f"crop=1440:2560:x='min(max(0,iw*{rx}-720),iw-1440)'")
+            vin, vf = pr.fuente(p['src']), (f"setpts=PTS/{sp},fps={FPS},scale={CUT_W}:{CUT_H}:force_original_aspect_ratio=increase:flags=lanczos,"
+                                            f"crop={CUT_W}:{CUT_H}:x='min(max(0,iw*{rx}-{CUT_W // 2}),iw-{CUT_W})'")
         ff('-ss', p['in'], '-t', src_d + 0.2, '-i', vin, '-frames:v', n, '-an', '-vf', vf, '-c:v', 'libx264', '-preset', 'medium',
            '-crf', '16', '-pix_fmt', 'yuv420p', '-g', '15', *tags, vo)
     if not ao.exists():
         # aresample PRIMERO: atrim cuenta muestras a la frecuencia de entrada (fuentes a 44.1/22 kHz se desincronizaban)
-        af = f"aresample={SR}," + (f"atempo={sp}," if sp != 1 else "") + (f"volume={p['gain_db']}dB," if p.get('gain_db') else "")
+        af = f"aresample={SR}," + (f"atempo={sp}," if sp != 1 else "") + (f"volume={p['gain_db']}dB,alimiter=limit=0.95:attack=1:release=60:level=disabled," if p.get('gain_db') else "")
         aud, off = pr.audio(p['src'])
         ff('-ss', p['in'] + off, '-t', src_d + 0.2, '-i', aud, '-vn', '-ac', '2', '-ar', SR, '-af',
            f"{af}apad,atrim=end_sample={round(d * SR)},afade=t=in:d=0.008,afade=t=out:st={d - 0.008}:d=0.008", '-c:a', 'pcm_s16le', ao)
@@ -684,12 +698,91 @@ def cmd_cortar(a):
             break
     jsave(pr.ed / 'edl_final.json', E)
     print(f"✓ public/cut.mp4  {n} cuadros ({n / FPS:.1f} s) | edicion/edl_final.json")
+    if pr.cfg.get('lentes'):
+        quitar_reflejo(pr, pr.cfg['lentes'].get('sec', 'intro'), pr.cfg['lentes'].get('fuerza', 0.88))
     if a.verificar:
         wav = pr.cache / 'verif.wav'
         ff('-i', out, '-vn', '-ac', '1', '-ar', '16000', wav)
         r = run(['whisper-cli', '-m', MODEL, '-f', wav, '-l', 'es', '-t', '8', '-np'], capture_output=True, text=True)
         (pr.ed / 'verificacion.txt').write_text(r.stdout)
         print("— transcripción del corte (revisa que se lea corrido y sin sílabas cortadas):\n" + r.stdout)
+
+
+def quitar_reflejo(pr, sec, fuerza=0.88):
+    """Quita el reflejo azul (antirreflejante) de los lentes en una sección de public/cut.mp4 (Rocket Revolution: la intro del creador
+    con zoom ×1.4 lo hacía muy notorio). Detecta la cara por cuadro (Apple Vision) y, SOLO en una elipse en la zona de los ojos,
+    baja la saturación de los píxeles azules; el resto del cuadro no se toca. Conversión explícita BT.709 (con BT.601 o sin
+    etiquetas el video sale gris). El audio se copia tal cual."""
+    import numpy as np
+    from PIL import Image
+    cut = pr.P / 'public' / 'cut.mp4'
+    E = jload(pr.ed / 'edl_final.json')
+    tr = [x for x in E if x.get('sec') == sec]
+    if not tr:
+        print(f"  ⚠ lentes: no hay sección '{sec}'"); return
+    a0, fin = min(x['start'] for x in tr), max(x['start'] + x['frames'] for x in tr)
+    v = next(x for x in probe(cut)['streams'] if x['codec_type'] == 'video')
+    w, h = v['width'], v['height']
+    tmp = pr.cache / 'lentes'
+    shutil.rmtree(tmp, ignore_errors=True)
+    (tmp / 'a').mkdir(parents=True); (tmp / 'p').mkdir()
+    ff('-i', cut, '-vf', f"select='between(n,{a0},{fin - 1})',scale=in_color_matrix=bt709:in_range=tv,format=rgb24", '-vsync', '0', tmp / 'a' / '%05d.png')
+    fs = sorted((tmp / 'a').glob('*.png'))
+    for f in fs:
+        Image.open(f).resize((w // 4, h // 4)).save(tmp / 'p' / (f.stem + '.jpg'))
+    run([BIN / 'faces', tmp / 'p', tmp / 'f.json'], capture_output=True)
+    F = jload(tmp / 'f.json')
+    def fill(vals):
+        v2 = np.array(vals, float); ok = ~np.isnan(v2); i = np.arange(len(v2))
+        if not ok.any():
+            return np.full(len(v2), np.nan)
+        v2 = np.interp(i, i[ok], v2[ok]); k = np.exp(-0.5 * (np.arange(-4, 5) / 2.0) ** 2); k /= k.sum()
+        return np.convolve(np.pad(v2, 4, mode='edge'), k, mode='valid')
+    best = [max(fr, key=lambda q: q[2]) if fr else (np.nan, np.nan, np.nan) for fr in F]
+    cx, cy, cs = (fill([b[j] for b in best]) for j in range(3))
+    yy, xx = np.mgrid[0:h, 0:w]
+    for i, f in enumerate(fs):
+        if np.isnan(cx[i]):
+            continue
+        im = np.array(Image.open(f).convert('RGB'))
+        fw = cs[i] * w
+        ex, ey = cx[i] * w, cy[i] * h - 0.12 * fw          # los ojos, un poco arriba del centro de la cara
+        m = (((xx - ex) / (0.75 * fw)) ** 2 + ((yy - ey) / (0.32 * fw)) ** 2) <= 1.0
+        hsv = np.array(Image.fromarray(im).convert('HSV')).astype(np.float32)
+        H, S = hsv[..., 0], hsv[..., 1]
+        azul = m & (H >= 125) & (H <= 190) & (S > 25)      # PIL: H 0–255 ≈ 175°–270°
+        hsv[..., 1] = S * (1 - fuerza * np.clip((S - 25) / 40, 0, 1) * azul)
+        out = np.array(Image.fromarray(np.round(hsv).astype(np.uint8), 'HSV').convert('RGB'))
+        Image.fromarray(np.where(azul[..., None], out, im).astype(np.uint8)).save(f)
+    tags = ['-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv']
+    n_total = int(round(float(probe(cut)['format']['duration']) * FPS))
+    seg = tmp / 'seg.mp4'
+    ff('-framerate', FPS, '-i', tmp / 'a' / '%05d.png', '-vf', 'scale=out_color_matrix=bt709:out_range=tv,format=yuv420p',
+       '-c:v', 'libx264', '-crf', '14', '-g', '15', *tags, seg)
+    partes = []
+    if a0 > 0:
+        partes.append(tmp / 'antes.mp4')
+        ff('-i', cut, '-frames:v', a0, '-an', '-c:v', 'libx264', '-crf', '14', '-g', '15', '-pix_fmt', 'yuv420p', *tags, partes[-1])
+    partes.append(seg)
+    if fin < n_total:
+        partes.append(tmp / 'resto.mp4')
+        ff('-ss', f'{fin / FPS:.4f}', '-i', cut, '-an', '-c:v', 'libx264', '-crf', '14', '-g', '15', '-pix_fmt', 'yuv420p', *tags, partes[-1])
+    (tmp / 'l.txt').write_text(''.join(f"file '{x}'\n" for x in partes))
+    ff('-f', 'concat', '-safe', '0', '-i', tmp / 'l.txt', '-c', 'copy',
+       '-bsf:v', 'h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1:video_full_range_flag=0', tmp / 'v.mp4')
+    ff('-i', tmp / 'v.mp4', '-i', cut, '-map', '0:v', '-map', '1:a', '-c', 'copy', '-shortest', *tags, tmp / 'cut.mp4')
+    shutil.move(str(tmp / 'cut.mp4'), cut)
+    shutil.rmtree(tmp)
+    print(f"✓ lentes: reflejo azul quitado en '{sec}' ({fin - a0} cuadros); se reaplica solo en cada  reel cortar")
+
+
+def cmd_lentes(a):
+    pr = Proyecto(a.proyecto)
+    if a.quitar:
+        pr.cfg.pop('lentes', None); pr.guardar_cfg(); print("✓ lentes desactivado (corre  reel cortar  para volver al original)"); return
+    pr.cfg['lentes'] = {'sec': a.sec, 'fuerza': a.fuerza}
+    pr.guardar_cfg()
+    quitar_reflejo(pr, a.sec, a.fuerza)
 
 
 # ---------------------------------------------------------------- datos
@@ -820,18 +913,19 @@ def cmd_datos(a):
     def walk(o):
         if isinstance(o, dict):
             for k, v in o.items():
-                if k in ('en', 'hasta') and v is not None:
-                    try:
-                        A.t(v)
-                    except KeyError as e:
-                        bad.append(str(e))
+                if k in ('en', 'hasta', 'monedas') and v is not None:
+                    for an in (v if isinstance(v, list) else [v]):  # intro_espacio.en es una lista de anclas
+                        try:
+                            A.t(an)
+                        except KeyError as e:
+                            bad.append(str(e))
                 elif isinstance(v, (dict, list)):
                     walk(v)
         elif isinstance(o, list):
             for v in o:
                 walk(v)
-    walk({k: v for k, v in ev.items() if k != 'objetos'})
-    for it in ev.get('objetos', []):
+    walk({k: v for k, v in ev.items() if k not in ('objetos', 'enfasis')})
+    for it in ev.get('objetos', []) + [e if isinstance(e, str) else e['en'] for e in ev.get('enfasis', [])]:
         try:
             A.t(it)
         except KeyError as e:
@@ -843,9 +937,9 @@ def cmd_datos(a):
     for p in E:
         if p['speed'] != 1:
             if fast and fast[-1][1] == p['start']:
-                fast[-1][1] = p['start'] + p['frames']
+                fast[-1][1] = p['start'] + p['frames']; fast[-1][2] = max(fast[-1][2], p['speed'])
             else:
-                fast.append([p['start'], p['start'] + p['frames']])
+                fast.append([p['start'], p['start'] + p['frames'], p['speed']])  # 3er valor: velocidad (la insignia muestra "x8")
 
     hl = set(norm(x) for x in ev.get('resaltar', []))
     items = []
@@ -859,6 +953,17 @@ def cmd_datos(a):
     for w in words:
         if norm(w['text']) in hl:
             w['key'] = True
+    # énfasis: palabras que el narrador carga (volumen/tono) o que llevan el sentido → salen solas, grandes y con golpe
+    enf_sfx = []
+    for e in ev.get('enfasis', []):
+        an = e['en'] if isinstance(e, dict) else e
+        f = A.f(an, e.get('offset', 0) if isinstance(e, dict) else 0)
+        for w in words:
+            if abs(round(w['start'] * FPS) - f) <= 1:
+                w['enf'] = True
+                w['key'] = True
+        if isinstance(e, dict) and e.get('sfx'):
+            enf_sfx.append((f, e['sfx'], e.get('vol', 0.18)))
 
     zooms = []
     for z in ev.get('zooms', []):
@@ -876,9 +981,9 @@ def cmd_datos(a):
     names = [dict(zip(('a', 'b'), span(x, 3.0)), nombre=x['nombre'], sub=x.get('sub', ''), color=x.get('color')) for x in ev.get('nombres', [])]
     labels = [dict(zip(('a', 'b'), span(x, 3.0)), texto=x['texto'], color=x.get('color')) for x in ev.get('etiquetas', [])]
     images = [dict(zip(('a', 'b'), span(x, 2.5)), src=x['src'], pos=x.get('pos', 'arriba'), ancho=x.get('ancho', 420),
-                   titulo=x.get('titulo'), texto=x.get('texto'), tarjeta=x.get('tarjeta', True)) for x in ev.get('imagenes', [])]
+                   titulo=x.get('titulo'), texto=x.get('texto'), tarjeta=x.get('tarjeta', True), **({'top': x['top']} if 'top' in x else {})) for x in ev.get('imagenes', [])]
     broll = [dict(zip(('a', 'b'), span(x, 2.5)), src=x['src']) for x in ev.get('broll', [])]
-    montos = [dict(zip(('a', 'b'), span(x, 2.5)), texto=x['texto'], **{k: x[k] for k in ('top', 'size', 'color') if k in x}) for x in ev.get('montos', [])]
+    montos = [dict(zip(('a', 'b'), span(x, 2.5)), texto=x['texto'], **{k: x[k] for k in ('top', 'size', 'color', 'sub') if k in x}) for x in ev.get('montos', [])]
     emojis = [dict(zip(('a', 'b'), span(x, 2.0)), emoji=x['emoji'], texto=x.get('texto')) for x in ev.get('emojis', [])]
     calendario = [dict(zip(('a', 'b'), span(x, 2.5)), dia=str(x['dia']), mes=x['mes'], **{k: x[k] for k in ('texto', 'top', 'color') if k in x})
                   for x in ev.get('calendario', [])]
@@ -891,6 +996,8 @@ def cmd_datos(a):
 
     hook = ev.get('gancho')
     hook_end = round(hook['dur'] * FPS) if hook and hook.get('dur') else (secs[0]['b'] if hook and len(secs) > 1 else (90 if hook else 0))
+    if hook and not hook.get('dur') and (ev.get('intro_espacio') or hook.get('tras_intro')) and len(secs) > 2:
+        hook_end = secs[1]['b']  # intro del creador (sección 1) → la pregunta (sección 2) es el gancho
     # nada se encima con el gancho: lo que empezaría durante el gancho espera a que termine (misma duración)
     if hook:
         for lst in (names, labels, images, montos, emojis, calendario):
@@ -904,13 +1011,15 @@ def cmd_datos(a):
     add = lambda f, src, v, ln=45: sfx.append({"f": int(f), "src": src, "v": v, "len": ln})
     for s in ev.get('sfx', []):
         add(A.f(s['en'], s.get('offset', 0)), s['sfx'], s.get('vol', 0.4), round(s.get('dur', 1.5) * FPS))
+    for f, src, v in enf_sfx:
+        add(f, src, v)
     if auto.get('objeto'):
         for it in items:
             add(it['f'], auto['objeto'], auto.get('objeto_vol', 0.32))
     if auto.get('zoom'):
         for z in zooms:
             add(z['a'] - 2, auto['zoom'], auto.get('zoom_vol', 0.16))
-    for a0, b0 in fast:
+    for a0, b0, *_ in fast:
         add(a0 - 6, 'ffwd', 0.4); add(b0 - 4, 'pop', 0.3)
     if auto.get('transicion'):
         for t in trans:
@@ -934,17 +1043,70 @@ def cmd_datos(a):
         s['len'] = min(s['len'], n - s['f'])
     hookfg = len(list((pr.P / 'public' / 'hookfg').glob('*.png'))) if (pr.P / 'public' / 'hookfg').exists() else 0
     tx, ty = face_track(pr, n, secs, cfg_secs, est.get('camara', {}).get('caras'))
+    intro3d = None
+    ie = ev.get('intro_espacio')
+    if ie:
+        s3 = next(x for x in secs if x['id'] == ie.get('sec', secs[0]['id']))
+        hs = [el['at'] for el in (hook or {}).get('elementos', []) if el.get('at') is not None and el['at'] >= s3['b'] - 2]
+        fin = (min(hs) - 6) if hs else s3['b']
+        en = ie.get('en', [])
+        intro3d = {"sec": s3['id'], "fin": fin, "titulo": ie.get('titulo', ['SEMANA MUNDIAL', 'DEL ESPACIO']), "hud": ie.get('hud', ''),
+                   "t": [A.f(x) for x in en] + [None] * (3 - len(en)), "monedas": A.f(ie['monedas']) if ie.get('monedas') else None,
+                   "planeta": ie.get('planeta', True), "cohete": ie.get('cohete', True), "warp": ie.get('warp', True)}
     data = {"n": n, "words": words, "secs": secs, "track": {"x": tx, "y": ty}, "fast": fast, "items": items, "zooms": zooms,
             "names": names, "labels": labels, "images": images, "broll": broll, "transitions": trans, "sfx": sfx,
             "hook": hook, "hookEnd": hook_end, "hookfg": hookfg, "cierre": ev.get('cierre'), "musica": ev.get('musica'),
-            "montos": montos, "emojis": emojis, "calendario": calendario}
+            "montos": montos, "emojis": emojis, "calendario": calendario, "intro3d": intro3d}
+    if intro3d:
+        c = capa_path(pr, data)
+        if (pr.P / 'public' / c).exists():
+            intro3d['capa'] = c  # capa 3D ya renderizada para exactamente estos datos: se reusa
     jsave(pr.P / 'src' / 'data.json', data, indent=None)
     print(f"✓ src/data.json  {n} cuadros ({n / FPS:.1f} s) | secciones {[(s['id'], round(s['a'] / FPS, 1), round(s['b'] / FPS, 1)) for s in secs]}")
     if zooms:
         print("  zooms (s del corte; centra con  reel cuadricula -p P <t> …):", ' '.join(f"{(z['a'] + z['b']) / 2 / FPS:.1f}" for z in zooms))
-    print(f"  objetos {len(items)} · zooms {len(zooms)} · sfx {len(sfx)} · nombres {len(names)} · etiquetas {len(labels)} · imágenes {len(images)} · cámara rápida {[(round(x / FPS, 1), round(y / FPS, 1)) for x, y in fast]}")
+    print(f"  objetos {len(items)} · zooms {len(zooms)} · sfx {len(sfx)} · nombres {len(names)} · etiquetas {len(labels)} · imágenes {len(images)} · cámara rápida {[(round(x / FPS, 1), round(y / FPS, 1)) for x, y, *_ in fast]}")
 
 
+
+
+# ---------------------------------------------------------------- capas pre-renderizadas (3D)
+def capa_path(pr, data):
+    """Nombre de la capa 3D según lo que la define: código del componente + datos de la intro + palabras de esa sección.
+    Si nada de eso cambia, la capa se reusa en cada render (el 3D es lo más lento de renderizar)."""
+    i3 = {k: v for k, v in (data.get('intro3d') or {}).items() if k != 'capa'}
+    comp = (pr.P / 'src' / 'components' / 'IntroEspacio.tsx')
+    words = [w for w in data['words'] if w.get('sec') == i3.get('sec')]
+    key = hashlib.md5((comp.read_text() if comp.exists() else '').encode() + json.dumps([i3, words], sort_keys=True).encode()).hexdigest()[:10]
+    return f'capas/intro3d_{key}.mov'
+
+
+def render_capas(pr, forzar=False):
+    data = jload(pr.P / 'src' / 'data.json')
+    i3 = data.get('intro3d')
+    if not i3:
+        return False
+    c = capa_path(pr, data)
+    out = pr.P / 'public' / c
+    if out.exists() and not forzar:
+        print(f"  capa 3D reusada: public/{c}")
+    else:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        for old in out.parent.glob('intro3d_*.mov'):
+            old.unlink()
+        i3.pop('capa', None); jsave(pr.P / 'src' / 'data.json', data, indent=None)
+        print(f"… capa 3D (una sola vez, ProRes 4444 con transparencia, {i3['fin'] + 12} cuadros)")
+        run(['npx', 'remotion', 'render', 'src/index.ts', 'Capa3D', out, '--codec=prores', '--prores-profile=4444',
+             '--pixel-format=yuva444p10le', '--image-format=png', '--log=error'], cwd=pr.P)
+    data['intro3d']['capa'] = c
+    jsave(pr.P / 'src' / 'data.json', data, indent=None)
+    return True
+
+
+def cmd_capas(a):
+    pr = Proyecto(a.proyecto)
+    if not render_capas(pr, a.forzar):
+        print("  (este proyecto no tiene intro_espacio en eventos.json)")
 
 
 # ---------------------------------------------------------------- ayudas (sugieren; Claude decide)
@@ -1369,6 +1531,11 @@ def cmd_dividir(a):
             if ajena(el.get('en')):
                 el.pop('en')  # entra por cuadro (`at`); el gancho de esta parte hay que reescribirlo de todos modos
         jsave(dest / 'edicion' / 'eventos.json', e2)
+        # la parte usa los mismos clips SDR del proyecto original (si no, `cortar` tomaría el HDR crudo del iPhone)
+        sdr_dst = TK / 'cache' / hashlib.md5(str(dest.resolve()).encode()).hexdigest()[:10] / 'sdr'
+        sdr_dst.parent.mkdir(parents=True, exist_ok=True)
+        if (pr.cache / 'sdr').exists() and not sdr_dst.exists():
+            sdr_dst.symlink_to(pr.cache / 'sdr', target_is_directory=True)
         cfg = {**pr.cfg, "nombre": nombre}
         jsave(dest / 'edicion' / 'proyecto.json', cfg)
         for stale in ('edl.json', 'edl_final.json', 'cambios.md', 'verificacion.txt'):
@@ -1463,6 +1630,7 @@ def cmd_render(a):
     pr = Proyecto(a.proyecto)
     raw = pr.cache / 'raw.mp4'
     import datetime
+    render_capas(pr)  # la capa 3D se renderiza una vez y se reusa (borrador y final)
     if a.borrador:
         # borrador rápido para aprobar el corte: mitad de resolución, sin verificación completa
         out = pr.ed / 'borrador.mp4'
@@ -1478,12 +1646,15 @@ def cmd_render(a):
         raw.unlink()
         print(f"✓ borrador: {out}  ({float(probe(out)['format']['duration']):.1f} s)")
         return
-    print("… render Remotion (bt709)")
-    run(['npx', 'remotion', 'render', 'src/index.ts', 'Reel', raw, '--codec=h264', '--crf=17', '--audio-bitrate=320k',
-         '--color-space=bt709', '--log=error'], cwd=pr.P)
+    print("… render Remotion (bt709" + (", 4K 2160x3840" if a.k4 else "") + ")")
+    # REEL_HW=1: codificador de hardware (VideoToolbox) + 8 hilos → 4K ~2× más rápido en Apple Silicon (M5: 240 cuadros 4K en ~20 s)
+    calidad = (['--hardware-acceleration=if-possible', '--concurrency=8', f"--video-bitrate={'80M' if a.k4 else '25M'}"]
+               if os.environ.get('REEL_HW') == '1' else ['--crf=17'])
+    run(['npx', 'remotion', 'render', 'src/index.ts', 'Reel', raw, '--codec=h264', *calidad, '--audio-bitrate=320k',
+         '--color-space=bt709', '--log=error', *(['--scale=2'] if a.k4 else [])], cwd=pr.P)
     I, _ = loudness(raw)
     g = round(a.lufs - I, 2)
-    name = a.salida or (pr.cfg['nombre'] + '.mp4')
+    name = a.salida or (pr.cfg['nombre'] + (' 4K' if a.k4 else '') + '.mp4')
     final = pr.fuentes / name
     # historial: la versión anterior pasa a P/versiones/ (se guardan las últimas 3)
     vdir = pr.P / 'versiones'
@@ -1668,7 +1839,7 @@ def cmd_actualizar(a):
     changed = []
     for f in tpl.rglob('*'):
         rel = f.relative_to(tpl)
-        if f.is_dir() or rel.name in ('data.json', 'estilo.json') or 'node_modules' in rel.parts:
+        if f.is_dir() or rel.name in ('data.json', 'estilo.json', 'vlog.json') or 'node_modules' in rel.parts:
             continue
         dst = pr.P / rel
         if dst.exists() and filecmp.cmp(f, dst, shallow=False):
@@ -1691,6 +1862,43 @@ def cmd_limpiar(a):
     print(f"✓ caché borrada ({sz:.2f} GB): {pr.cache}")
 
 
+# ---------------------------------------------------------------- énfasis (sugiere; Claude decide con el guion)
+def cmd_enfasis(a):
+    """Puntúa cada palabra del corte por énfasis acústico (volumen + tono + duración vs. sus vecinas) → candidatas a "enfasis"."""
+    import numpy as np
+    import wave
+    pr = Proyecto(a.proyecto)
+    D = jload(pr.P / 'src' / 'data.json')
+    src = pr.P / 'public' / ('cut_voz.mp4' if (pr.P / 'public' / 'cut_voz.mp4').exists() else 'cut.mp4')
+    wav = pr.cache / 'enfasis.wav'
+    ff('-i', src, '-vn', '-ac', '1', '-ar', '16000', wav)
+    w = wave.open(str(wav)); x = np.frombuffer(w.readframes(w.getnframes()), np.int16) / 32768; sr = 16000
+    def f0(seg):
+        seg = seg - seg.mean()
+        if len(seg) < 800 or np.sqrt((seg ** 2).mean()) < 0.01:
+            return np.nan
+        fr = []
+        for i in range(0, len(seg) - 640, 320):
+            c = seg[i:i + 640]; ac = np.correlate(c, c, 'full')[639:]
+            lo, hi = int(sr / 400), int(sr / 70); k = lo + int(np.argmax(ac[lo:hi]))
+            if ac[k] > 0.4 * ac[0]:
+                fr.append(sr / k)
+        return float(np.median(fr)) if fr else np.nan
+    rows = []
+    for wd in D['words']:
+        seg = x[int(wd['start'] * sr):int(min(wd['end'], wd['start'] + 0.8) * sr)]
+        rows.append((wd, 20 * np.log10(np.sqrt((seg ** 2).mean()) + 1e-9) if len(seg) else -90, f0(seg), wd['end'] - wd['start']))
+    R = np.array([r[1] for r in rows]); Pp = np.array([r[2] for r in rows]); Du = np.array([r[3] for r in rows])
+    z = lambda v, arr, lo, hi: (v - np.nanmean(arr[lo:hi])) / (np.nanstd(arr[lo:hi]) + 1e-6)
+    print("palabra            sec       s      score   (*** fuerte · * medio; ignora artículos/conectores y decide con el sentido)")
+    for k, (wd, r, p, du) in enumerate(rows):
+        lo, hi = max(0, k - 6), min(len(rows), k + 7)
+        zp = 0 if np.isnan(p) else z(p, Pp, lo, hi)
+        sc = 0.45 * z(r, R, lo, hi) + 0.35 * (0 if np.isnan(zp) else zp) + 0.2 * z(du, Du, lo, hi)
+        if sc > a.umbral and len(norm(wd['text'])) > 2:
+            print(f"{wd['text']:<18} {wd['sec']:<8} {wd['start']:6.2f}  {sc:+.2f} {'***' if sc > 0.9 else '*'}")
+
+
 # ---------------------------------------------------------------- CLI
 def main():
     ap = argparse.ArgumentParser(prog='reel', description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -1711,11 +1919,18 @@ def main():
     s = sp.add_parser('revisar'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('frames', nargs='+', type=int)
     s.add_argument('--sin-guias', action='store_true'); s.set_defaults(fn=cmd_revisar)
     s = sp.add_parser('recorte'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--frames', type=int, default=120); s.set_defaults(fn=cmd_recorte)
-    s = sp.add_parser('render'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--salida'); s.add_argument('--lufs', type=float, default=-14.0)
+    s = sp.add_parser('enfasis'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--umbral', type=float, default=0.55); s.set_defaults(fn=cmd_enfasis)
+    s = sp.add_parser('render'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--salida'); s.add_argument('--lufs', type=float, default=-12.0)
     s.add_argument('--borrador', action='store_true', help='render rápido a 540x960 en edicion/borrador.mp4')
+    s.add_argument('--4k', dest='k4', action='store_true', help='final a 2160x3840 (solo con el visto bueno; ~4× más lento)')
     s.add_argument('--nota', help='qué cambió en esta versión (va a edicion/cambios.md)')
     s.set_defaults(fn=cmd_render)
     s = sp.add_parser('prueba'); s.set_defaults(fn=cmd_prueba)
+    s = sp.add_parser('lentes', help='quita el reflejo azul de los lentes en una sección (se reaplica en cada cortar)')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('--sec', default='intro'); s.add_argument('--fuerza', type=float, default=0.88)
+    s.add_argument('--quitar', action='store_true'); s.set_defaults(fn=cmd_lentes)
+    s = sp.add_parser('capas', help='pre-renderiza la intro 3D (intro_espacio) como capa transparente reutilizable')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('--forzar', action='store_true'); s.set_defaults(fn=cmd_capas)
     s = sp.add_parser('tomas'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('clips', nargs='*'); s.set_defaults(fn=cmd_tomas)
     s = sp.add_parser('zooms'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--todos', action='store_true'); s.set_defaults(fn=cmd_zooms)
     s = sp.add_parser('niveles'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--aplicar', action='store_true'); s.set_defaults(fn=cmd_niveles)

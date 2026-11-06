@@ -1,0 +1,83 @@
+{
+ "piezas": [
+  {
+   "src": "AWS Student Community Day",
+   "de": 19,
+   "a": 25,
+   "sec": "intro"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 48,
+   "a": 60,
+   "sec": "intro"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 61,
+   "a": 71,
+   "sec": "evento"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 83,
+   "a": 93,
+   "sec": "niveles"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 105,
+   "a": 115,
+   "sec": "niveles"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 116,
+   "a": 122,
+   "sec": "niveles"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 123,
+   "a": 144,
+   "sec": "actividades",
+   "mas_final": -0.35
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 150,
+   "a": 154,
+   "sec": "gratis"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 178,
+   "a": 194,
+   "sec": "fecha"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 196,
+   "a": 200,
+   "sec": "fecha"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 204,
+   "a": 209,
+   "sec": "cierre"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 236,
+   "a": 244,
+   "sec": "cierre"
+  },
+  {
+   "src": "AWS Student Community Day",
+   "de": 247,
+   "a": 249,
+   "sec": "cierre"
+  }
+ ]
+}
