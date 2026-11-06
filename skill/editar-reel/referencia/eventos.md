@@ -110,6 +110,17 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
 }
 ```
 
+## Cortes de subtítulos
+`"cortes": ["sec:palabra#n", …]`: esa palabra empieza un bloque de subtítulos nuevo (además de los cortes automáticos por puntuación, sección y tramo). Lo usa Reel Studio en el panel Subtítulos.
+
+## Posición libre (Reel Studio)
+`nombres`, `etiquetas`, `imagenes`, `montos`, `emojis`, `calendario` y los `elementos` del gancho aceptan además:
+- `dx`, `dy`: desplazamiento en px sobre su posición normal (lienzo 1080×1920; `dy` positivo = hacia abajo).
+- `escala`: 1 = tamaño normal.
+- `rot`: grados. En los elementos del gancho `rot` ya existía (giro propio del elemento) y se respeta igual.
+
+Sin estos campos todo se dibuja exactamente como antes. Los escribe Reel Studio al arrastrar un elemento en el lienzo; se pueden editar a mano. Mantén el elemento dentro de la zona segura (x 125–905, y 260–1500).
+
 ## Reglas automáticas de `reel datos`
 - Nombres, etiquetas, imágenes, montos, emojis o calendario que empezarían durante el gancho se mueven a cuando termina (misma duración).
 - Las imágenes `arriba` y los emojis se colocan debajo de lo que ocupe la esquina superior (contador, insignia x2, nombre) durante toda su duración.
@@ -133,4 +144,4 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   `ffmpeg -ss <inicio> -t <dur> -i sdr.mp4 -an -vf "fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920" -c:v libx264 -crf 17 P/public/broll/x.mp4`
 
 ## Qué genera `reel datos` → `src/data.json`
-`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. Los componentes en `src/components/` leen solo esto y `estilo.json`.
+`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. Cada elemento de `names`, `labels`, `images`, `broll`, `montos`, `emojis` y `calendario` lleva `ev` (su índice en la lista de `eventos.json`) y, si los tiene, `dx`/`dy`/`escala`/`rot`. Los componentes en `src/components/` leen solo esto y `estilo.json`.

@@ -24,6 +24,22 @@ o pídelo normal: *"edita los videos de esta carpeta como la promo de Interpolit
 
 Claude sigue el flujo de la skill y deja `<Título>.mp4` en la misma carpeta, con su `proyecto_remotion/` editable al lado. Para corregir, abre Claude en esa carpeta y pide el cambio ("en el 0:23 quita esa frase").
 
+### Reel Studio (app de escritorio)
+
+Para cambios rápidos a mano está **Reel Studio** (`app/`). Es una app de Mac con:
+- vista previa en vivo;
+- textos que se arrastran sobre el video;
+- línea de tiempo;
+- subtítulos, estilo, cortes, pipeline con botones y Claude integrado.
+
+Trabaja sobre los mismos archivos que la skill.
+
+```bash
+cd app && ./instalar.sh     # crea /Applications/Reel Studio.app
+```
+
+Detalles en [`app/README.md`](app/README.md).
+
 ## Instalación (macOS)
 
 ```bash
@@ -59,6 +75,7 @@ skill/editar-reel/        La skill (lo que Claude carga)
   setup.sh                Instalador del toolkit (~/.reels-toolkit)
 docs/                     Contexto del proyecto (historia, preferencias, arquitectura, validación, roadmap)
 legacy/                   Código de los primeros videos (antes de la skill) y scripts sueltos
+app/                      Reel Studio: app de escritorio (Electron + React + @remotion/player) sobre la skill
 install.sh                Enlaza la skill y corre el setup
 CLAUDE.md                 Contexto para Claude cuando trabaja en ESTE repo
 ```

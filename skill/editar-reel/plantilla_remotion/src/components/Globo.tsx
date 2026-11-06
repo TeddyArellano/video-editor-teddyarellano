@@ -4,16 +4,15 @@
 // Entra con zoom, gira, salen pines con pulso en varias ciudades, arcos desde CDMX y birretes 🎓 en "universidades";
 // sale con un zoom que lo atraviesa.
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {W, clamp} from '../theme';
-import land from '../land.json';
-import vlog from '../vlog.json';
-
-const L = land as [number, number][];
+import {AbsoluteFill, Audio, Easing, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {LAND, VLOG, W, asset, clamp, derivado} from '../theme';
 const AMA = '#FFD60A';
 type GloboV = {a: number; b: number; arcos: number; pines: number; birretes?: number; origen?: [number, number]; ciudades?: [number, number][]; centro?: number};
-const GLB = (vlog as {globo?: GloboV}).globo;
-const G = GLB ? {a: GLB.a, mundo: GLB.arcos, presencia: GLB.pines, univ: GLB.birretes ?? 1e9, b: GLB.b} : {a: -1, mundo: -1, presencia: -1, univ: -1, b: -1};
+const GLBd = derivado(() => (VLOG as {globo?: GloboV}).globo);
+const Gd = derivado(() => {
+  const GLB = GLBd();
+  return GLB ? {a: GLB.a, mundo: GLB.arcos, presencia: GLB.pines, univ: GLB.birretes ?? 1e9, b: GLB.b} : {a: -1, mundo: -1, presencia: -1, univ: -1, b: -1};
+});
 
 // lugares de referencia (solo ubicaciones, no datos)
 const CIUDADES0: [number, number][] = [
@@ -21,7 +20,10 @@ const CIUDADES0: [number, number][] = [
   [3.4, 6.5], [31.2, 30], [28, -26.2], [37.6, 55.8], [77.2, 28.6], [103.8, 1.35], [116.4, 39.9], [139.7, 35.7], [151.2, -33.9], [-58.4, -34.6],
 ];
 // la primera ciudad es el origen de los arcos (por defecto Ciudad de México)
-const CIUDADES: [number, number][] = GLB?.ciudades ?? (GLB?.origen ? [GLB.origen, ...CIUDADES0.slice(1)] : CIUDADES0);
+const CIUDADESd = derivado((): [number, number][] => {
+  const GLB = GLBd();
+  return GLB?.ciudades ?? (GLB?.origen ? [GLB.origen, ...CIUDADES0.slice(1)] : CIUDADES0);
+});
 const CX = W / 2;
 const CY = 760;
 const R = 330;
@@ -42,6 +44,10 @@ const proj = (lon: number, lat: number, lam: number, phi: number, r: number) => 
 export const Globo: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const G = Gd();
+  const GLB = GLBd();
+  const CIUDADES = CIUDADESd();
+  const L = LAND;
   if (G.a < 0 || G.b < 0 || f < G.a - 2 || f >= G.b + 6) return null;
   const len = G.b - G.a;
   const bg = interpolate(f, [G.a - 2, G.a + 5, G.b, G.b + 6], [0, 0.88, 0.88, 0], clamp);
@@ -113,11 +119,11 @@ export const Globo: React.FC = () => {
         {pins}
       </AbsoluteFill>
       {/* sonido: whoosh al entrar, pop por pin (cada otro), ding en "universidades" */}
-      <Sequence from={G.a - 2} durationInFrames={30} layout="none"><Audio src={staticFile('sfx/whoosh.wav')} volume={0.22} /></Sequence>
+      <Sequence from={G.a - 2} durationInFrames={30} layout="none"><Audio src={asset('sfx/whoosh.wav')} volume={0.22} /></Sequence>
       {CIUDADES.map((_, k) => (k % 2 === 0 ? (
-        <Sequence key={k} from={pinAt(k)} durationInFrames={20} layout="none"><Audio src={staticFile('sfx/pop.wav')} volume={0.13} /></Sequence>
+        <Sequence key={k} from={pinAt(k)} durationInFrames={20} layout="none"><Audio src={asset('sfx/pop.wav')} volume={0.13} /></Sequence>
       ) : null))}
-      <Sequence from={G.univ} durationInFrames={40} layout="none"><Audio src={staticFile('sfx/ding.wav')} volume={0.2} /></Sequence>
+      <Sequence from={G.univ} durationInFrames={40} layout="none"><Audio src={asset('sfx/ding.wav')} volume={0.2} /></Sequence>
     </AbsoluteFill>
   );
 };

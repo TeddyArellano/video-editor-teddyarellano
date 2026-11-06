@@ -113,3 +113,19 @@ Arreglado: `vlog.py` cae a `sdr_global()` con la misma clave que `reel.py` (`Pro
 - **Stills con `"proxy":true` fallan** si no existe `public/cut_proxy.mp4`: usa `"proxy":false` o corre `render --borrador` antes.
 - **`seguimiento.py` con `PANTALLA=[]` y `CENTRO=[]`** debe saltarse el bloque `data.pantalla` (ya lo hace); si todo es NaN `np.interp` falla.
 - **Tomas sin silueta** no son siempre "fuera de cuadro": en tomas lejanas el creador es diminuto y no se detecta. Mira hojas de contacto (`ffmpeg … fps=1/1.2,tile`) antes de declarar un tramo como `PANTALLA`/`CENTRO`.
+
+## Dos `reel datos` a la vez chocaban (Reel Studio + Claude Code, noviembre 2026)
+- **Síntoma:** `FileNotFoundError: …/cache/<id>/ffc` en `datos`. Pasaba cuando otro proceso corría `datos` sobre el mismo proyecto al mismo tiempo, por ejemplo la app y Claude Code.
+- **Causa:** el seguimiento de caras usaba una carpeta fija (`cache/<id>/ffc`) que cada proceso borraba y recreaba.
+- **Arreglo:**
+  - `datos` toma un candado por proyecto (`cache/<id>/datos.lock`), así que dos procesos se esperan en vez de chocar.
+  - Los cuadros van a una carpeta temporal propia (`ffc_XXXX`).
+  - `jsave` escribe de forma atómica (temporal + rename).
+  - Al cerrarse, Reel Studio detiene sus procesos.
+
+## La autoprueba no detectaba que el inventario ignoraba su clip (noviembre 2026)
+- **Síntoma:** en `reel prueba`, `inventario.json` quedaba con `videos: []` y el clip aparecía en `renders_ignorados`, pero la prueba pasaba igual.
+- **Causa:** ffmpeg sobrescribe `-metadata encoder=camara` con `Lavf…`, e `inventario` toma los archivos con `Lavf` como renders.
+- **Arreglo:**
+  - El clip sintético se genera con `-fflags +bitexact`, que no escribe la etiqueta `Lavf`.
+  - El paso `inventario` de la prueba ahora exige que `CLIP01` esté en `videos`.

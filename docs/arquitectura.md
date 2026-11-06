@@ -31,6 +31,7 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
 | Plantilla Remotion | `skill/editar-reel/plantilla_remotion/` | Composición `Reel` 1080×1920 a 30 fps. Componentes: `Camera` (encuadre por sección, empuje lento, zooms a objetos, proxy), `Hook` (elementos con animaciones y capas detrás/delante), `Captions`, `Overlays` (contador, x2, nombre, etiquetas, imágenes/QR, transición VS, b-roll, cierre, sonido) y `Extras` (montos, emojis, calendario, decoración gamer). Todo se lee de `data.json` + `estilo.json`. |
 | Estilos | `skill/editar-reel/estilos/` | Colores, fuentes, subtítulos, cámara y SFX automáticos por tipo de video, más un `eventos.json` de ejemplo. |
 | Marcas | `skill/editar-reel/marcas/` | Colores y logos que se aplican encima de un estilo. |
+| Reel Studio | `app/` | App de escritorio (Electron + React). La vista previa es la composición `Reel` de la plantilla en `@remotion/player`, alimentada por props (`setDatos`). Edita `eventos.json`/`estilo.json`/`plan.json`/`notas.json` y ejecuta `reel.py --json` en una cola. Ver `app/README.md`. |
 | Toolkit | `~/.reels-toolkit/` | `bin/`, `models/` (Whisper large-v3-turbo), `venv/`, `remotion/node_modules` (compartido por todos los proyectos vía symlink) y `cache/` (SDR, wav, tramos y proxies por proyecto). |
 
 ## Decisiones técnicas clave (y por qué)
@@ -55,6 +56,20 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
 8. **Plantilla configurable por datos.** Un video normal no requiere escribir TSX. Lo específico de un video va en `eventos.json`; el look, en `estilo.json`.
 9. **Las ayudas sugieren, Claude decide.** `tomas`, `zooms` y `niveles` producen propuestas e imágenes de verificación; la elección final la hace Claude leyendo y mirando.
 10. **Revisión con el creador.** Página (artifact) con el borrador como asset y notas en `db` (`comentarios`: `t`, `texto`, `autor`, `estado`, `respuesta`). Claude las lee y actualiza con `ArtifactData`.
+11. **Plantilla alimentada por props.**
+    - `theme.ts` expone `D`/`E`/`VLOG` como datos intercambiables: `setDatos()` desde los props de `Reel`.
+    - Lo que se calcula a partir de los datos (bloques de subtítulos, tramos de cámara…) va en `derivado()`.
+    - Los archivos de `public/` se piden con `asset()`.
+    - Sin props, el render por CLI usa los JSON de `src/` como siempre. Se verificó con 141 stills de 5 proyectos reales, idénticos píxel a píxel.
+12. **Posición libre.** `dx`/`dy`/`escala`/`rot` en `eventos.json` mueven cualquier elemento sobre su posición normal.
+    - El envoltorio `<Pos data-reel="lista:i">` no altera el dibujo si faltan.
+    - `reel datos` copia esos campos más `ev` (índice en `eventos.json`) a `data.json`.
+13. **`reel.py --json`.** Salida en líneas JSON con progreso, para la app.
+    - El id de caché queda guardado en `proyecto.json`, así que mover la carpeta no pierde la caché.
+    - El seguimiento de caras va en caché con la huella de `cut.mp4`, así que `datos` sin cambios de corte tarda unos 0.05 s.
+14. **Fuentes locales.** Las 15 familias van en `public/fonts` y el manifiesto en `src/fuentes.json`.
+    - Se cargan con `FontFace` y `delayRender`, sin internet.
+    - Golden test contra Google Fonts: 139 de 141 stills idénticos; los otros 2 difieren solo en imágenes escaladas durante su animación, no en texto.
 
 ## Datos por proyecto (`proyecto_remotion/edicion/`)
 - `proyecto.json`: fuentes, estilo, nombre, marca, `recorte_x`, `audio_externo` y `revision_url`.

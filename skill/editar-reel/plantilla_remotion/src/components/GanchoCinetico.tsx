@@ -4,8 +4,7 @@
 // Roles de línea → tipografía de la variante: chico | grande | acento | script | medio | numero.
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate, random, useCurrentFrame} from 'remotion';
-import {D, W, clamp, font, stroke} from '../theme';
-import vlog from '../vlog.json';
+import {D, VLOG, W, clamp, derivado, font, stroke} from '../theme';
 
 type Linea = {t: string; f: number; rol: string; color?: string; sombra?: string; desde?: 'grande' | 'izq' | 'der' | 'arriba'; rot?: number; size?: number; mt?: number};
 type Escena = {a: number; b: number; top?: number; lineas: Linea[]};
@@ -13,7 +12,7 @@ export type GanchoV = {
   variante?: string; escenas: Escena[]; zooms?: number[]; golpes?: {f: number; flash?: number; sacudida?: number}[];
   particulas?: number; franja?: {t: string; f: number};
 };
-export const GV = (vlog as {gancho?: GanchoV}).gancho;
+export const GV = derivado(() => (VLOG as {gancho?: GanchoV}).gancho);
 
 type Fnt = {f: string; peso?: number; italic?: boolean; cw?: number};
 type Var = {key: string; acc: string; sh: string; sh2: string; txt: string; strip: string; stripTxt: string; extra: string;
@@ -31,9 +30,13 @@ export const VARIANTES: Record<string, Var> = {
   calido: {key: '#FF8A00', acc: '#FF8A00', sh: '#8B1A1A', sh2: '#5A0F0F', txt: '#fff', strip: '#FF8A00', stripTxt: '#fff', extra: '#FFD60A',
     chico: {f: 'Bowlby One', cw: 0.8}, grande: {f: 'Anton', cw: 0.46}, acento: {f: 'Caveat Brush', cw: 0.45}, script: {f: 'Yellowtail'}, medio: {f: 'Bowlby One', cw: 0.75}},
 };
-const V = VARIANTES[GV?.variante ?? 'limpio'] ?? VARIANTES.limpio;
-const col = (c?: string, def = V.txt) => (!c ? def : c === 'key' ? V.key : c === 'acc' ? V.acc : c === 'txt' ? V.txt : c);
-const sombra = (c: string | undefined, px: number) => (c === 'none' ? undefined : `${px}px ${px}px 0 ${c === 'sh2' ? V.sh2 : c && c !== 'sh' ? c : V.sh}`);
+const GVv = GV;
+const VAR = derivado(() => VARIANTES[GV()?.variante ?? 'limpio'] ?? VARIANTES.limpio);
+const col = (c?: string, def = VAR().txt) => {
+  const V = VAR();
+  return (!c ? def : c === 'key' ? V.key : c === 'acc' ? V.acc : c === 'txt' ? V.txt : c);
+};
+const sombra = (c: string | undefined, px: number) => (c === 'none' ? undefined : `${px}px ${px}px 0 ${c === 'sh2' ? VAR().sh2 : c && c !== 'sh' ? c : VAR().sh}`);
 
 const fast = {...clamp, easing: Easing.out(Easing.cubic)};
 const hit = (f: number, at: number, d = 3) => interpolate(f, [at, at + d], [0, 1], fast);
@@ -41,6 +44,7 @@ const fill = (txt: string, cw: number, max: number, w = 780) => Math.min(max, Ma
 
 // golpes de cámara del gancho (los usa Reel.tsx sobre el video)
 export const hookCam = (f: number) => {
+  const GV = GVv();
   if (!GV || f > D.hookEnd + 8) return 1;
   let s = 0;
   for (const p of GV.zooms ?? []) if (f >= p && f < p + 12) s = Math.max(s, interpolate(f, [p, p + 12], [0.16, 0], fast));
@@ -48,6 +52,7 @@ export const hookCam = (f: number) => {
 };
 
 const Word: React.FC<{l: Linea; f: number}> = ({l, f}) => {
+  const V = VAR();
   const fn: Fnt = (V as unknown as Record<string, Fnt>)[l.rol === 'numero' ? 'grande' : l.rol] ?? V.grande;
   const size =
     l.size ??
@@ -72,6 +77,7 @@ const Word: React.FC<{l: Linea; f: number}> = ({l, f}) => {
 const Particulas: React.FC<{f: number; at: number}> = ({f, at}) => {
   const t = f - at;
   if (t < 0 || t > 16) return null;
+  const V = VAR();
   const cols = [V.key, '#fff', V.acc, V.sh === '#000' ? V.key : V.sh, V.extra];
   return (
     <>
@@ -88,6 +94,8 @@ const Particulas: React.FC<{f: number; at: number}> = ({f, at}) => {
 
 export const GanchoCinetico: React.FC = () => {
   const f = useCurrentFrame();
+  const GV = GVv();
+  const V = VAR();
   if (!GV || f >= D.hookEnd + 1) return null;
   const end = interpolate(f, [D.hookEnd - 3, D.hookEnd], [1, 0], clamp);
   let amp = 0;

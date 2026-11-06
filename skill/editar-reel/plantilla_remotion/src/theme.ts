@@ -1,41 +1,33 @@
 // Tema global: datos del video (data.json, generado por `reel datos`) + estilo (estilo.json, preset editable).
-import {loadFont as lilita} from '@remotion/google-fonts/LilitaOne';
-import {loadFont as marker} from '@remotion/google-fonts/PermanentMarker';
-import {loadFont as bangers} from '@remotion/google-fonts/Bangers';
-import {loadFont as bungee} from '@remotion/google-fonts/Bungee';
-import {loadFont as montserrat} from '@remotion/google-fonts/Montserrat';
-import {loadFont as poppins} from '@remotion/google-fonts/Poppins';
-import {loadFont as anton} from '@remotion/google-fonts/Anton';
-import {loadFont as silkscreen} from '@remotion/google-fonts/Silkscreen';
-import {loadFont as righteous} from '@remotion/google-fonts/Righteous';
-import {loadFont as pacifico} from '@remotion/google-fonts/Pacifico';
-import {loadFont as rubikMono} from '@remotion/google-fonts/RubikMonoOne';
-import {loadFont as lobster} from '@remotion/google-fonts/Lobster';
-import {loadFont as bowlby} from '@remotion/google-fonts/BowlbyOne';
-import {loadFont as caveatBrush} from '@remotion/google-fonts/CaveatBrush';
-import {loadFont as yellowtail} from '@remotion/google-fonts/Yellowtail';
+import {continueRender, delayRender, staticFile} from 'remotion';
+import fuentes from './fuentes.json';
 import data from './data.json';
 import estilo from './estilo.json';
+import vlogJson from './vlog.json';
+import landJson from './land.json';
 
-const mont = montserrat('normal', {weights: ['600', '700', '800', '900'], subsets: ['latin']}).fontFamily;
-montserrat('italic', {weights: ['800', '900'], subsets: ['latin']});
-const FONTS: Record<string, string> = {
-  'Lilita One': lilita().fontFamily,
-  'Permanent Marker': marker().fontFamily,
-  Bangers: bangers().fontFamily,
-  Bungee: bungee().fontFamily,
-  Montserrat: mont,
-  Poppins: poppins('normal', {weights: ['600', '700', '800'], subsets: ['latin']}).fontFamily,
-  Anton: anton().fontFamily,
-  Silkscreen: silkscreen('normal', {weights: ['400', '700'], subsets: ['latin']}).fontFamily,
-  Righteous: righteous().fontFamily,
-  Pacifico: pacifico().fontFamily,
-  'Rubik Mono One': rubikMono().fontFamily,
-  Lobster: lobster().fontFamily,
-  'Bowlby One': bowlby().fontFamily,
-  'Caveat Brush': caveatBrush().fontFamily,
-  Yellowtail: yellowtail().fontFamily,
+// Fuentes LOCALES (public/fonts, descargadas de Google Fonts; licencia OFL): no hace falta internet para ver ni renderizar.
+// src/fuentes.json = manifiesto {familia, peso, estilo, subconjunto, rango, archivo}. Se cargan una vez, con delayRender.
+type Fuente = {familia: string; peso: string; estilo: string; rango: string; archivo: string};
+let fuentesCargadas = false;
+export const cargarFuentes = (base?: string | null) => {
+  if (fuentesCargadas || typeof document === 'undefined' || typeof FontFace === 'undefined') return;
+  fuentesCargadas = true;
+  for (const f of fuentes as Fuente[]) {
+    const url = base ? base + f.archivo : staticFile(`fonts/${f.archivo}`);
+    const h = delayRender(`fuente ${f.archivo}`);
+    const ff = new FontFace(f.familia, `url("${url}") format("woff2")`, {weight: f.peso, style: f.estilo, unicodeRange: f.rango, display: 'block'});
+    document.fonts.add(ff);
+    ff.load().then(
+      () => continueRender(h),
+      (e) => {
+        console.error(`no se pudo cargar ${f.archivo}`, e);
+        continueRender(h);
+      },
+    );
+  }
 };
+const FONTS: Record<string, string> = Object.fromEntries((fuentes as Fuente[]).map((f) => [f.familia, f.familia]));
 export const font = (name?: string) => (name ? FONTS[name] ?? name : FONTS['Montserrat']);
 // ancho aproximado por carácter (en em) de cada fuente, para que una línea nunca se salga de la zona segura
 const CHAR_W: Record<string, number> = {
@@ -54,7 +46,7 @@ export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as co
 
 export type Word = {text: string; start: number; end: number; sec: string; key?: boolean; corte?: boolean; enf?: boolean};
 export type Sec = {id: string; a: number; b: number; zoom: number; color?: string | null; contador?: {label: string; color?: string} | null};
-export type Span = {a: number; b: number};
+export type Span = {a: number; b: number; ev?: number} & Libre;
 export type HookEl = {
   top?: number;
   tipo: 'texto' | 'stickers' | 'nota' | 'pildora' | 'imagen';
@@ -104,9 +96,8 @@ export type Data = {
   emojis?: (Span & {emoji: string; texto?: string})[];
   calendario?: (Span & {dia: string; mes: string; texto?: string; top?: number; color?: string})[];
 };
-export const D = data as unknown as Data;
 
-type Estilo = {
+export type Estilo = {
   colores: {acento: string; texto: string; contorno: string; a: string; b: string; pildora: string};
   subtitulos: {fuente: string; peso?: number; italic?: boolean; size: number; top: number; contorno: number; maxPalabras: number; maxChars: number; mayus: boolean; sombra?: string; simple?: boolean};
   camara: {empuje: number; ancla_y: number; zoom_objeto?: number};
@@ -117,9 +108,6 @@ type Estilo = {
   cierre: {fuente: string; peso?: number; italic?: boolean};
   monto?: {estilo?: 'pixel' | 'golpe'}; // golpe = cifra grande verde con billetes (Rocket Revolution)
 };
-export const E = estilo as unknown as Estilo;
-export const CIERRE_LEN = D.cierre ? Math.round((D.cierre.dur ?? 2.3) * FPS) : 0;
-export const CUT = D.n;
 export const secAt = (f: number) => D.secs.find((s) => f >= s.a && f < s.b) ?? D.secs[D.secs.length - 1];
 export const stroke = (px: number, color = E.colores.contorno) => ({WebkitTextStroke: `${px}px ${color}`, paintOrder: 'stroke fill' as const});
 // primera y libre debajo de los elementos fijos de arriba (contador, insignia x2, nombre), para no encimar
@@ -133,7 +121,75 @@ export const topLibre = (f: number) => {
 
 // El gancho puede empezar DESPUÉS de una intro del creador (Rocket Revolution): antes de HOOK_START hay subtítulos normales.
 // Sin intro, HOOK_START = 0 y todo funciona como antes.
-export const HOOK_START = D.hook && (D.intro3d || (D.hook as {tras_intro?: boolean}).tras_intro)
-  ? Math.max(0, Math.min(...D.hook.elementos.map((e) => (e.at ?? 0) as number)) - 6)
+const hookStart = (d: Data) => d.hook && (d.intro3d || (d.hook as {tras_intro?: boolean}).tras_intro)
+  ? Math.max(0, Math.min(...d.hook.elementos.map((e) => (e.at ?? 0) as number)) - 6)
   : 0;
 export const enGancho = (f: number) => !!D.hook && f >= HOOK_START && f < D.hookEnd;
+
+// ---------------------------------------------------------------- datos intercambiables
+// D/E/VLOG/LAND son "live bindings": `npx remotion render` usa los JSON importados arriba (como siempre) y la app
+// (Reel Studio, @remotion/player) pasa otros datos por props → setDatos() los reemplaza ANTES de que se dibujen los hijos.
+// Todo lo que se calcula a partir de los datos (bloques de subtítulos, tramos de cámara…) va con derivado(): se recalcula
+// solo cuando cambian los datos.
+export type Vlog = Record<string, unknown>;
+export type Datos = {data?: unknown; estilo?: unknown; vlog?: unknown; land?: unknown; base?: string | null; proxy?: boolean; fuentes?: string | null};
+export let D: Data;
+export let E: Estilo;
+export let VLOG: Vlog;
+export let LAND: [number, number][];
+export let CUT = 0;
+export let CIERRE_LEN = 0;
+export let HOOK_START = 0;
+export let PROXY = false;
+let BASE: string | null = null;
+let version = 0;
+const cierreLen = (d: Data) => (d.cierre ? Math.round((d.cierre.dur ?? 2.3) * FPS) : 0);
+export const totalFrames = (d: Data) => d.n + cierreLen(d);
+export const setDatos = (o: Datos) => {
+  const d = (o.data ?? data) as unknown as Data;
+  const e = (o.estilo ?? estilo) as unknown as Estilo;
+  const v = (o.vlog ?? vlogJson) as Vlog;
+  const l = (o.land ?? landJson) as [number, number][];
+  const b = o.base ?? null;
+  const px = !!o.proxy;
+  if (d === D && e === E && v === VLOG && l === LAND && b === BASE && px === PROXY) return;
+  D = d;
+  E = e;
+  VLOG = v;
+  LAND = l;
+  BASE = b;
+  PROXY = px;
+  CUT = d.n;
+  CIERRE_LEN = cierreLen(d);
+  HOOK_START = hookStart(d);
+  version++;
+};
+// valor calculado a partir de los datos, con caché hasta el siguiente setDatos()
+export const derivado = <T,>(fn: () => T) => {
+  let v = -1;
+  let val: T;
+  return () => {
+    if (v !== version) {
+      val = fn();
+      v = version;
+    }
+    return val;
+  };
+};
+// ruta de un archivo de public/: staticFile() al renderizar; en la app, la URL del proyecto abierto
+export const asset = (p: string) => (BASE === null ? staticFile(p) : BASE + p.split('/').map(encodeURIComponent).join('/'));
+setDatos({});
+
+// ---------------------------------------------------------------- posición libre (eventos.json → dx, dy, escala, rot)
+// Cualquier elemento movible se envuelve en <Pos>: sin campos se dibuja EXACTAMENTE igual que antes (el envoltorio se
+// comporta como su contenedor flex); con dx/dy (px), escala y rot se mueve sobre su posición normal.
+// data-reel="<lista>:<i>" permite que Reel Studio encuentre el elemento en el lienzo.
+export type Libre = {dx?: number; dy?: number; escala?: number; rot?: number};
+export const libre = (o?: Libre | null) => {
+  if (!o) return undefined;
+  const t: string[] = [];
+  if (o.dx || o.dy) t.push(`translate(${o.dx ?? 0}px, ${o.dy ?? 0}px)`);
+  if (o.rot) t.push(`rotate(${o.rot}deg)`);
+  if (o.escala !== undefined && o.escala !== 1) t.push(`scale(${o.escala})`);
+  return t.length ? t.join(' ') : undefined;
+};
