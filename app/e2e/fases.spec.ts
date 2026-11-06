@@ -3,7 +3,7 @@ import {expect, test} from '@playwright/test';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {FIXTURE, hasta, irA, lanzar, leer} from './util';
+import {FIXTURE, hasta, irA, lanzar, leer, limpiarCache} from './util';
 
 test('estilo: cambiar la altura de las etiquetas se guarda y se ve', async () => {
   const {app, page} = await lanzar();
@@ -47,6 +47,7 @@ test('cortes: tachar una palabra y re-cortar con reel.py', async () => {
   await expect(page.getByText('corte desactualizado')).toHaveCount(0);
   console.log(`corte: ${n0} → ${leer('src/data.json').n} cuadros`);
   await app.close();
+  limpiarCache(FIXTURE);
 });
 
 test('pipeline: proyecto nuevo (inventario → SDR → transcribir) y borrador', async () => {
@@ -79,5 +80,7 @@ test('pipeline: proyecto nuevo (inventario → SDR → transcribir) y borrador',
   await expect(page.getByTestId('trabajo').filter({hasText: 'Borrador'}).first()).toContainText('✓', {timeout: 60_000});
   await page.screenshot({path: 'test-results/pipeline.png'});
   await app.close();
+  limpiarCache(path.join(mat, 'proyecto_remotion'));
+  fs.rmSync(mat, {recursive: true, force: true});
   void FIXTURE;
 });

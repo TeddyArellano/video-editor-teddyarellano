@@ -1,9 +1,18 @@
 import {_electron as electron, type ElectronApplication, type Page} from '@playwright/test';
+import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
 export const FIXTURE = process.env.REEL_FIXTURE ?? '';
+// cada prueba que genera caché pesada la limpia al final con `reel limpiar` (el disco de trabajo puede ir justo)
+export const limpiarCache = (proyecto: string) => {
+  try {
+    execFileSync(path.join(os.homedir(), '.reels-toolkit/venv/bin/python'), [path.join(__dirname, '../../skill/editar-reel/scripts/reel.py'), 'limpiar', '-p', proyecto]);
+  } catch {
+    /* proyecto ya borrado */
+  }
+};
 export const leer = (rel: string) => JSON.parse(fs.readFileSync(path.join(FIXTURE, rel), 'utf8'));
 export const escribir = (rel: string, obj: unknown) => fs.writeFileSync(path.join(FIXTURE, rel), JSON.stringify(obj, null, 2));
 

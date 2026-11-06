@@ -6,7 +6,7 @@ import {execFileSync} from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {hasta, lanzar} from './util';
+import {hasta, lanzar, limpiarCache} from './util';
 
 const P = process.env.REEL_FIXTURE2 ?? '';
 const QR = process.env.REEL_FOTO_QR ?? '';
@@ -147,7 +147,8 @@ test('utilidades del pipeline, cortes y revisión', async () => {
   expect(copiado).toContain(P);
   await expect(page.getByTestId('avisos')).toContainText('Pedido copiado');
 
-  // --- mantenimiento: limpiar caché y probar el toolkit
+  // --- mantenimiento: limpiar caché (también la de las partes de dividir) y probar el toolkit
+  for (const n of ['parte_a', 'parte_b']) limpiarCache(path.join(path.dirname(P), `proyecto_remotion_${n}`));
   await page.getByTestId('tab-pipeline').click();
   await page.getByRole('button', {name: 'Limpiar caché'}).click();
   await trabajoOk(page, 'Limpiar caché');
