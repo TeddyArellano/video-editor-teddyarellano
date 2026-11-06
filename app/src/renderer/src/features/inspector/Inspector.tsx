@@ -104,7 +104,9 @@ export const Inspector: React.FC = () => {
 
   const ev = sel && data ? eventoDe(eventos ?? {}, data, sel) : undefined;
   const item: Obj | undefined = sel && data ? (sel.lista === 'hook' ? data.hook?.elementos?.[sel.i] : data[sel.lista]?.[sel.i]) : undefined;
-  useEffect(() => setAncla(textoAncla(ev?.en)), [ev?.en, sel?.lista, sel?.i]);
+  useEffect(() => {
+    setAncla(textoAncla(ev?.en));
+  }, [ev?.en, sel?.lista, sel?.i]);
 
   const agregar = (l: Lista) => {
     const s = useEditor.getState();

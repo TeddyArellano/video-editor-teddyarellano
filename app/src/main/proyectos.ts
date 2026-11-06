@@ -15,16 +15,24 @@ export const propias = new Set<string>(); // "<archivo>:<hash>" escritos por la 
 
 // acepta la carpeta proyecto_remotion o la del material que la contiene
 export const normalizarRuta = (ruta: string): string => {
-  const r = path.resolve(ruta);
+  const r = fs.realpathSync(path.resolve(ruta)); // igual que Path.resolve() de reel.py (/var → /private/var)
   if (fs.existsSync(path.join(r, 'edicion', 'proyecto.json'))) return r;
   if (fs.existsSync(path.join(r, 'proyecto_remotion', 'edicion', 'proyecto.json'))) return path.join(r, 'proyecto_remotion');
   throw new Error(`${r} no es un proyecto de editar-reel (falta edicion/proyecto.json)`);
 };
 
 // mismo id que reel.py (proyecto.json → id, o md5 de la ruta para proyectos que aún no lo tienen)
+// Si falta, se guarda en proyecto.json como lo haría reel.py (conservando la fecha del archivo, que `transcribir` compara):
+// así el id no cambia a media sesión cuando reel.py lo escriba.
 export const idDe = (ruta: string): string => {
-  const cfg = (leerJSON(path.join(ruta, 'edicion', 'proyecto.json'))?.contenido ?? {}) as {id?: string};
-  return cfg.id || crypto.createHash('md5').update(ruta).digest('hex').slice(0, 10);
+  const f = path.join(ruta, 'edicion', 'proyecto.json');
+  const cfg = (leerJSON(f)?.contenido ?? {}) as {id?: string};
+  if (cfg.id) return cfg.id;
+  const id = crypto.createHash('md5').update(fs.realpathSync(ruta)).digest('hex').slice(0, 10);
+  const st = fs.statSync(f);
+  fs.writeFileSync(f, JSON.stringify({...cfg, id}, null, 1));
+  fs.utimesSync(f, st.atime, st.mtime);
+  return id;
 };
 
 const mtime = (f: string) => (fs.existsSync(f) ? fs.statSync(f).mtimeMs : 0);

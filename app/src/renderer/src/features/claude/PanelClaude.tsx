@@ -49,6 +49,9 @@ const alTerminar = async () => {
   actualizar({sesion: null, cambiados});
   // asegura que la vista previa tenga lo último (el vigilante ya lo hizo; esto cubre data.json)
   for (const d of [...cambiados, 'data' as Doc]) await useEditor.getState().recargar(d);
+  // si Claude cambió eventos/estilo y no regeneró data.json, se regenera aquí para que la vista previa lo muestre
+  const info = useEditor.getState().info;
+  if (info && cambiados.some((d) => d === 'eventos' || d === 'estilo')) window.reel.correr(info.id, 'Datos', ['datos']);
 };
 
 export const PanelClaude: React.FC = () => {
@@ -59,9 +62,13 @@ export const PanelClaude: React.FC = () => {
   useEffect(() => {
     const f = () => forzar((x) => x + 1);
     oyentes.add(f);
-    return () => void oyentes.delete(f);
+    return () => {
+      oyentes.delete(f);
+    };
   }, []);
-  useEffect(() => fin.current?.scrollIntoView({block: 'end'}), [estado.msgs.length]);
+  useEffect(() => {
+    fin.current?.scrollIntoView({block: 'end'});
+  }, [estado.msgs.length]);
 
   const revertir = async () => {
     if (!estado.foto) return;
@@ -94,7 +101,7 @@ export const PanelClaude: React.FC = () => {
           <div
             key={i}
             className={`rounded-md px-2.5 py-1.5 text-xs whitespace-pre-wrap ${
-              m.de === 'yo' ? 'ml-8 bg-sky-900/50 text-sky-100' : m.de === 'claude' ? 'mr-4 bg-zinc-800 text-zinc-100' : m.de === 'error' ? 'bg-rose-950 text-rose-200' : 'font-mono text-[10px] text-zinc-500'
+              m.de === 'yo' ? 'ml-8 bg-sky-900/50 text-sky-100' : m.de === 'claude' ? 'mr-4 bg-zinc-800 text-zinc-100' : m.de === 'error' ? 'bg-rose-950 text-rose-200' : 'font-mono text-[10px] break-all text-zinc-500'
             }`}
           >
             {m.texto}

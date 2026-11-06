@@ -50,6 +50,7 @@ export const App: React.FC = () => {
           useEditor.setState({info});
           for (const d of ['data', 'edl', 'plan', 'eventos', 'estilo', 'proyecto', 'vlog'] as Doc[]) await s.recargar(d);
           if (['cortar', 'datos'].includes(t.comando[0]) && t.estado === 'ok') conPausa(() => useEditor.setState({corteDesactualizado: false}));
+          if (t.comando[0] === 'proxy' && t.estado === 'ok') useEditor.setState({calidad: 'proxy'});
         }
       }
     });

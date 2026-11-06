@@ -116,13 +116,17 @@ const registrarIPC = () => {
       .filter((f) => f.endsWith('.json') && !f.endsWith('.eventos.json'))
       .map((f) => {
         const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-        return {id: f.slice(0, -5), nombre: j.nombre ?? f.slice(0, -5), descripcion: j.descripcion};
+        // ojo: en estilos/*.json "nombre" es el grupo de fuentes de la etiqueta de nombre, no el nombre del estilo
+        return {id: f.slice(0, -5), nombre: typeof j.titulo === 'string' ? j.titulo : f.slice(0, -5), descripcion: typeof j.descripcion === 'string' ? j.descripcion : undefined};
       });
     const md = path.join(skillDir(), 'marcas');
     const marcas = fs
       .readdirSync(md)
       .filter((d) => fs.existsSync(path.join(md, d, 'marca.json')))
-      .map((d) => ({id: d, nombre: JSON.parse(fs.readFileSync(path.join(md, d, 'marca.json'), 'utf8')).nombre ?? d}));
+      .map((d) => {
+        const n = JSON.parse(fs.readFileSync(path.join(md, d, 'marca.json'), 'utf8')).nombre;
+        return {id: d, nombre: typeof n === 'string' ? n : d};
+      });
     return {estilos, marcas};
   });
   ipcMain.handle('leerEstilo', (_e, id: string) => {

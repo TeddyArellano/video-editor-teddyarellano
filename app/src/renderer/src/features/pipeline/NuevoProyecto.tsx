@@ -76,7 +76,8 @@ export const NuevoProyecto: React.FC<{cerrar: () => void; abrir: (ruta: string) 
           <select className={inputCls} value={estilo} onChange={(e) => setEstilo(e.target.value)}>
             {cat.estilos.map((e) => (
               <option key={e.id} value={e.id}>
-                {e.nombre} — {e.descripcion?.slice(0, 70)}
+                {e.id}
+                {e.descripcion ? ` — ${e.descripcion.slice(0, 70)}` : ''}
               </option>
             ))}
           </select>

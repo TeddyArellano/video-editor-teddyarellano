@@ -9,8 +9,10 @@ export const escribir = (rel: string, obj: unknown) => fs.writeFileSync(path.joi
 
 export const lanzar = async (abrir = true): Promise<{app: ElectronApplication; page: Page}> => {
   const userData = fs.mkdtempSync(path.join(os.tmpdir(), 'reel-studio-e2e-'));
+  // REEL_EJECUTABLE=dist/mac-arm64/Reel Studio.app/Contents/MacOS/Reel Studio → prueba la app empaquetada
+  const ejecutable = process.env.REEL_EJECUTABLE;
   const app = await electron.launch({
-    args: [path.join(__dirname, '..', 'out', 'main', 'index.js')],
+    ...(ejecutable ? {executablePath: ejecutable, args: []} : {args: [path.join(__dirname, '..', 'out', 'main', 'index.js')]}),
     env: {...process.env, REEL_USER_DATA: userData, ...(abrir ? {REEL_ABRIR: FIXTURE} : {})},
   });
   const page = await app.firstWindow();
@@ -30,4 +32,11 @@ export const hasta = async (fn: () => boolean, ms = 30_000) => {
     await new Promise((r) => setTimeout(r, 200));
   }
   throw new Error('tiempo agotado esperando la condición');
+};
+
+// lleva el cabezal al cuadro f con el teclado (Home, Shift+→ = 1 s, → = 1 cuadro)
+export const irA = async (page: Page, f: number) => {
+  await page.keyboard.press('Home');
+  for (let k = 0; k < Math.floor(f / 30); k++) await page.keyboard.press('Shift+ArrowRight');
+  for (let k = 0; k < f % 30; k++) await page.keyboard.press('ArrowRight');
 };

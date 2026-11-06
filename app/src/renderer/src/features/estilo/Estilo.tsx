@@ -127,7 +127,7 @@ export const Estilo: React.FC = () => {
             <option value="">Elegir…</option>
             {cat.estilos.map((e) => (
               <option key={e.id} value={e.id}>
-                {e.nombre} ({e.id})
+                {e.nombre === e.id ? e.id : `${e.nombre} (${e.id})`}
               </option>
             ))}
           </select>
@@ -152,7 +152,7 @@ export const Estilo: React.FC = () => {
             disabled={!nuevoId}
             onClick={async () => {
               try {
-                await window.reel.guardarEstilo(nuevoId, {...estilo, nombre: (estilo as Obj).nombre ?? nuevoId});
+                await window.reel.guardarEstilo(nuevoId, estilo);
                 useEditor.getState().avisar('ok', `Guardado como estilos/${nuevoId}.json en la skill.`);
                 window.reel.estilos().then(setCat);
               } catch (e) {

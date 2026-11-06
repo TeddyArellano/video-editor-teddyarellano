@@ -11,6 +11,12 @@
 - [ ] Primer video **real nuevo** de punta a punta con la skill, incluida una ronda de notas en la página de revisión.
 - [ ] Commit inicial y push de este repo (cuando el creador lo pida).
 
+## Reel Studio: pendientes
+- **Fuentes locales:** hoy la plantilla carga las 15 Google Fonts por internet; empaquetarlas (`@remotion/fonts` + `public/fonts`) para trabajar sin red. Requiere repetir el golden test de la plantilla.
+- **Vista previa de proyectos con componentes propios:** cargar los `src/components` del proyecto en el Player (hoy muestra "vista aproximada" con los de la skill).
+- **Color de la vista previa:** el `<video>` de Chromium se ve ~10/255 más claro que el render; estudiar una corrección CSS/WebGL.
+- **Firmar la app** (cuenta de Apple Developer) si se reparte al equipo.
+
 ## Siguientes mejoras (cuando el uso real lo pida)
 - **Equipo:** empaquetar la skill como plugin de Claude Code para otras personas (requieren Mac).
 - **Volumen de producción:** procesar varios videos en cola (una carpeta por entrevista) y revisar todos los borradores juntos.
@@ -20,4 +26,4 @@
 - **Fuera de macOS:** buscar alternativas a AVFoundation y Vision.
 
 ## Ideas descartadas o pospuestas
-- **Una interfaz web propia para editar:** pospuesta. Lo difícil (elegir tomas, chistes, zooms) es criterio de Claude; la página de revisión cubre la parte de dar notas.
+- ~~**Una interfaz web propia para editar**~~ → hecha como **Reel Studio** (`app/`, noviembre 2026). Claude sigue haciendo el criterio; la app cubre los cambios rápidos a mano.

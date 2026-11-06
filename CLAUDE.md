@@ -17,6 +17,15 @@ Este repo es la **fuente de verdad** de la skill `/editar-reel`: el sistema con 
 - **Preferencia nueva y general del creador** (llega como corrección en un video): agrégala a `SKILL.md §1`, `skill/editar-reel/referencia/criterio_editorial.md` y `docs/preferencias_creador.md`, y anótala en `docs/historia.md`.
 - **Bug resuelto:** agrégalo a `skill/editar-reel/referencia/problemas.md`.
 - **Nuevo estilo:** `skill/editar-reel/estilos/<id>.json` + `<id>.eventos.json` + `ejemplos/<id>/`, más la fila en la tabla de `SKILL.md §3`.
+- **Reel Studio (`app/`):** la app usa la MISMA plantilla (`@plantilla` → `skill/editar-reel/plantilla_remotion/src`). Si cambias la plantilla o `reel.py`, corre también:
+  ```bash
+  cd app && pnpm typecheck && pnpm test
+  REEL_FIXTURE=<copia de un proyecto> pnpm e2e
+  ```
+  - La copia del proyecto lleva `src/` y `edicion/` copiados y `public/` clonado con `cp -cR`. Nunca uses un proyecto real.
+  - La plantilla debe seguir leyendo los datos con `setDatos`/`derivado`/`asset` de `theme.ts` (nada de imports de JSON ni de cálculos a nivel de módulo en los componentes).
+  - Los elementos movibles van envueltos en `<Pos>`.
+  - Después: `./instalar.sh` para actualizar la app instalada.
 - **Commits:** solo cuando el usuario lo pida. No subas videos, audio, cachés ni `node_modules` (ver `.gitignore`).
 
 ## Entorno

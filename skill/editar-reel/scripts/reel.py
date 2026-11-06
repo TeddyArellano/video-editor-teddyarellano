@@ -25,6 +25,7 @@ Comandos (en orden de uso):
   revisar -p P f1 f2 …            stills de Remotion con zona segura y centro → edicion/revision/
   enfasis -p P [--umbral 0.55]   SUGERENCIAS: palabras con énfasis en la voz (volumen/tono/duración) → eventos.enfasis
   render -p P [--borrador] [--nota "..."] [--salida x.mp4]   borrador rápido o final verificado (con versiones)
+  proxy -p P                      public/cut_proxy.mp4 (540x960) para una vista previa fluida
   extras -p P [--frame N]         subtítulos .srt + portada .jpg junto al video
   revision -p P [--video-url U --artifact A]   página de revisión con notas por código de tiempo
   dividir -p P --partes "a,b" "c,d" --nombres "T1" "T2"   un proyecto por parte
@@ -1745,9 +1746,7 @@ def cmd_render(a):
     if a.borrador:
         # borrador rápido para aprobar el corte: mitad de resolución, sin verificación completa
         out = pr.ed / 'borrador.mp4'
-        cut, proxy = pr.P / 'public' / 'cut.mp4', pr.P / 'public' / 'cut_proxy.mp4'
-        if not proxy.exists() or proxy.stat().st_mtime < cut.stat().st_mtime:
-            ff('-i', cut, '-vf', 'scale=540:960', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '24', '-g', '15', '-c:a', 'copy', proxy)
+        hacer_proxy(pr)
         print("… borrador (540x960, proxy)")
         remotion_render(['src/index.ts', 'Reel', raw, '--codec=h264', '--crf=26', '--scale=0.5',
                          '--color-space=bt709', '--props={"proxy":true}'], cwd=pr.P)
@@ -1796,6 +1795,22 @@ def cmd_render(a):
         print("  ⚠ el color no quedó bt709")
     if n_ver > 1:
         print(f"  versión anterior en {vdir}  · historial: edicion/cambios.md")
+
+
+def hacer_proxy(pr, forzar=False):
+    """public/cut_proxy.mp4: corte a 540x960 con GOP corto (busca rápido en la vista previa y en el borrador)"""
+    cut, proxy = pr.P / 'public' / 'cut.mp4', pr.P / 'public' / 'cut_proxy.mp4'
+    if forzar or not proxy.exists() or proxy.stat().st_mtime < cut.stat().st_mtime:
+        ff('-i', cut, '-vf', 'scale=540:960', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '24', '-g', '15', '-c:a', 'copy', proxy)
+    return proxy
+
+
+def cmd_proxy(a):
+    pr = Proyecto(a.proyecto)
+    if not (pr.P / 'public' / 'cut.mp4').exists():
+        sys.exit("✗ falta public/cut.mp4 (corre cortar)")
+    p = hacer_proxy(pr, True)
+    print(f"✓ {p.relative_to(pr.P)}  (540x960, vista previa fluida)")
 
 
 def cmd_extras(a):
@@ -2017,7 +2032,8 @@ def main():
     s = sp.add_parser('nuevo'); s.add_argument('carpeta'); s.add_argument('--estilo', required=True); s.add_argument('--nombre')
     s.add_argument('--destino'); s.add_argument('--forzar', action='store_true'); s.add_argument('--marca'); s.set_defaults(fn=cmd_nuevo)
     s = sp.add_parser('marca'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('marca'); s.set_defaults(fn=cmd_marca)
-    for name, fn in (('inventario', cmd_inventario), ('datos', cmd_datos), ('edl', cmd_edl), ('limpiar', cmd_limpiar), ('actualizar', cmd_actualizar)):
+    for name, fn in (('inventario', cmd_inventario), ('datos', cmd_datos), ('edl', cmd_edl), ('limpiar', cmd_limpiar), ('actualizar', cmd_actualizar),
+                     ('proxy', cmd_proxy)):
         s = sp.add_parser(name); s.add_argument('-p', '--proyecto', required=True); s.set_defaults(fn=fn)
     s = sp.add_parser('sdr'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('clips', nargs='*'); s.set_defaults(fn=cmd_sdr)
     s = sp.add_parser('transcribir'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('clips', nargs='*')

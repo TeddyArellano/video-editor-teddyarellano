@@ -157,6 +157,11 @@ export const Editor: React.FC = () => {
             <span className="text-zinc-600">cuadro {frame}</span>
             <div className="flex-1" />
             <BarraTrabajos />
+            {!info.estado.proxy && info.estado.cortado && (
+              <Boton v="fantasma" onClick={() => window.reel.correr(info.id, 'Proxy', ['proxy'])} title="Crea public/cut_proxy.mp4 (540×960) para que la vista previa sea fluida">
+                Crear proxy
+              </Boton>
+            )}
             <select
               className="rounded border border-zinc-700 bg-zinc-900 px-1.5 py-1 text-[11px]"
               value={calidad}
