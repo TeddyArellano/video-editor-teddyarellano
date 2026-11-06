@@ -9,8 +9,12 @@ import {pedirAClaude} from '../claude/PanelClaude';
 
 export type Nota = {id: string; t: number; texto: string; autor: string; estado: 'pendiente' | 'aplicado'; respuesta?: string; version?: number; creado: number};
 
-// página de revisión (SKILL.md §4): `reel revision --renderizar` prepara el borrador web y revision.html; publicarla en
-// claude.ai la hace Claude (herramienta Artifact), porque es contenido que sale de tu Mac: se pide con un botón aparte.
+// página de revisión (SKILL.md §4): `reel revision --renderizar` prepara el borrador web y revision.html. Publicarla en
+// claude.ai requiere la herramienta Artifact, que solo tiene una sesión interactiva de Claude (el `claude -p` de la app no):
+// la app copia el pedido exacto para pegarlo en Claude Code.
+export const pedidoPublicar = (ruta: string) =>
+  `/editar-reel Publica la página de revisión del proyecto ${ruta} siguiendo SKILL.md §4 (la página y el borrador web ya están listos en edicion/revision/: haz los pasos 2–4 y dame el link).`;
+
 const Revision: React.FC = () => {
   const info = useEditor((s) => s.info)!;
   const t = useEditor((s) => s.trabajos.find((x) => x.proyecto === info.id && x.comando[0] === 'revision'));
@@ -26,9 +30,14 @@ const Revision: React.FC = () => {
             <Boton onClick={() => window.reel.mostrarEnFinder(`${info.ruta}/edicion/revision/revision.html`)}>Mostrar en Finder</Boton>
             <Boton
               v="primario"
-              onClick={() => pedirAClaude('Publica la página de revisión de este proyecto siguiendo SKILL.md §4 (pasos 2–4: Artifact con edicion/revision/revision.html, sube borrador_web.mp4 como asset y vuelve a correr reel revision con --video-url y --artifact). Dame el link.')}
+              data-testid="publicar-revision"
+              title="Publicar en claude.ai necesita la herramienta Artifact, que solo tiene una sesión interactiva de Claude (no el modo -p de la app)"
+              onClick={async () => {
+                await window.reel.copiar(pedidoPublicar(info.ruta));
+                useEditor.getState().avisar('ok', 'Pedido copiado: pégalo en Claude Code (en la terminal) para publicar la página en claude.ai.');
+              }}
             >
-              Claude: publicarla
+              Copiar pedido para publicarla
             </Boton>
           </>
         )}

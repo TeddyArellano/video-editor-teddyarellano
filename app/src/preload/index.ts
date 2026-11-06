@@ -38,6 +38,7 @@ const api: ReelAPI = {
   leerEstilo: (id) => ipcRenderer.invoke('leerEstilo', id),
   guardarEstilo: (id, c) => ipcRenderer.invoke('guardarEstilo', id, c),
   claude: (id, p) => ipcRenderer.invoke('claude', id, p),
+  copiar: (t) => ipcRenderer.invoke('copiar', t),
   claudeCancelar: (s) => ipcRenderer.invoke('claudeCancelar', s),
   onCambio: (fn) => on<CambioArchivo>('cambio', fn),
   onTrabajo: (fn) => on<Trabajo>('trabajo', fn),

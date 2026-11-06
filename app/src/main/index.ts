@@ -1,5 +1,5 @@
 // Proceso principal de Reel Studio.
-import {BrowserWindow, app, dialog, ipcMain, shell} from 'electron';
+import {BrowserWindow, app, clipboard, dialog, ipcMain, shell} from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import {ARCHIVOS, type Archivo, type CambioArchivo, type EventoClaude, type Herramientas, type Trabajo} from '../shared/tipos';
@@ -169,6 +169,7 @@ const registrarIPC = () => {
     fs.writeFileSync(path.join(skillDir(), 'estilos', `${id}.json`), JSON.stringify(contenido, null, 2) + '\n');
   });
   ipcMain.handle('claude', (_e, id: string, prompt: string) => preguntar(rutaDe(id), prompt, (ev: EventoClaude) => enviar('claude', ev)));
+  ipcMain.handle('copiar', (_e, t: string) => clipboard.writeText(t));
   ipcMain.handle('claudeCancelar', (_e, s: string) => cancelarClaude(s));
   alAvisar((t: Trabajo) => enviar('trabajo', t));
 };
