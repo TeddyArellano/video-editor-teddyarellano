@@ -1,0 +1,48 @@
+{
+  "name": "reel-studio",
+  "productName": "Reel Studio",
+  "version": "0.1.0",
+  "description": "Editor visual de reels sobre la skill editar-reel",
+  "private": true,
+  "type": "module",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "e2e": "electron-vite build && playwright test -c e2e",
+    "dist": "electron-vite build && electron-builder --mac --dir"
+  },
+  "dependencies": {
+    "@react-three/fiber": "9.8.1",
+    "@remotion/google-fonts": "4.0.529",
+    "@remotion/player": "4.0.529",
+    "@remotion/three": "4.0.529",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.529",
+    "three": "0.178.0",
+    "zod": "4.6.7",
+    "zundo": "2.3.0",
+    "zustand": "5.0.16"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/vite": "4.3.4",
+    "@types/node": "26.6.6",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "0.178.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "chokidar": "6.0.0",
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0",
+    "electron-vite": "6.0.0",
+    "tailwindcss": "4.3.4",
+    "typescript": "5.9.3",
+    "vite": "8.3.5",
+    "vitest": "5.1.0"
+  }
+}

@@ -1003,8 +1003,8 @@ def cmd_datos(a):
         elif isinstance(o, list):
             for v in o:
                 walk(v)
-    walk({k: v for k, v in ev.items() if k not in ('objetos', 'enfasis')})
-    for it in ev.get('objetos', []) + [e if isinstance(e, str) else e['en'] for e in ev.get('enfasis', [])]:
+    walk({k: v for k, v in ev.items() if k not in ('objetos', 'enfasis', 'cortes')})
+    for it in ev.get('objetos', []) + ev.get('cortes', []) + [e if isinstance(e, str) else e['en'] for e in ev.get('enfasis', [])]:
         try:
             A.t(it)
         except KeyError as e:
@@ -1043,6 +1043,13 @@ def cmd_datos(a):
                 w['key'] = True
         if isinstance(e, dict) and e.get('sfx'):
             enf_sfx.append((f, e['sfx'], e.get('vol', 0.18)))
+
+    # cortes manuales de subtítulos (Reel Studio): la palabra empieza un bloque nuevo
+    for an in ev.get('cortes', []):
+        f = A.f(an)
+        for w in words:
+            if abs(round(w['start'] * FPS) - f) <= 1:
+                w['corte'] = True
 
     zooms = []
     for z in ev.get('zooms', []):

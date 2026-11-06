@@ -110,6 +110,9 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
 }
 ```
 
+## Cortes de subtítulos
+`"cortes": ["sec:palabra#n", …]`: esa palabra empieza un bloque de subtítulos nuevo (además de los cortes automáticos por puntuación, sección y tramo). Lo usa Reel Studio en el panel Subtítulos.
+
 ## Posición libre (Reel Studio)
 `nombres`, `etiquetas`, `imagenes`, `montos`, `emojis`, `calendario` y los `elementos` del gancho aceptan además:
 - `dx`, `dy`: desplazamiento en px sobre su posición normal (lienzo 1080×1920; `dy` positivo = hacia abajo).
