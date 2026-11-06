@@ -35,9 +35,9 @@ No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada
 | **Elementos** | Inspector del elemento seleccionado (texto, colores, ancla, duración, posición…) y paleta para agregar etiquetas, nombres, imágenes, montos, emojis, calendario, zooms y SFX en el cuadro actual. |
 | **Subtítulos** | Transcripción sincronizada. Corregir palabra (`fix`), resaltar, énfasis y "cortar bloque aquí" (`cortes`). |
 | **Estilo** | `src/estilo.json` por secciones, cambio de preset, marca y "guardar como preset". |
-| **Cortes** | El plan como piezas de transcripción. Tachar palabras, recortar o extender por palabra, dividir (Alt+clic), reordenar, velocidad, ganancia y márgenes. Escuchar el clip original. **Re-cortar** corre `edl → cortar --verificar → datos`. |
-| **Pipeline** | Todos los pasos de `reel.py` con botones y cola de trabajos con progreso: inventario, SDR, micrófono externo, transcribir, zooms, énfasis, recorte, intro 3D, borrador, render final (con nota / 4K), SRT + portada, logos, QR, b-roll y limpiar caché. |
-| **Notas** | Notas de revisión en el cuadro actual (`edicion/notas.json`). Claude las aplica y las marca. |
+| **Cortes** | Tabla de LUFS por sección ("Medir niveles" / "Igualar"). El plan como piezas de transcripción. Tachar palabras, recortar o extender por palabra, dividir (Alt+clic), reordenar, velocidad, ganancia y márgenes. Escuchar el clip original. **Re-cortar** corre `edl → cortar --verificar → datos`. |
+| **Pipeline** | Todos los pasos de `reel.py` con botones y cola de trabajos con progreso: inventario (con tabla y hojas de contacto); SDR, micrófono externo y transcribir; zooms, énfasis, recorte e intro 3D; borrador, render final (con nota / 4K) y SRT + portada; logos y QR; b-roll marcando **entrada y salida en un visor del clip original**; dividir en partes; limpiar caché y probar el toolkit. |
+| **Notas** | Notas de revisión en el cuadro actual (`edicion/notas.json`). Claude las lista y las marca con `reel notas`. **Página de revisión:** "Preparar página" corre `reel revision --renderizar`; "Claude: publicarla" le pide a Claude que la suba a claude.ai (eso sale de tu Mac, por eso va en un botón aparte). |
 | **Claude** | Pide cambios de criterio a Claude Code (tu sesión, con la skill). Con **revisar antes de aplicar** (por defecto) ves el diff campo por campo de lo que propone y decides **Aplicar** o **Descartar**. Sin revisar, se aplica directo y puedes **Revertir**. |
 | **⚙ Preferencias** | Ruta de la skill y del Python del toolkit, tema claro u oscuro, calidad de la vista previa al abrir, lista de atajos, estado del toolkit (**Instalar / reparar**) y **Buscar actualizaciones**. Esta última hace `git fetch` del repo; **Actualizar ahora** hace `git pull --ff-only` y reinstala la app, que luego se reinicia. |
 
@@ -80,7 +80,7 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 ```
 
 **Las E2E modifican el proyecto.** Usa siempre una copia:
-- `src/` y `edicion/` copiados;
+- `src/`, `edicion/` y la configuración (`remotion.config.ts`, `package.json`) copiados;
 - `public/` clonado con `cp -cR` (clon APFS: no ocupa espacio y escribir ahí no toca el original).
 
 **Qué cubren:**
@@ -94,6 +94,9 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 - estilo;
 - re-corte real;
 - proyecto nuevo de punta a punta con borrador;
+- utilidades: inventario con hojas, logos, QR, b-roll con entrada y salida, intro 3D, dividir, niveles, escuchar un corte, notas con `reel notas`, página de revisión, limpiar caché y probar el toolkit (`REEL_FIXTURE2=<copia del proyecto de reel prueba>`, `REEL_FOTO_QR=<foto con un QR>`);
+- Claude real en modo revisar (`REEL_E2E_CLAUDE=1`);
+- actualización real sobre un clon atrasado (`REEL_E2E_CLON`);
 - paneles;
 - fidelidad: la vista previa contra `remotion still` en 6 cuadros.
 

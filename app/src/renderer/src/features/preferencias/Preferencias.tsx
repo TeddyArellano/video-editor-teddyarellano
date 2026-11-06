@@ -44,6 +44,7 @@ export const Preferencias: React.FC<{cerrar: () => void}> = ({cerrar}) => {
   };
   const actualizando = trabajos.find((t) => t.titulo === 'Actualizar Reel Studio');
   const reparando = trabajos.find((t) => t.titulo === 'Instalar / reparar toolkit');
+  const probando = trabajos.find((t) => t.titulo === 'Probar toolkit');
   if (!p) return null;
 
   return (
@@ -113,6 +114,14 @@ export const Preferencias: React.FC<{cerrar: () => void}> = ({cerrar}) => {
             <Boton onClick={() => window.reel.repararToolkit()} disabled={reparando?.estado === 'corriendo'}>
               Instalar / reparar toolkit
             </Boton>
+            <Boton onClick={() => window.reel.probarToolkit()} disabled={probando?.estado === 'corriendo'} data-testid="probar-toolkit">
+              Probar toolkit
+            </Boton>
+            {probando && (
+              <span className={`text-[11px] ${probando.estado === 'ok' ? 'text-emerald-400' : probando.estado === 'error' ? 'text-rose-300' : 'text-zinc-400'}`} data-testid="resultado-prueba">
+                {probando.estado === 'corriendo' ? `probando… ${probando.ultimo ?? ''}` : probando.estado === 'ok' ? `✓ ${probando.lineas.filter((l) => l.tipo === 'ok').pop()?.msg ?? 'OK'}` : `✗ ${probando.ultimo ?? ''}`}
+              </span>
+            )}
             {reparando && <span className="truncate text-[11px] text-zinc-400">{reparando.estado === 'corriendo' ? 'instalando… (puede tardar varios minutos)' : reparando.estado}</span>}
           </div>
         </div>

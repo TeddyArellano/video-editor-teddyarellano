@@ -122,3 +122,10 @@ Arreglado: `vlog.py` cae a `sdr_global()` con la misma clave que `reel.py` (`Pro
   - Los cuadros van a una carpeta temporal propia (`ffc_XXXX`).
   - `jsave` escribe de forma atómica (temporal + rename).
   - Al cerrarse, Reel Studio detiene sus procesos.
+
+## La autoprueba no detectaba que el inventario ignoraba su clip (noviembre 2026)
+- **Síntoma:** en `reel prueba`, `inventario.json` quedaba con `videos: []` y el clip aparecía en `renders_ignorados`, pero la prueba pasaba igual.
+- **Causa:** ffmpeg sobrescribe `-metadata encoder=camara` con `Lavf…`, e `inventario` toma los archivos con `Lavf` como renders.
+- **Arreglo:**
+  - El clip sintético se genera con `-fflags +bitexact`, que no escribe la etiqueta `Lavf`.
+  - El paso `inventario` de la prueba ahora exige que `CLIP01` esté en `videos`.

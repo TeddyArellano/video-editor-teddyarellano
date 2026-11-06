@@ -26,6 +26,7 @@ Comandos (en orden de uso):
   enfasis -p P [--umbral 0.55]   SUGERENCIAS: palabras con énfasis en la voz (volumen/tono/duración) → eventos.enfasis
   render -p P [--borrador] [--nota "..."] [--salida x.mp4]   borrador rápido o final verificado (con versiones)
   proxy -p P                      public/cut_proxy.mp4 (540x960) para una vista previa fluida
+  notas -p P [--marcar ID --respuesta "…"]   notas de Reel Studio (edicion/notas.json): listar / marcar aplicadas
   extras -p P [--frame N]         subtítulos .srt + portada .jpg junto al video
   revision -p P [--video-url U --artifact A]   página de revisión con notas por código de tiempo
   dividir -p P --partes "a,b" "c,d" --nombres "T1" "T2"   un proyecto por parte
@@ -1910,10 +1911,12 @@ def cmd_prueba(a):
              "Tengo un cuaderno, [[slnc 700]] un lápiz y una botella de agua. [[slnc 1500]] Y ya es todo.")
     step('voz (say)', ['say', '-v', voz, '-o', d / 'voz.aiff', texto])
     step('clip', ['ffmpeg', '-nostdin', '-v', 'error', '-y', '-f', 'lavfi', '-i', 'testsrc2=s=1080x1920:r=30', '-i', d / 'voz.aiff',
-                  '-shortest', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-metadata', 'encoder=camara', d / 'material' / 'CLIP01.mov'])
+                  '-shortest', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-fflags', '+bitexact', '-flags:v', '+bitexact', '-metadata', 'encoder=camara',
+                  d / 'material' / 'CLIP01.mov'])  # bitexact: sin etiqueta Lavf (si no, inventario lo toma por un render)
     P = d / 'material' / 'proyecto_remotion'
     step('nuevo', [*me, 'nuevo', d / 'material', '--estilo', 'humor-comparacion', '--nombre', 'autoprueba'])
-    step('inventario', [*me, 'inventario', '-p', P], lambda o: 'CLIP01' in o)
+    step('inventario', [*me, 'inventario', '-p', P],
+         lambda o: any(v['clip'] == 'CLIP01' for v in jload(P / 'edicion' / 'inventario.json')['videos']))  # el clip cuenta como material
     step('transcribir', [*me, 'transcribir', '-p', P, '--prompt', 'mochila, cuaderno, lápiz'], lambda o: 'palabras' in o)
     W_ = jload(P / 'edicion' / 'palabras' / 'CLIP01.json')
     nw = [norm(w[0]) for w in W_]
@@ -2006,6 +2009,33 @@ def cmd_actualizar(a):
         print("  ", c)
 
 
+def cmd_notas(a):
+    """Notas de revisión de Reel Studio (edicion/notas.json): listarlas y marcarlas como aplicadas con una respuesta."""
+    pr = Proyecto(a.proyecto)
+    f = pr.ed / 'notas.json'
+    notas = jload(f, [])
+    if a.marcar:
+        hits = [n for n in notas if str(n.get('id', '')).startswith(a.marcar)]
+        if len(hits) != 1:
+            sys.exit(f"✗ {len(hits)} notas coinciden con '{a.marcar}' (usa más caracteres del id)")
+        n = hits[0]
+        n['estado'] = 'pendiente' if a.reabrir else 'aplicado'
+        if a.respuesta:
+            n['respuesta'] = a.respuesta
+        jsave(f, notas, indent=2)
+        print(f"✓ nota {n['id'][:8]} → {n['estado']}" + (f": {a.respuesta}" if a.respuesta else ''))
+        return
+    pend = sorted([n for n in notas if n.get('estado') != 'aplicado'], key=lambda n: n.get('t', 0))
+    hechas = [n for n in notas if n.get('estado') == 'aplicado']
+    print(f"notas: {len(pend)} pendientes · {len(hechas)} aplicadas  (edicion/notas.json)")
+    for n in pend + ([] if not a.todas else sorted(hechas, key=lambda n: n.get('t', 0))):
+        t = float(n.get('t', 0))
+        print(f"  [{str(n.get('id', ''))[:8]}] {int(t // 60)}:{t % 60:05.2f}  cuadro {round(t * FPS)}  {n.get('estado', 'pendiente')}  {n.get('texto', '')}"
+              + (f"  → {n['respuesta']}" if n.get('respuesta') else ''))
+    if pend:
+        print("→ aplica cada una y márcala:  reel notas -p P --marcar <id> --respuesta \"qué hiciste\"")
+
+
 def cmd_limpiar(a):
     pr = Proyecto(a.proyecto)
     sz = sum(f.stat().st_size for f in pr.cache.rglob('*') if f.is_file()) / 1e9
@@ -2078,6 +2108,10 @@ def main():
     s.add_argument('--nota', help='qué cambió en esta versión (va a edicion/cambios.md)')
     s.set_defaults(fn=cmd_render)
     s = sp.add_parser('prueba'); s.set_defaults(fn=cmd_prueba)
+    s = sp.add_parser('notas', help='notas de revisión de Reel Studio (edicion/notas.json)')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('--marcar', help='id (o inicio del id) de la nota')
+    s.add_argument('--respuesta'); s.add_argument('--reabrir', action='store_true'); s.add_argument('--todas', action='store_true')
+    s.set_defaults(fn=cmd_notas)
     s = sp.add_parser('lentes', help='quita el reflejo azul de los lentes en una sección (se reaplica en cada cortar)')
     s.add_argument('-p', '--proyecto', required=True); s.add_argument('--sec', default='intro'); s.add_argument('--fuerza', type=float, default=0.88)
     s.add_argument('--quitar', action='store_true'); s.set_defaults(fn=cmd_lentes)

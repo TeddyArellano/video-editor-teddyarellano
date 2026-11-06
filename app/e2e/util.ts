@@ -7,12 +7,13 @@ export const FIXTURE = process.env.REEL_FIXTURE ?? '';
 export const leer = (rel: string) => JSON.parse(fs.readFileSync(path.join(FIXTURE, rel), 'utf8'));
 export const escribir = (rel: string, obj: unknown) => fs.writeFileSync(path.join(FIXTURE, rel), JSON.stringify(obj, null, 2));
 
-export const lanzar = async (abrir = true, userData = fs.mkdtempSync(path.join(os.tmpdir(), 'reel-studio-e2e-'))): Promise<{app: ElectronApplication; page: Page; userData: string}> => {
+// abrir: true = el fixture (REEL_FIXTURE) · false = nada · "<ruta>" = ese proyecto
+export const lanzar = async (abrir: boolean | string = true, userData = fs.mkdtempSync(path.join(os.tmpdir(), 'reel-studio-e2e-'))): Promise<{app: ElectronApplication; page: Page; userData: string}> => {
   // REEL_EJECUTABLE=dist/mac-arm64/Reel Studio.app/Contents/MacOS/Reel Studio → prueba la app empaquetada
   const ejecutable = process.env.REEL_EJECUTABLE;
   const app = await electron.launch({
     ...(ejecutable ? {executablePath: ejecutable, args: []} : {args: [path.join(__dirname, '..', 'out', 'main', 'index.js')]}),
-    env: {...process.env, REEL_USER_DATA: userData, ...(abrir ? {REEL_ABRIR: FIXTURE} : {})},
+    env: {...process.env, REEL_USER_DATA: userData, ...(abrir ? {REEL_ABRIR: typeof abrir === 'string' ? abrir : FIXTURE} : {})},
   });
   const page = await app.firstWindow();
   page.on('console', (m) => m.type() === 'error' && console.log('[renderer]', m.text().slice(0, 300)));

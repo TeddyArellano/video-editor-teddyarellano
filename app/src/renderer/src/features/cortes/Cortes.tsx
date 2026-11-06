@@ -34,6 +34,9 @@ const useEscuchar = () => {
     if (!f) return useEditor.getState().avisar('error', `No encuentro el clip ${clip} en la carpeta del material.`);
     if (!audio.current) {
       audio.current = document.createElement('video');
+      audio.current.dataset.testid = 'escucha';
+      audio.current.style.display = 'none';
+      document.body.appendChild(audio.current);
       audio.current.ontimeupdate = () => audio.current && audio.current.currentTime >= fin.current && audio.current.pause();
     }
     const url = `${info.base}__fuente/${encodeURIComponent(f)}`;
@@ -42,6 +45,35 @@ const useEscuchar = () => {
     audio.current.currentTime = Math.max(0, ini);
     audio.current.play();
   };
+};
+
+// tabla de LUFS por sección (salida de `reel niveles`): diferencias ≥ 1.5 dB se marcan
+const Niveles: React.FC = () => {
+  const info = useEditor((s) => s.info)!;
+  const t = useEditor((s) => s.trabajos.find((x) => x.proyecto === info.id && x.comando[0] === 'niveles' && x.estado === 'ok'));
+  if (!t) return null;
+  const filas = t.lineas.map((l) => l.msg.match(/^(\S+)\s+(-?\d+\.\d)\s+([+-]\d+\.\d) dB/)).filter(Boolean) as RegExpMatchArray[];
+  if (!filas.length) return null;
+  return (
+    <table className="mb-1 w-full text-[11px]" data-testid="niveles">
+      <thead>
+        <tr className="text-zinc-500">
+          <th className="text-left font-normal">sección</th>
+          <th className="text-right font-normal">LUFS</th>
+          <th className="text-right font-normal">sugerido</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filas.map((m) => (
+          <tr key={m[1]}>
+            <td className="text-zinc-200">{m[1]}</td>
+            <td className="text-right text-zinc-300">{m[2]}</td>
+            <td className={`text-right ${Math.abs(Number(m[3])) >= 1.5 ? 'text-amber-300' : 'text-zinc-500'}`}>{m[3]} dB</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 };
 
 export const Cortes: React.FC = () => {
@@ -231,6 +263,7 @@ export const Cortes: React.FC = () => {
         )}
       </Seccion>
       <Seccion titulo="Audio">
+        <Niveles />
         <div className="flex gap-1">
           <Boton onClick={() => window.reel.correr(info.id, 'Niveles', ['niveles'])}>Medir niveles</Boton>
           <Boton onClick={() => window.reel.correr(info.id, 'Igualar niveles', ['niveles', '--aplicar'])} title="Escribe gain_db en plan.json; luego Re-cortar">

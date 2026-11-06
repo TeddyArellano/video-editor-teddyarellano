@@ -92,6 +92,7 @@ export type ReelAPI = {
   buscarActualizaciones: () => Promise<EstadoActualizacion>;
   actualizarApp: () => Promise<string>;
   repararToolkit: () => Promise<string>;
+  probarToolkit: () => Promise<string>;
   reiniciar: () => Promise<void>;
   estilos: () => Promise<{estilos: {id: string; nombre: string; descripcion?: string}[]; marcas: {id: string; nombre: string}[]}>;
   leerEstilo: (id: string) => Promise<unknown>;

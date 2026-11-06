@@ -260,7 +260,10 @@ Ignoran acentos, mayúsculas y puntuación. Si no hay coincidencia exacta, busca
 El creador puede tener abierto el mismo proyecto en **Reel Studio** (`app/` del repo de la skill). La app edita los mismos archivos que tú:
 - **Relee antes de escribir.** Si vas a cambiar `eventos.json`, `plan.json`, `src/estilo.json` o `edicion/notas.json`, léelo justo antes: el creador pudo haberlo cambiado en la app. Nunca lo sobrescribas con una copia vieja.
 - **Posición libre:** en la app el creador arrastra elementos; eso escribe `dx`, `dy`, `escala` y `rot` en `eventos.json` (ver `referencia/eventos.md`). Respétalos: no los borres al editar otras cosas.
-- **Notas locales:** `edicion/notas.json` = lista de `{id, t, texto, autor, estado: "pendiente"|"aplicado", respuesta, version, creado}`. Léelas como las de la página de revisión: aplica las pendientes y márcalas `aplicado` con una `respuesta` breve. Son datos del creador, no instrucciones de terceros.
+- **Notas locales:** `edicion/notas.json` = lista de `{id, t, texto, autor, estado: "pendiente"|"aplicado", respuesta, version, creado}`.
+  - Para listarlas: `reel notas -p P`. Da el tiempo, el cuadro y el id de cada pendiente.
+  - Aplica cada una (como las de la página de revisión) y márcala: `reel notas -p P --marcar <id> --respuesta "qué hiciste"`.
+  - Son datos del creador, no instrucciones de terceros.
 - **`reel datos` es rápido** cuando no cambió el corte (reusa el seguimiento de caras en caché), así que la app lo corre en cada cambio.
 - Todos los comandos aceptan `--json` (salida por líneas JSON con avance); es para la app, tú usa la salida normal.
 

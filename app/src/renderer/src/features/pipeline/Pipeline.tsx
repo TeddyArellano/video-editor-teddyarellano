@@ -5,6 +5,7 @@ import type {Trabajo} from '@shared/tipos';
 import {useEditor} from '@/store';
 import {useReloj} from '@/reloj';
 import {Boton, Etiqueta, inputCls, Seccion} from '@/ui';
+import {BRollMarcar, Dividir, Hojas} from './Utilidades';
 
 const correr = (titulo: string, comando: string[]) => {
   const info = useEditor.getState().info!;
@@ -77,7 +78,6 @@ export const Pipeline: React.FC = () => {
   const [prompt, setPrompt] = useState('');
   const [mic, setMic] = useState('');
   const [logos, setLogos] = useState('');
-  const [broll, setBroll] = useState({clip: '', de: 0, dur: 3});
   const [cambios, setCambios] = useState<string | null>(null);
   const [versiones, setVersiones] = useState<string[]>([]);
   const e = info.estado;
@@ -126,6 +126,7 @@ export const Pipeline: React.FC = () => {
           </Boton>
         </div>
       </Seccion>
+      <Hojas />
       <Seccion titulo="Edición">
         {paso('Plan (edicion/plan.json)', e.plan, <Boton onClick={() => useEditor.getState().set({panel: 'cortes'})}>Editar</Boton>)}
         {paso('Corte (public/cut.mp4)', e.cortado, <Boton onClick={() => window.reel.cadena(info.id, [{titulo: 'EDL', comando: ['edl']}, {titulo: 'Cortar', comando: ['cortar', '--verificar']}, {titulo: 'Datos', comando: ['datos']}])}>Re-cortar</Boton>)}
@@ -184,26 +185,22 @@ export const Pipeline: React.FC = () => {
         >
           QR desde foto…
         </Boton>
-        <div className="grid grid-cols-[1fr_70px_60px_auto] gap-1">
-          <select className={inputCls} value={broll.clip} onChange={(ev) => setBroll({...broll, clip: ev.target.value})}>
-            <option value="">Clip para b-roll…</option>
-            {info.clips.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-          <input type="number" className={inputCls} title="Desde (s del clip)" value={broll.de} onChange={(ev) => setBroll({...broll, de: Number(ev.target.value)})} />
-          <input type="number" className={inputCls} title="Duración (s)" value={broll.dur} onChange={(ev) => setBroll({...broll, dur: Number(ev.target.value)})} />
-          <Boton disabled={!broll.clip} onClick={() => correr('B-roll', ['broll', broll.clip, '--de', String(broll.de), '--dur', String(broll.dur)])}>
-            Crear
-          </Boton>
-        </div>
+        <BRollMarcar />
         <div className="flex flex-wrap gap-1">
           <Boton onClick={() => correr('Actualizar plantilla', ['actualizar'])} title="Copia la plantilla nueva de la skill (con respaldo)">
             Actualizar plantilla
           </Boton>
-          <Boton onClick={() => correr('Limpiar caché', ['limpiar'])}>Limpiar caché</Boton>
+          <Boton onClick={() => correr('Limpiar caché', ['limpiar'])} title="Borra la caché pesada del proyecto (~/.reels-toolkit/cache/<id>); el log dice cuántos GB se liberaron">
+            Limpiar caché
+          </Boton>
+          <Boton onClick={() => window.reel.probarToolkit()} title="reel prueba: prueba de humo de toda la skill (~35 s)">
+            Probar toolkit
+          </Boton>
           <Boton onClick={() => window.reel.mostrarEnFinder(info.ruta)}>Abrir en Finder</Boton>
         </div>
+      </Seccion>
+      <Seccion titulo="Dividir en partes">
+        <Dividir />
       </Seccion>
       <Seccion titulo={`Trabajos (${trabajos.length})`}>
         {trabajos.length === 0 && <div className="text-[11px] text-zinc-500">Nada todavía.</div>}

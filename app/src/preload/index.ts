@@ -32,6 +32,7 @@ const api: ReelAPI = {
   buscarActualizaciones: () => ipcRenderer.invoke('buscarActualizaciones'),
   actualizarApp: () => ipcRenderer.invoke('actualizarApp'),
   repararToolkit: () => ipcRenderer.invoke('repararToolkit'),
+  probarToolkit: () => ipcRenderer.invoke('probarToolkit'),
   reiniciar: () => ipcRenderer.invoke('reiniciar'),
   estilos: () => ipcRenderer.invoke('estilos'),
   leerEstilo: (id) => ipcRenderer.invoke('leerEstilo', id),

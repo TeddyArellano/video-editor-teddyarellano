@@ -9,6 +9,35 @@ import {pedirAClaude} from '../claude/PanelClaude';
 
 export type Nota = {id: string; t: number; texto: string; autor: string; estado: 'pendiente' | 'aplicado'; respuesta?: string; version?: number; creado: number};
 
+// página de revisión (SKILL.md §4): `reel revision --renderizar` prepara el borrador web y revision.html; publicarla en
+// claude.ai la hace Claude (herramienta Artifact), porque es contenido que sale de tu Mac: se pide con un botón aparte.
+const Revision: React.FC = () => {
+  const info = useEditor((s) => s.info)!;
+  const t = useEditor((s) => s.trabajos.find((x) => x.proyecto === info.id && x.comando[0] === 'revision'));
+  return (
+    <Seccion titulo="Página de revisión (para compartir)">
+      <div className="text-[11px] text-zinc-500">Borrador web + página con notas por código de tiempo para revisar desde el celular o con otras personas.</div>
+      <div className="flex flex-wrap gap-1">
+        <Boton onClick={() => window.reel.correr(info.id, 'Página de revisión', ['revision', '--renderizar'])} disabled={t?.estado === 'corriendo'} data-testid="preparar-revision">
+          Preparar página
+        </Boton>
+        {t?.estado === 'ok' && (
+          <>
+            <Boton onClick={() => window.reel.mostrarEnFinder(`${info.ruta}/edicion/revision/revision.html`)}>Mostrar en Finder</Boton>
+            <Boton
+              v="primario"
+              onClick={() => pedirAClaude('Publica la página de revisión de este proyecto siguiendo SKILL.md §4 (pasos 2–4: Artifact con edicion/revision/revision.html, sube borrador_web.mp4 como asset y vuelve a correr reel revision con --video-url y --artifact). Dame el link.')}
+            >
+              Claude: publicarla
+            </Boton>
+          </>
+        )}
+      </div>
+      {t && <div className={`text-[11px] ${t.estado === 'error' ? 'text-rose-300' : 'text-zinc-400'}`} data-testid="estado-revision">{t.estado === 'corriendo' ? 'preparando…' : t.estado === 'ok' ? '✓ edicion/revision/revision.html lista' : t.ultimo}</div>}
+    </Seccion>
+  );
+};
+
 export const Notas: React.FC = () => {
   const notas = (useEditor((s) => s.notas) ?? []) as Nota[];
   const frame = useReloj((s) => s.frame);
@@ -36,13 +65,14 @@ export const Notas: React.FC = () => {
             </Boton>
             <Boton
               disabled={!pendientes}
-              onClick={() => pedirAClaude('Aplica las notas pendientes de edicion/notas.json (cada una en su tiempo t, en segundos del video). Márcalas "aplicado" con una respuesta breve.')}
+              onClick={() => pedirAClaude('Aplica las notas pendientes de Reel Studio: lístalas con `reel notas -p <proyecto>`, aplica cada una en su tiempo y márcala con `reel notas -p <proyecto> --marcar <id> --respuesta "qué hiciste"`.')}
             >
               Claude: aplicar {pendientes} pendientes
             </Boton>
           </div>
         </form>
       </Seccion>
+      <Revision />
       <div className="space-y-1.5 p-3">
         {ordenadas.map((n) => (
           <div key={n.id} className={`rounded-md border p-2 text-xs ${n.estado === 'aplicado' ? 'border-emerald-900 bg-emerald-950/30' : 'border-zinc-800 bg-zinc-900/60'}`}>

@@ -135,6 +135,7 @@ const registrarIPC = () => {
     ]),
   );
   ipcMain.handle('repararToolkit', () => encolar('', repoDir(), 'Instalar / reparar toolkit', ['__sh', path.join(repoDir(), 'install.sh')]));
+  ipcMain.handle('probarToolkit', () => encolar('', repoDir(), 'Probar toolkit', ['prueba']));
   ipcMain.handle('reiniciar', () => {
     app.relaunch();
     app.exit(0);
