@@ -108,7 +108,7 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
   - Al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto.
 - **Fuentes:** las 15 van en `plantilla_remotion/public/fonts` (OFL), así que no hace falta internet.
 - **Atajos:** se consultan en Preferencias, pero no se pueden cambiar.
-- **Publicar la página de revisión:** el `claude -p` que usa la app no tiene la herramienta Artifact. La app prepara la página y copia el pedido; lo pegas en Claude Code (sesión interactiva) y él la publica. Se verificó el flujo completo de SKILL.md §4 sobre el proyecto sintético de la autoprueba:
+- **Publicar la página de revisión:** el `claude -p` que usa la app no tiene la herramienta Artifact (verificado: no aparece en las herramientas al iniciar). Por eso **"Publicar con Claude Code"** abre Terminal con una sesión interactiva en la carpeta del proyecto, con el pedido ya escrito y permiso solo para Artifact, leer y correr `reel.py`. Si es la primera vez en esa carpeta, Claude Code pregunta si confías en ella: esa respuesta es tuya. También está "Copiar pedido". Se verificó el flujo completo de SKILL.md §4 sobre el proyecto sintético de la autoprueba:
   - publicar la página;
   - subir el borrador como asset;
   - `reel revision --video-url --artifact`, que deja `revision_url` en `proyecto.json`;

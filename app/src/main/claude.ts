@@ -72,4 +72,26 @@ const resumen = (input: unknown): string => {
   return String(v).slice(0, 160);
 };
 
+// Publicar en claude.ai necesita la herramienta Artifact, que el modo -p no tiene (verificado: no aparece en la lista
+// de herramientas al iniciar). Se abre una sesión INTERACTIVA de Claude Code en Terminal, en la carpeta del proyecto,
+// con el pedido ya escrito y permiso solo para Artifact, leer y correr reel.py. El creador la ve y la puede detener.
+// REEL_TERMINAL_REGISTRO=<archivo>: en pruebas, escribe ahí el comando en lugar de abrir Terminal.
+export const comillasShell = (s: string) => `'${s.replace(/'/g, `'\\''`)}'`;
+export const comandoSesion = (ruta: string, prompt: string) =>
+  `cd ${comillasShell(ruta)} && claude --allowedTools Artifact Read ${comillasShell(`Bash(${python()}:*)`)} -- ${comillasShell(prompt)}`;
+export const abrirSesionInteractiva = async (ruta: string, prompt: string) => {
+  const cmd = comandoSesion(ruta, prompt);
+  if (process.env.REEL_TERMINAL_REGISTRO) {
+    const fs = await import('node:fs');
+    fs.writeFileSync(process.env.REEL_TERMINAL_REGISTRO, cmd);
+    return cmd;
+  }
+  const script = `tell application "Terminal"\n  activate\n  do script ${JSON.stringify(cmd)}\nend tell`;
+  await new Promise<void>((ok, mal) => {
+    const p = spawn('osascript', ['-e', script], {env: entorno()});
+    p.on('close', (c) => (c === 0 ? ok() : mal(new Error(`osascript terminó con ${c}`))));
+  });
+  return cmd;
+};
+
 export const cancelarClaude = (sesion: string) => sesiones.get(sesion)?.kill('SIGTERM');

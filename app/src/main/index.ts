@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {ARCHIVOS, type Archivo, type CambioArchivo, type EventoClaude, type Herramientas, type Trabajo} from '../shared/tipos';
 import {escribirJSON, leerJSON} from './archivos';
-import {cancelarClaude, preguntar} from './claude';
+import {abrirSesionInteractiva, cancelarClaude, preguntar} from './claude';
 import {manejarProtocolo, registrarEsquema} from './medios';
 import {alAvisar, cancelar, detenerTodo, encolar, encolarCadena, lista} from './procesos';
 import {abrir, cerrar, infoDe, propias, recientes, rutaDe} from './proyectos';
@@ -170,6 +170,16 @@ const registrarIPC = () => {
   });
   ipcMain.handle('claude', (_e, id: string, prompt: string) => preguntar(rutaDe(id), prompt, (ev: EventoClaude) => enviar('claude', ev)));
   ipcMain.handle('copiar', (_e, t: string) => clipboard.writeText(t));
+  ipcMain.handle('publicarRevision', (_e, id: string) => {
+    const ruta = rutaDe(id);
+    const url = (leerJSON(path.join(ruta, 'edicion', 'proyecto.json'))?.contenido as {revision_url?: string} | null)?.revision_url;
+    const prompt =
+      `Publica la página de revisión de este proyecto (${ruta}) siguiendo SKILL.md §4 de la skill editar-reel. ` +
+      `La página y el borrador web ya están en edicion/revision/. ` +
+      (url ? `Ya existe en ${url}: lee ese artifact y republica ahí (mismo link), subiendo el video nuevo como asset. ` : 'Es la primera vez: publícala nueva. ') +
+      `Después corre reel revision con --video-url y --artifact para que quede revision_url en proyecto.json, y dame el link.`;
+    return abrirSesionInteractiva(ruta, prompt);
+  });
   ipcMain.handle('claudeCancelar', (_e, s: string) => cancelarClaude(s));
   alAvisar((t: Trabajo) => enviar('trabajo', t));
 };

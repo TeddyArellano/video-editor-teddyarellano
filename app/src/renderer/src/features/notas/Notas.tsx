@@ -31,13 +31,22 @@ const Revision: React.FC = () => {
             <Boton
               v="primario"
               data-testid="publicar-revision"
-              title="Publicar en claude.ai necesita la herramienta Artifact, que solo tiene una sesión interactiva de Claude (no el modo -p de la app)"
+              title="Abre Claude Code en Terminal (sesión interactiva: el modo de la app no tiene la herramienta Artifact) con el pedido listo"
               onClick={async () => {
-                await window.reel.copiar(pedidoPublicar(info.ruta));
-                useEditor.getState().avisar('ok', 'Pedido copiado: pégalo en Claude Code (en la terminal) para publicar la página en claude.ai.');
+                await window.reel.publicarRevision(info.id);
+                useEditor.getState().avisar('ok', 'Se abrió Claude Code en Terminal para publicar la página. Acepta lo que te pida y te dará el link.');
               }}
             >
-              Copiar pedido para publicarla
+              Publicar con Claude Code
+            </Boton>
+            <Boton
+              onClick={async () => {
+                await window.reel.copiar(pedidoPublicar(info.ruta));
+                useEditor.getState().avisar('ok', 'Pedido copiado: pégalo en Claude Code.');
+              }}
+              data-testid="copiar-pedido"
+            >
+              Copiar pedido
             </Boton>
           </>
         )}

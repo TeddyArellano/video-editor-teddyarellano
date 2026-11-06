@@ -99,6 +99,7 @@ export type ReelAPI = {
   guardarEstilo: (id: string, contenido: unknown) => Promise<void>;
   claude: (id: string, prompt: string) => Promise<string>;
   copiar: (texto: string) => Promise<void>;
+  publicarRevision: (id: string) => Promise<string>;
   claudeCancelar: (sesion: string) => Promise<void>;
   onCambio: (fn: (c: CambioArchivo) => void) => () => void;
   onTrabajo: (fn: (t: Trabajo) => void) => () => void;

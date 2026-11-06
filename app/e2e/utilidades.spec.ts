@@ -11,6 +11,8 @@ import {hasta, lanzar, limpiarCache} from './util';
 const P = process.env.REEL_FIXTURE2 ?? '';
 const QR = process.env.REEL_FOTO_QR ?? '';
 const MIC = process.env.REEL_MIC ?? '';
+const REGISTRO = path.join(os.tmpdir(), `reel-terminal-${process.pid}.txt`);
+process.env.REEL_TERMINAL_REGISTRO = REGISTRO;
 const PY = path.join(os.homedir(), '.reels-toolkit/venv/bin/python');
 const REEL = path.join(__dirname, '../../skill/editar-reel/scripts/reel.py');
 test.skip(!P || !QR || !MIC, 'prepara los fixtures con e2e/preparar.sh (REEL_FIXTURE2, REEL_FOTO_QR, REEL_MIC)');
@@ -140,12 +142,23 @@ test('utilidades del pipeline, cortes y revisión', async () => {
   expect(fs.existsSync(path.join(P, 'edicion/revision/revision.html'))).toBe(true);
   expect(fs.existsSync(path.join(P, 'edicion/revision/borrador_web.mp4'))).toBe(true);
   expect(fs.readFileSync(path.join(P, 'edicion/revision/revision.html'), 'utf8')).toContain('comentarios'); // colección de notas
-  // publicarla: se copia el pedido para Claude Code (el `claude -p` de la app no tiene la herramienta Artifact)
+  // publicarla: abre Claude Code interactivo en Terminal (el modo -p no tiene Artifact). En la prueba el comando se
+  // registra en un archivo y se ejecuta con un `claude` simulado para revisar exactamente lo que recibiría.
   await page.getByTestId('publicar-revision').click();
+  await hasta(() => fs.existsSync(REGISTRO));
+  const cmd = fs.readFileSync(REGISTRO, 'utf8');
+  const argv = execFileSync('/bin/zsh', ['-c', `claude() { for a in "$@"; do print -r -- "ARG:$a"; done; print -r -- "PWD:$PWD"; }; ${cmd}`]).toString();
+  expect(argv).toContain(`PWD:${fs.realpathSync(P)}`);
+  expect(argv).toContain('ARG:Artifact');
+  expect(argv).toMatch(/ARG:Bash\(.*python:\*\)/);
+  expect(argv).toContain('SKILL.md §4');
+  expect(argv).toContain(P);
+  await expect(page.getByTestId('avisos')).toContainText('Claude Code en Terminal');
+  // alternativa: copiar el pedido
+  await page.getByTestId('copiar-pedido').click();
   const copiado = await app.evaluate(({clipboard}) => clipboard.readText());
   expect(copiado).toContain('/editar-reel Publica la página de revisión');
   expect(copiado).toContain(P);
-  await expect(page.getByTestId('avisos')).toContainText('Pedido copiado');
 
   // --- mantenimiento: limpiar caché (también la de las partes de dividir) y probar el toolkit
   for (const n of ['parte_a', 'parte_b']) limpiarCache(path.join(path.dirname(P), `proyecto_remotion_${n}`));
