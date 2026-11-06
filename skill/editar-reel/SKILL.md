@@ -148,6 +148,7 @@ El porqué de cada regla está en `referencia/criterio_editorial.md`.
 | 10 | `zooms -p P` | Propone `cx`/`cy` de los zooms sin centro (manos del sujeto; usa `"sujeto": "izquierda"\|"derecha"` en la sección) y genera `edicion/revision/zooms.png`, con un recuadro de lo que se verá. **Míralo**, corrige lo que no caiga en el objeto y repite el paso 9. También existe `cuadricula -p P t1 t2…` para centrar a mano. |
 | 11 | `revisar -p P f1 f2 …` | Stills con zona segura y centro. Revisa gancho, subtítulos, cada zoom, transiciones, tarjetas y cierre. |
 | 12 | `render -p P --borrador` | Borrador a 540×960 (`edicion/borrador.mp4`): ~40 s sin 3D, ~2 min un video de 70 s con intro 3D. **Úsalo para TODAS las iteraciones** (§2b). Si hay `intro_espacio`, antes pre-renderiza la capa 3D una sola vez (`reel capas`). |
+| 12b | Abrir en Reel Studio | Después del **primer** borrador de un video, abre el proyecto en la app para que el creador ajuste a mano: `[ -d "/Applications/Reel Studio.app" ] && open -a "Reel Studio" "<carpeta del material>"`. Hazlo una sola vez por video (en las iteraciones la app recarga sola lo que cambies) y dile en una línea que ya está abierto ahí. Si la app no está instalada, sigue sin ella. |
 | 13 | `render -p P --nota "qué cambió" [--4k]` | Render final 1080×1920 (o 2160×3840 con `--4k`, ~4× más lento, solo si lo pide) bt709 a −12 LUFS con verificación automática. La versión anterior pasa a `P/versiones/` (se guardan 3) y el historial queda en `edicion/cambios.md`. |
 | 14 | `extras -p P` | `<nombre>.srt` (frases completas) y `<nombre> - portada.jpg` (gancho completo; elige otro cuadro con `--frame N`). **Escribe tú** `<nombre> - post.txt` con 2–3 opciones de caption y hashtags. **Miniatura con su estilo de Canva:** usa la skill `/crear-miniatura` (`miniatura.py desde-reel -p P`) → `<nombre> - miniatura.png`. |
 | 15 | Entrega | Envía el video (SendUserFile) y resume en 3–6 líneas con números. Con el disco justo, corre `limpiar -p P`. |
@@ -257,7 +258,7 @@ Ignoran acentos, mayúsculas y puntuación. Si no hay coincidencia exacta, busca
 - Si una corrección revela una preferencia **general** del creador, agrégala a §1 y a `referencia/criterio_editorial.md`. Si es un arreglo de la plantilla que sirve a todos los videos, hazlo en `plantilla_remotion/` de la skill y corre `prueba`.
 
 ### Convivencia con Reel Studio (la app de escritorio)
-El creador puede tener abierto el mismo proyecto en **Reel Studio** (`app/` del repo de la skill). La app edita los mismos archivos que tú:
+El creador puede tener abierto el mismo proyecto en **Reel Studio** (`app/` del repo de la skill). Tú lo abres ahí después del primer borrador (paso 12b). La app edita los mismos archivos que tú:
 - **Relee antes de escribir.** Si vas a cambiar `eventos.json`, `plan.json`, `src/estilo.json` o `edicion/notas.json`, léelo justo antes: el creador pudo haberlo cambiado en la app. Nunca lo sobrescribas con una copia vieja.
 - **Posición libre:** en la app el creador arrastra elementos; eso escribe `dx`, `dy`, `escala` y `rot` en `eventos.json` (ver `referencia/eventos.md`). Respétalos: no los borres al editar otras cosas.
 - **Notas locales:** `edicion/notas.json` = lista de `{id, t, texto, autor, estado: "pendiente"|"aplicado", respuesta, version, creado}`.
