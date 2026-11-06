@@ -108,4 +108,10 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
   - Al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto.
 - **Fuentes:** las 15 van en `plantilla_remotion/public/fonts` (OFL), así que no hace falta internet.
 - **Atajos:** se consultan en Preferencias, pero no se pueden cambiar.
+- **Publicar la página de revisión:** el `claude -p` que usa la app no tiene la herramienta Artifact. La app prepara la página y copia el pedido; lo pegas en Claude Code (sesión interactiva) y él la publica. Se verificó el flujo completo de SKILL.md §4 sobre el proyecto sintético de la autoprueba:
+  - publicar la página;
+  - subir el borrador como asset;
+  - `reel revision --video-url --artifact`, que deja `revision_url` en `proyecto.json`;
+  - republicar;
+  - el ciclo de una nota: escribirla, consultarla pendiente, marcarla `aplicado` con respuesta y leerla con nivel de solo lectura.
 - **Re-cortar** reconstruye el corte con `reel cortar`. Los pasos manuales hechos después de cortar (p. ej. un `insertar.py`) hay que repetirlos.
