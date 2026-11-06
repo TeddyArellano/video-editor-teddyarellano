@@ -7,8 +7,7 @@ export const FIXTURE = process.env.REEL_FIXTURE ?? '';
 export const leer = (rel: string) => JSON.parse(fs.readFileSync(path.join(FIXTURE, rel), 'utf8'));
 export const escribir = (rel: string, obj: unknown) => fs.writeFileSync(path.join(FIXTURE, rel), JSON.stringify(obj, null, 2));
 
-export const lanzar = async (abrir = true): Promise<{app: ElectronApplication; page: Page}> => {
-  const userData = fs.mkdtempSync(path.join(os.tmpdir(), 'reel-studio-e2e-'));
+export const lanzar = async (abrir = true, userData = fs.mkdtempSync(path.join(os.tmpdir(), 'reel-studio-e2e-'))): Promise<{app: ElectronApplication; page: Page; userData: string}> => {
   // REEL_EJECUTABLE=dist/mac-arm64/Reel Studio.app/Contents/MacOS/Reel Studio → prueba la app empaquetada
   const ejecutable = process.env.REEL_EJECUTABLE;
   const app = await electron.launch({
@@ -17,11 +16,12 @@ export const lanzar = async (abrir = true): Promise<{app: ElectronApplication; p
   });
   const page = await app.firstWindow();
   page.on('console', (m) => m.type() === 'error' && console.log('[renderer]', m.text().slice(0, 300)));
-  return {app, page};
+  return {app, page, userData};
 };
 
 // espera hasta que fn() sea verdadero (archivos que escribe la app o reel.py)
 export const hasta = async (fn: () => boolean, ms = 30_000) => {
+  const donde = new Error().stack?.split('\n')[2]?.trim() ?? '';
   const t0 = Date.now();
   while (Date.now() - t0 < ms) {
     try {
@@ -31,7 +31,7 @@ export const hasta = async (fn: () => boolean, ms = 30_000) => {
     }
     await new Promise((r) => setTimeout(r, 200));
   }
-  throw new Error('tiempo agotado esperando la condición');
+  throw new Error(`tiempo agotado esperando la condición (${donde})`);
 };
 
 // lleva el cabezal al cuadro f con el teclado (Home, Shift+→ = 1 s, → = 1 cuadro)

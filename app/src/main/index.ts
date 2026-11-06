@@ -6,9 +6,11 @@ import {ARCHIVOS, type Archivo, type CambioArchivo, type EventoClaude, type Herr
 import {escribirJSON, leerJSON} from './archivos';
 import {cancelarClaude, preguntar} from './claude';
 import {manejarProtocolo, registrarEsquema} from './medios';
-import {alAvisar, cancelar, encolar, encolarCadena, lista} from './procesos';
+import {alAvisar, cancelar, detenerTodo, encolar, encolarCadena, lista} from './procesos';
 import {abrir, cerrar, infoDe, propias, recientes, rutaDe} from './proyectos';
-import {PYTHON, TOOLKIT, reelPy, skillDir} from './rutas';
+import {TOOLKIT, entorno, python, reelPy, repoDir, skillDir} from './rutas';
+import {guardarPreferencias, preferencias} from './preferencias';
+import {execFileSync} from 'node:child_process';
 
 registrarEsquema();
 // pruebas: perfil aislado (recientes, etc.)
@@ -97,9 +99,9 @@ const registrarIPC = () => {
   ipcMain.handle('herramientas', (): Herramientas => {
     const det: string[] = [];
     const ok = (f: string, n: string) => (fs.existsSync(f) ? true : (det.push(`falta ${n}: ${f}`), false));
-    const t = [ok(PYTHON, 'Python del toolkit'), ok(reelPy(), 'reel.py'), ok(path.join(TOOLKIT, 'bin', 'faces'), 'binarios Swift'),
+    const t = [ok(python(), 'Python del toolkit'), ok(reelPy(), 'reel.py'), ok(path.join(TOOLKIT, 'bin', 'faces'), 'binarios Swift'),
       ok(path.join(TOOLKIT, 'models', 'ggml-large-v3-turbo.bin'), 'modelo Whisper'), ok(path.join(TOOLKIT, 'remotion', 'node_modules'), 'Remotion')];
-    return {python: PYTHON, reel: reelPy(), toolkit: t.every(Boolean), detalles: det};
+    return {python: python(), reel: reelPy(), skill: skillDir(), toolkit: t.every(Boolean), detalles: det};
   });
   ipcMain.handle('mostrarEnFinder', (_e, ruta: string) => shell.showItemInFolder(ruta));
   ipcMain.handle('copiarAPublic', (_e, id: string, origen: string, destinoRel: string) => {
@@ -108,6 +110,34 @@ const registrarIPC = () => {
     fs.mkdirSync(path.dirname(dst), {recursive: true});
     fs.copyFileSync(origen, dst);
     return path.relative(path.join(raiz, 'public'), dst);
+  });
+  ipcMain.handle('preferencias', () => preferencias());
+  ipcMain.handle('guardarPreferencias', (_e, p) => guardarPreferencias(p));
+  // actualizaciones: el repo de la skill es la fuente de la app (git fetch + comparar con la rama remota)
+  ipcMain.handle('buscarActualizaciones', () => {
+    const repo = repoDir();
+    const git = (...a: string[]) => execFileSync('git', ['-C', repo, ...a], {encoding: 'utf8', env: entorno(), timeout: 30_000}).trim();
+    try {
+      const rama = git('rev-parse', '--abbrev-ref', 'HEAD');
+      git('fetch', '--quiet');
+      const [adelante, atras] = git('rev-list', '--left-right', '--count', 'HEAD...@{u}').split(/\s+/).map(Number);
+      return {repo, rama, atras, adelante, cambiosLocales: git('status', '--porcelain', '--untracked-files=no') !== '', ultimo: git('log', '-1', '--format=%h %s (%cr)')};
+    } catch (e) {
+      return {repo, rama: '', atras: 0, adelante: 0, cambiosLocales: false, ultimo: '', error: String((e as Error).message).split('\n')[0]};
+    }
+  });
+  // REEL_DESTINO_APP: dónde reinstalar (pruebas); por defecto /Applications
+  // git pull (solo avance rápido) + instalar.sh de la versión NUEVA; no depende de scripts que la versión vieja no tenga
+  ipcMain.handle('actualizarApp', () =>
+    encolar('', repoDir(), 'Actualizar Reel Studio', [
+      '__sh', '-c', 'set -e; echo "… git pull"; git -C "$1" pull --ff-only; zsh "$1/app/instalar.sh" "$2"; echo "✓ actualizado: reinicia Reel Studio"',
+      'actualizar', repoDir(), process.env.REEL_DESTINO_APP || '/Applications',
+    ]),
+  );
+  ipcMain.handle('repararToolkit', () => encolar('', repoDir(), 'Instalar / reparar toolkit', ['__sh', path.join(repoDir(), 'install.sh')]));
+  ipcMain.handle('reiniciar', () => {
+    app.relaunch();
+    app.exit(0);
   });
   ipcMain.handle('estilos', () => {
     const dir = path.join(skillDir(), 'estilos');
@@ -149,3 +179,4 @@ app.whenReady().then(() => {
   app.on('activate', () => BrowserWindow.getAllWindows().length === 0 && crearVentana());
 });
 app.on('window-all-closed', () => app.quit());
+app.on('before-quit', () => detenerTodo());

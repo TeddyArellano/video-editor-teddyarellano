@@ -11,7 +11,7 @@ import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, OffthreadVideo, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {ThreeCanvas} from '@remotion/three';
 import * as THREE from 'three';
-import {D, HOOK_START, H, W, asset, clamp, font} from '../theme';
+import {D, HOOK_START, H, W, asset, cargarFuentes, clamp, font} from '../theme';
 
 // se leen en cada cuadro (los datos pueden cambiar en la app); son lecturas simples, sin costo
 const i3 = () => D.intro3d;
@@ -326,6 +326,7 @@ const Monedas: React.FC<{f: number; t0: number}> = ({f, t0}) => {
 };
 
 export const IntroEspacio: React.FC = () => {
+  cargarFuentes(); // composición Capa3D (reel capas) se renderiza sola, sin Reel
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const I3 = i3();

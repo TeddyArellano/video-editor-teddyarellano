@@ -1,8 +1,10 @@
 // Raíz: biblioteca ↔ editor, y la conexión con el proceso principal (cambios en disco y trabajos de reel.py).
 import React, {useEffect} from 'react';
-import {aceptarDataExterna, ARCHIVO_DE, conPausa, docDeArchivo, useEditor, type Doc} from './store';
+import {aceptarDataExterna, ARCHIVO_DE, conPausa, docDeArchivo, prefs, useEditor, type Doc} from './store';
+import {aplicarTema} from './features/preferencias/Preferencias';
 import {Biblioteca} from './features/biblioteca/Biblioteca';
 import {Editor} from './features/editor/Editor';
+import {claudeRevisando} from './features/claude/PanelClaude';
 
 export const App: React.FC = () => {
   const info = useEditor((s) => s.info);
@@ -20,6 +22,7 @@ export const App: React.FC = () => {
     const quitarCambio = window.reel.onCambio(async (c) => {
       const s = useEditor.getState();
       if (!s.info || c.proyecto !== s.info.id) return;
+      if (claudeRevisando()) return; // Claude trabaja en modo revisar: sus cambios se ven como propuesta al terminar
       if (c.archivo === 'public/cut.mp4') {
         useEditor.setState({info: await window.reel.info(s.info.id)});
         return;
@@ -55,6 +58,10 @@ export const App: React.FC = () => {
       }
     });
     window.reel.trabajos().then((l) => useEditor.setState({trabajos: l}));
+    window.reel.preferencias().then((p) => {
+      aplicarTema(p.tema);
+      prefs.calidad = p.calidad;
+    });
     const quitarAbrir = window.reel.onAbrir((r) => abrir(r));
     return () => {
       quitarAbrir();

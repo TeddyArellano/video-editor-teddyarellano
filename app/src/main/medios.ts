@@ -4,6 +4,7 @@ import {protocol} from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import {Readable} from 'node:stream';
+import {plantillaDir} from './rutas';
 
 export const ESQUEMA = 'reel-media';
 const proyectos = new Map<string, {ruta: string; fuentes: string}>(); // id → carpeta proyecto_remotion y del material
@@ -32,9 +33,11 @@ export const resolverMedio = (url: string): string | null => {
   if (!id) return null;
   const p = proyectos.get(id);
   if (!p) return null;
-  // __edicion/… = edicion/ (hojas, borrador) · __fuente/… = clips originales (escuchar cortes) · lo demás = public/
-  const base = partes[0] === '__edicion' ? path.join(p.ruta, 'edicion') : partes[0] === '__fuente' ? p.fuentes : path.join(p.ruta, 'public');
-  if (partes[0] === '__edicion' || partes[0] === '__fuente') partes.shift();
+  // __edicion/… = edicion/ (hojas, borrador) · __fuente/… = clips originales (escuchar cortes)
+  // __plantilla/… = public/ de la plantilla de la skill (fuentes locales) · lo demás = public/ del proyecto
+  const raices: Record<string, string> = {__edicion: path.join(p.ruta, 'edicion'), __fuente: p.fuentes, __plantilla: path.join(plantillaDir(), 'public')};
+  const base = raices[partes[0]] ?? path.join(p.ruta, 'public');
+  if (partes[0] in raices) partes.shift();
   const f = path.resolve(base, ...partes);
   if (!f.startsWith(base + path.sep)) return null;
   return f;

@@ -12,7 +12,10 @@ export const usePropsPlantilla = (): Datos | null => {
   const info = useEditor((s) => s.info);
   const calidad = useEditor((s) => s.calidad);
   return useMemo(
-    () => (data ? {data, estilo: estilo ?? undefined, vlog: vlog ?? VACIO, base: info?.base ?? null, proxy: calidad === 'proxy' && !!info?.estado.proxy} : null),
+    () =>
+      data
+        ? {data, estilo: estilo ?? undefined, vlog: vlog ?? VACIO, base: info?.base ?? null, proxy: calidad === 'proxy' && !!info?.estado.proxy, fuentes: info ? `${info.base}__plantilla/fonts/` : null}
+        : null,
     [data, estilo, vlog, info, calidad],
   );
 };

@@ -38,6 +38,18 @@ export const Timeline: React.FC = () => {
   );
 
   const todos = useMemo(() => (data ? bloques(data) : []), [data]);
+  // bloques que se enciman en el tiempo van en sub-carriles (si no, uno tapa al otro y no se puede agarrar)
+  const carriles = (bs: Bloque[]) => {
+    const fin: number[] = [];
+    const carril = new Map<Bloque, number>();
+    for (const b of [...bs].sort((x, y) => x.a - y.a)) {
+      let k = fin.findIndex((e) => e <= b.a);
+      if (k < 0) k = fin.push(0) - 1;
+      fin[k] = b.b;
+      carril.set(b, k);
+    }
+    return {carril, n: Math.max(1, fin.length)};
+  };
   const filas = useMemo(() => {
     const f: {id: string; nombre: string; bloques: Bloque[]}[] = [];
     const hook = todos.filter((b) => b.sel.lista === 'hook');
@@ -123,7 +135,7 @@ export const Timeline: React.FC = () => {
   for (let f = 0; f <= total; f += paso) marcas.push(f);
 
   const fila = (titulo: string, contenido: React.ReactNode, key: string, alto = ALTO) => (
-    <div key={key} className="relative border-b border-zinc-800/80" style={{height: alto + 6, width: ancho}}>
+    <div key={key} className="relative border-b border-zinc-800/80" style={{height: alto + 6, width: ancho}} data-testid={`fila-${key}`}>
       <div className="sticky left-0 z-20 flex h-full items-center bg-zinc-950 pl-2 text-[11px] text-zinc-400" style={{width: ETIQUETA}}>
         {titulo}
       </div>
@@ -131,7 +143,7 @@ export const Timeline: React.FC = () => {
     </div>
   );
 
-  const bloqueVista = (b: Bloque) => {
+  const bloqueVista = (b: Bloque, carril = 0) => {
     const activo = sel && sel.lista === b.sel.lista && sel.i === b.sel.i;
     const ar = arr && arr.sel.lista === b.sel.lista && arr.sel.i === b.sel.i ? arr : null;
     const a = b.a + (ar?.da ?? 0);
@@ -142,7 +154,7 @@ export const Timeline: React.FC = () => {
         key={`${b.sel.lista}:${b.sel.i}`}
         data-testid={`bloque-${b.sel.lista}-${b.sel.i}`}
         className={`absolute top-[3px] flex cursor-grab items-center overflow-hidden rounded px-1 text-[10px] leading-none text-white ${activo ? 'ring-2 ring-white' : ''}`}
-        style={{left: X(a), width: w, height: ALTO, background: b.color + (activo ? '' : 'cc')}}
+        style={{left: X(a), width: w, height: ALTO, top: 3 + carril * (ALTO + 2), background: b.color + (activo ? '' : 'cc')}}
         onPointerDown={empezar(b, 'mover')}
         title={`${LISTAS[b.sel.lista as Lista].nombre}: ${b.texto}  ${tc(a)}–${tc(bb)}`}
       >
@@ -215,7 +227,10 @@ export const Timeline: React.FC = () => {
           )),
           'subs',
         )}
-        {filas.map((f) => fila(f.nombre, f.bloques.map(bloqueVista), f.id))}
+        {filas.map((f) => {
+          const {carril, n} = carriles(f.bloques);
+          return fila(f.nombre, f.bloques.map((b) => bloqueVista(b, carril.get(b) ?? 0)), f.id, n * (ALTO + 2) - 2);
+        })}
         {(notas ?? []).length > 0 &&
           fila(
             'Notas',

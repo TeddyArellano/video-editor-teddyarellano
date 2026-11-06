@@ -91,8 +91,30 @@ def jload(p, default=None):
 
 
 def jsave(p, obj, indent=1):
-    Path(p).parent.mkdir(parents=True, exist_ok=True)
-    Path(p).write_text(json.dumps(obj, ensure_ascii=False, indent=indent))
+    """escritura atómica (archivo temporal + rename): quien lea en paralelo (Reel Studio, otro reel) nunca ve un JSON a medias"""
+    p = Path(p)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_name(f".{p.name}.{os.getpid()}.tmp")
+    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=indent))
+    os.replace(tmp, p)
+
+
+class Candado:
+    """candado por proyecto (flock): dos `reel datos` a la vez (Claude Code + Reel Studio) se esperan en lugar de chocar"""
+
+    def __init__(self, pr, nombre):
+        self.f = pr.cache / f'{nombre}.lock'
+
+    def __enter__(self):
+        import fcntl
+        self.fh = open(self.f, 'w')
+        fcntl.flock(self.fh, fcntl.LOCK_EX)
+        return self
+
+    def __exit__(self, *a):
+        import fcntl
+        fcntl.flock(self.fh, fcntl.LOCK_UN)
+        self.fh.close()
 
 
 def norm(s):
@@ -925,12 +947,10 @@ def face_track(pr, n, secs, cfg_secs, caras_def=None):
 
 
 def _face_track(pr, n, secs, cfg_secs, caras_def=None):
-    frames = pr.cache / 'ffc'
-    if frames.exists():
-        shutil.rmtree(frames)
-    frames.mkdir()
+    import tempfile
+    frames = Path(tempfile.mkdtemp(prefix='ffc_', dir=pr.cache))  # carpeta propia: nunca choca con otro proceso
     ff('-i', pr.P / 'public' / 'cut.mp4', '-vf', 'fps=5,scale=540:960', '-q:v', '4', frames / '%05d.jpg')
-    fj = pr.cache / 'faces.json'
+    fj = frames / 'faces.json'
     run([BIN / 'faces', frames, fj], capture_output=True)
     F = jload(fj)
     import numpy as np
@@ -971,6 +991,11 @@ def _face_track(pr, n, secs, cfg_secs, caras_def=None):
 def cmd_datos(a):
     need_toolkit()
     pr = Proyecto(a.proyecto)
+    with Candado(pr, 'datos'):
+        _datos(pr)
+
+
+def _datos(pr):
     E = jload(pr.ed / 'edl_final.json')
     ev = jload(pr.ed / 'eventos.json', {})
     est = jload(pr.P / 'src' / 'estilo.json')

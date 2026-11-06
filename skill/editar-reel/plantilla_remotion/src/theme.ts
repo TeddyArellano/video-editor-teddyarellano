@@ -1,44 +1,33 @@
 // Tema global: datos del video (data.json, generado por `reel datos`) + estilo (estilo.json, preset editable).
-import {loadFont as lilita} from '@remotion/google-fonts/LilitaOne';
-import {loadFont as marker} from '@remotion/google-fonts/PermanentMarker';
-import {loadFont as bangers} from '@remotion/google-fonts/Bangers';
-import {loadFont as bungee} from '@remotion/google-fonts/Bungee';
-import {loadFont as montserrat} from '@remotion/google-fonts/Montserrat';
-import {loadFont as poppins} from '@remotion/google-fonts/Poppins';
-import {loadFont as anton} from '@remotion/google-fonts/Anton';
-import {loadFont as silkscreen} from '@remotion/google-fonts/Silkscreen';
-import {loadFont as righteous} from '@remotion/google-fonts/Righteous';
-import {loadFont as pacifico} from '@remotion/google-fonts/Pacifico';
-import {loadFont as rubikMono} from '@remotion/google-fonts/RubikMonoOne';
-import {loadFont as lobster} from '@remotion/google-fonts/Lobster';
-import {loadFont as bowlby} from '@remotion/google-fonts/BowlbyOne';
-import {loadFont as caveatBrush} from '@remotion/google-fonts/CaveatBrush';
-import {loadFont as yellowtail} from '@remotion/google-fonts/Yellowtail';
-import {staticFile} from 'remotion';
+import {continueRender, delayRender, staticFile} from 'remotion';
+import fuentes from './fuentes.json';
 import data from './data.json';
 import estilo from './estilo.json';
 import vlogJson from './vlog.json';
 import landJson from './land.json';
 
-const mont = montserrat('normal', {weights: ['600', '700', '800', '900'], subsets: ['latin']}).fontFamily;
-montserrat('italic', {weights: ['800', '900'], subsets: ['latin']});
-const FONTS: Record<string, string> = {
-  'Lilita One': lilita().fontFamily,
-  'Permanent Marker': marker().fontFamily,
-  Bangers: bangers().fontFamily,
-  Bungee: bungee().fontFamily,
-  Montserrat: mont,
-  Poppins: poppins('normal', {weights: ['600', '700', '800'], subsets: ['latin']}).fontFamily,
-  Anton: anton().fontFamily,
-  Silkscreen: silkscreen('normal', {weights: ['400', '700'], subsets: ['latin']}).fontFamily,
-  Righteous: righteous().fontFamily,
-  Pacifico: pacifico().fontFamily,
-  'Rubik Mono One': rubikMono().fontFamily,
-  Lobster: lobster().fontFamily,
-  'Bowlby One': bowlby().fontFamily,
-  'Caveat Brush': caveatBrush().fontFamily,
-  Yellowtail: yellowtail().fontFamily,
+// Fuentes LOCALES (public/fonts, descargadas de Google Fonts; licencia OFL): no hace falta internet para ver ni renderizar.
+// src/fuentes.json = manifiesto {familia, peso, estilo, subconjunto, rango, archivo}. Se cargan una vez, con delayRender.
+type Fuente = {familia: string; peso: string; estilo: string; rango: string; archivo: string};
+let fuentesCargadas = false;
+export const cargarFuentes = (base?: string | null) => {
+  if (fuentesCargadas || typeof document === 'undefined' || typeof FontFace === 'undefined') return;
+  fuentesCargadas = true;
+  for (const f of fuentes as Fuente[]) {
+    const url = base ? base + f.archivo : staticFile(`fonts/${f.archivo}`);
+    const h = delayRender(`fuente ${f.archivo}`);
+    const ff = new FontFace(f.familia, `url("${url}") format("woff2")`, {weight: f.peso, style: f.estilo, unicodeRange: f.rango, display: 'block'});
+    document.fonts.add(ff);
+    ff.load().then(
+      () => continueRender(h),
+      (e) => {
+        console.error(`no se pudo cargar ${f.archivo}`, e);
+        continueRender(h);
+      },
+    );
+  }
 };
+const FONTS: Record<string, string> = Object.fromEntries((fuentes as Fuente[]).map((f) => [f.familia, f.familia]));
 export const font = (name?: string) => (name ? FONTS[name] ?? name : FONTS['Montserrat']);
 // ancho aproximado por carácter (en em) de cada fuente, para que una línea nunca se salga de la zona segura
 const CHAR_W: Record<string, number> = {
@@ -143,7 +132,7 @@ export const enGancho = (f: number) => !!D.hook && f >= HOOK_START && f < D.hook
 // Todo lo que se calcula a partir de los datos (bloques de subtítulos, tramos de cámara…) va con derivado(): se recalcula
 // solo cuando cambian los datos.
 export type Vlog = Record<string, unknown>;
-export type Datos = {data?: unknown; estilo?: unknown; vlog?: unknown; land?: unknown; base?: string | null; proxy?: boolean};
+export type Datos = {data?: unknown; estilo?: unknown; vlog?: unknown; land?: unknown; base?: string | null; proxy?: boolean; fuentes?: string | null};
 export let D: Data;
 export let E: Estilo;
 export let VLOG: Vlog;

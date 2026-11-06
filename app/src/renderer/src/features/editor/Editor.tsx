@@ -1,5 +1,5 @@
 // Editor: barra superior, vista previa (centro), paneles (derecha) y línea de tiempo (abajo). Atajos de teclado.
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useStore} from 'zustand';
 import {quitarEvento} from '@shared/elementos';
 import {guardar, pedirDatos, useEditor} from '@/store';
@@ -14,6 +14,7 @@ import {Cortes} from '../cortes/Cortes';
 import {Pipeline, BarraTrabajos} from '../pipeline/Pipeline';
 import {PanelClaude} from '../claude/PanelClaude';
 import {Notas} from '../notas/Notas';
+import {Preferencias} from '../preferencias/Preferencias';
 
 const PANELES = [
   {id: 'inspector', n: 'Elementos'},
@@ -42,6 +43,7 @@ export const Editor: React.FC = () => {
   const frame = useReloj((s) => s.frame);
   const total = useReloj((s) => s.total);
   const jugando = useReloj((s) => s.jugando);
+  const [pref, setPref] = useState(false);
   const pasado = useStore(useEditor.temporal, (s) => s.pastStates.length);
   const futuro = useStore(useEditor.temporal, (s) => s.futureStates.length);
 
@@ -123,6 +125,9 @@ export const Editor: React.FC = () => {
           <Boton v="fantasma" disabled={!futuro} onClick={() => historial(rehacer)} title="Rehacer (⇧⌘Z)">
             ↷
           </Boton>
+          <Boton v="fantasma" onClick={() => setPref(true)} title="Preferencias">
+            ⚙
+          </Boton>
           <Boton onClick={() => pedirDatos()} title="Regenerar src/data.json (reel datos)">
             Actualizar datos
           </Boton>
@@ -203,6 +208,7 @@ export const Editor: React.FC = () => {
       <div className="h-[230px] shrink-0 border-t border-zinc-800">
         <Timeline />
       </div>
+      {pref && <Preferencias cerrar={() => setPref(false)} />}
     </div>
   );
 };

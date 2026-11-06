@@ -3,7 +3,7 @@
 import {spawn, type ChildProcess} from 'node:child_process';
 import crypto from 'node:crypto';
 import type {LineaReel, Trabajo} from '../shared/tipos';
-import {PYTHON, entorno, reelPy, skillDir} from './rutas';
+import {entorno, python, reelPy, skillDir} from './rutas';
 
 type Interno = Trabajo & {ruta: string; proc?: ChildProcess};
 const cola: Interno[] = [];
@@ -16,13 +16,14 @@ const publico = (t: Interno): Trabajo => {
   return {...rest, lineas: rest.lineas.slice(-200)};
 };
 
-// comando: ["datos"] | ["render", "--borrador"] | ["vlog.py", "datos"] (scripts de la skill)…
+// comando: ["datos"] | ["render", "--borrador"] | ["vlog.py", "datos"] (scripts de la skill) | ["__sh", "/ruta/x.sh", …]
 // los comandos de reel.py reciben -p <ruta>; para otros scripts el comando trae sus propios argumentos.
 const argv = (t: Interno): string[] => {
   const [c, ...resto] = t.comando;
-  if (c.endsWith('.py')) return [`${skillDir()}/scripts/${c}`, ...resto.map((x) => (x === '{P}' ? t.ruta : x))];
+  if (c === '__sh') return ['/bin/zsh', ...resto];
+  if (c.endsWith('.py')) return [python(), `${skillDir()}/scripts/${c}`, ...resto.map((x) => (x === '{P}' ? t.ruta : x))];
   const sinProyecto = ['nuevo', 'prueba'].includes(c);
-  return [reelPy(), c, ...(sinProyecto ? [] : ['-p', t.ruta]), ...resto, '--json'];
+  return [python(), reelPy(), c, ...(sinProyecto ? [] : ['-p', t.ruta]), ...resto, '--json'];
 };
 
 export const encolar = (proyecto: string, ruta: string, titulo: string, comando: string[]): string => {
@@ -45,7 +46,7 @@ const siguiente = () => {
   t.estado = 'corriendo';
   t.inicio = Date.now();
   avisar(publico(t));
-  const [prog, ...args] = [PYTHON, ...argv(t)];
+  const [prog, ...args] = argv(t);
   const p = spawn(prog, args, {cwd: t.ruta, env: entorno()});
   t.proc = p;
   let buf = '';
@@ -104,6 +105,14 @@ export const cancelar = (id: string) => {
   } else if (t.proc) {
     t.estado = 'cancelado';
     t.proc.kill('SIGTERM');
+  }
+};
+
+// al cerrar la app: los procesos en curso se detienen (no quedan reel.py huérfanos escribiendo en el proyecto)
+export const detenerTodo = () => {
+  for (const t of cola) {
+    if (t.proc) t.proc.kill('SIGTERM');
+    t.estado = 'cancelado';
   }
 };
 

@@ -80,4 +80,9 @@ describe('bloques', () => {
     expect(b.map((x) => x.sel.lista).sort()).toEqual(['hook', 'labels', 'montos']);
     expect(b.find((x) => x.sel.lista === 'hook')).toMatchObject({a: 3, b: 40, texto: 'HOLA'});
   });
+  it('gancho: cada elemento llega hasta el siguiente (no se enciman)', () => {
+    const d = {...data(), hook: {elementos: [{texto: 'A', at: 3}, {texto: 'B', at: 20}, {texto: 'C', at: 10}]}, hookEnd: 60};
+    const h = bloques(d).filter((x) => x.sel.lista === 'hook').map((x) => [x.texto, x.a, x.b]);
+    expect(h).toEqual([['A', 3, 10], ['B', 20, 60], ['C', 10, 20]]);
+  });
 });

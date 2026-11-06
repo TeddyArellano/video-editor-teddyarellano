@@ -1,0 +1,354 @@
+[
+ {
+  "familia": "Lilita One",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "LilitaOne-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Lilita One",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "LilitaOne-400-latin.woff2"
+ },
+ {
+  "familia": "Permanent Marker",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "PermanentMarker-400-latin.woff2"
+ },
+ {
+  "familia": "Bangers",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Bangers-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Bangers",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Bangers-400-latin.woff2"
+ },
+ {
+  "familia": "Bungee",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Bungee-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Bungee",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Bungee-400-latin.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "800",
+  "estilo": "italic",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Montserrat-800i-latin-ext.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "800",
+  "estilo": "italic",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Montserrat-800i-latin.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "900",
+  "estilo": "italic",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Montserrat-900i-latin-ext.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "900",
+  "estilo": "italic",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Montserrat-900i-latin.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "600",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Montserrat-600-latin-ext.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "600",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Montserrat-600-latin.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "700",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Montserrat-700-latin-ext.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "700",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Montserrat-700-latin.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "800",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Montserrat-800-latin-ext.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "800",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Montserrat-800-latin.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "900",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Montserrat-900-latin-ext.woff2"
+ },
+ {
+  "familia": "Montserrat",
+  "peso": "900",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Montserrat-900-latin.woff2"
+ },
+ {
+  "familia": "Poppins",
+  "peso": "600",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Poppins-600-latin-ext.woff2"
+ },
+ {
+  "familia": "Poppins",
+  "peso": "600",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Poppins-600-latin.woff2"
+ },
+ {
+  "familia": "Poppins",
+  "peso": "700",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Poppins-700-latin-ext.woff2"
+ },
+ {
+  "familia": "Poppins",
+  "peso": "700",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Poppins-700-latin.woff2"
+ },
+ {
+  "familia": "Poppins",
+  "peso": "800",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Poppins-800-latin-ext.woff2"
+ },
+ {
+  "familia": "Poppins",
+  "peso": "800",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Poppins-800-latin.woff2"
+ },
+ {
+  "familia": "Anton",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Anton-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Anton",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Anton-400-latin.woff2"
+ },
+ {
+  "familia": "Silkscreen",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Silkscreen-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Silkscreen",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Silkscreen-400-latin.woff2"
+ },
+ {
+  "familia": "Silkscreen",
+  "peso": "700",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Silkscreen-700-latin-ext.woff2"
+ },
+ {
+  "familia": "Silkscreen",
+  "peso": "700",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Silkscreen-700-latin.woff2"
+ },
+ {
+  "familia": "Righteous",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Righteous-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Righteous",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Righteous-400-latin.woff2"
+ },
+ {
+  "familia": "Pacifico",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Pacifico-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Pacifico",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Pacifico-400-latin.woff2"
+ },
+ {
+  "familia": "Rubik Mono One",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "RubikMonoOne-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Rubik Mono One",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "RubikMonoOne-400-latin.woff2"
+ },
+ {
+  "familia": "Lobster",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Lobster-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Lobster",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Lobster-400-latin.woff2"
+ },
+ {
+  "familia": "Bowlby One",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "BowlbyOne-400-latin.woff2"
+ },
+ {
+  "familia": "Caveat Brush",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "CaveatBrush-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Caveat Brush",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "CaveatBrush-400-latin.woff2"
+ },
+ {
+  "familia": "Yellowtail",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin-ext",
+  "rango": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF",
+  "archivo": "Yellowtail-400-latin-ext.woff2"
+ },
+ {
+  "familia": "Yellowtail",
+  "peso": "400",
+  "estilo": "normal",
+  "subconjunto": "latin",
+  "rango": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+  "archivo": "Yellowtail-400-latin.woff2"
+ }
+]

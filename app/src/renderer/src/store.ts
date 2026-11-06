@@ -48,6 +48,8 @@ type Estado = Docs & {
 };
 
 let idAviso = 0;
+// calidad preferida al abrir un proyecto (Preferencias)
+export const prefs = {calidad: 'proxy' as 'proxy' | 'completa'};
 let temporizador: ReturnType<typeof setTimeout> | null = null;
 
 export const useEditor = create<Estado>()(
@@ -80,7 +82,7 @@ export const useEditor = create<Estado>()(
           (docs as Obj)[doc] = c?.contenido ?? (doc === 'eventos' ? {} : doc === 'notas' ? [] : null);
           hashes[doc] = c?.hash ?? null;
         }
-        set({...docs, info: s.info, hashes, sucios: [], sel: null, corteDesactualizado: false, calidad: s.info.estado.proxy ? 'proxy' : 'completa'});
+        set({...docs, info: s.info, hashes, sucios: [], sel: null, corteDesactualizado: false, calidad: s.info.estado.proxy && prefs.calidad === 'proxy' ? 'proxy' : 'completa'});
         useEditor.temporal.getState().clear();
       },
       cerrar: () => set({info: null, data: null, eventos: null, estilo: null, plan: null, notas: null, sel: null}),

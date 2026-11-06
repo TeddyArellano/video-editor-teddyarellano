@@ -67,6 +67,9 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
 13. **`reel.py --json`.** Salida en líneas JSON con progreso, para la app.
     - El id de caché queda guardado en `proyecto.json`, así que mover la carpeta no pierde la caché.
     - El seguimiento de caras va en caché con la huella de `cut.mp4`, así que `datos` sin cambios de corte tarda unos 0.05 s.
+14. **Fuentes locales.** Las 15 familias van en `public/fonts` y el manifiesto en `src/fuentes.json`.
+    - Se cargan con `FontFace` y `delayRender`, sin internet.
+    - Golden test contra Google Fonts: 139 de 141 stills idénticos; los otros 2 difieren solo en imágenes escaladas durante su animación, no en texto.
 
 ## Datos por proyecto (`proyecto_remotion/edicion/`)
 - `proyecto.json`: fuentes, estilo, nombre, marca, `recorte_x`, `audio_externo` y `revision_url`.

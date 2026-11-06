@@ -3,11 +3,15 @@ import React, {useEffect, useState} from 'react';
 import type {Herramientas, Reciente} from '@shared/tipos';
 import {Boton} from '@/ui';
 import {NuevoProyecto} from '../pipeline/NuevoProyecto';
+import {Preferencias} from '../preferencias/Preferencias';
+import {useEditor} from '@/store';
 
 export const Biblioteca: React.FC<{abrir: (ruta: string) => void}> = ({abrir}) => {
   const [rec, setRec] = useState<Reciente[]>([]);
   const [herr, setHerr] = useState<Herramientas | null>(null);
   const [nuevo, setNuevo] = useState(false);
+  const [pref, setPref] = useState(false);
+  const reparando = useEditor((s) => s.trabajos.find((t) => t.titulo === 'Instalar / reparar toolkit'));
   useEffect(() => {
     window.reel.recientes().then(setRec);
     window.reel.herramientas().then(setHerr);
@@ -23,6 +27,9 @@ export const Biblioteca: React.FC<{abrir: (ruta: string) => void}> = ({abrir}) =
             <p className="mt-1 text-sm text-zinc-400">Editor visual de la skill /editar-reel. Abre un proyecto o crea uno nuevo.</p>
           </div>
           <div className="flex gap-2">
+            <Boton v="fantasma" onClick={() => setPref(true)} title="Preferencias" data-testid="abrir-preferencias">
+              ⚙
+            </Boton>
             <Boton onClick={() => setNuevo(true)}>+ Nuevo proyecto</Boton>
             <Boton
               v="primario"
@@ -37,8 +44,24 @@ export const Biblioteca: React.FC<{abrir: (ruta: string) => void}> = ({abrir}) =
           </div>
         </div>
         {herr && !herr.toolkit && (
-          <div className="mb-6 rounded-lg border border-amber-700/60 bg-amber-950/40 p-3 text-xs text-amber-200">
-            El toolkit no está completo: {herr.detalles.join(' · ')}. Corre <code>zsh skill/editar-reel/setup.sh</code> (o <code>install.sh</code>) en el repo.
+          <div className="mb-6 rounded-lg border border-amber-700/60 bg-amber-950/40 p-3 text-xs text-amber-200" data-testid="aviso-toolkit">
+            <div className="mb-2 font-semibold">Primer arranque: falta preparar el toolkit de la skill</div>
+            <div className="mb-2">{herr.detalles.join(' · ')}</div>
+            <div className="flex items-center gap-2">
+              <Boton v="primario" disabled={reparando?.estado === 'corriendo'} onClick={() => window.reel.repararToolkit()}>
+                Instalar / reparar toolkit
+              </Boton>
+              <span className="text-amber-300/80">
+                {reparando
+                  ? reparando.estado === 'corriendo'
+                    ? `instalando… ${reparando.ultimo ?? ''}`
+                    : reparando.estado === 'ok'
+                      ? '✓ listo'
+                      : `✗ ${reparando.ultimo ?? ''}`
+                  : 'corre install.sh del repo (Homebrew, Whisper, Python, binarios Swift, Remotion)'}
+              </span>
+              {reparando?.estado === 'ok' && <Boton onClick={() => window.reel.herramientas().then(setHerr)}>Verificar de nuevo</Boton>}
+            </div>
           </div>
         )}
         <h2 className="mb-3 text-xs font-semibold tracking-wide text-zinc-400 uppercase">Recientes</h2>
@@ -61,6 +84,7 @@ export const Biblioteca: React.FC<{abrir: (ruta: string) => void}> = ({abrir}) =
         </div>
       </div>
       {nuevo && <NuevoProyecto cerrar={() => setNuevo(false)} abrir={abrir} />}
+      {pref && <Preferencias cerrar={() => setPref(false)} />}
     </div>
   );
 };

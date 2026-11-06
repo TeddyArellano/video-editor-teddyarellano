@@ -29,3 +29,16 @@ select {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Tema claro: se invierte la interfaz (oscura por diseño) y se vuelve a invertir la vista previa y las imágenes,
+   para que el video y los gráficos se vean con sus colores reales. */
+:root[data-tema='claro'] {
+  background: #fafafa;
+}
+:root[data-tema='claro'] #root {
+  filter: invert(1) hue-rotate(180deg);
+}
+:root[data-tema='claro'] [data-testid='visor'] > div,
+:root[data-tema='claro'] #root img {
+  filter: invert(1) hue-rotate(180deg);
+}

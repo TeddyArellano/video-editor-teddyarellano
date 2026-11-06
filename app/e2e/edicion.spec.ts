@@ -8,6 +8,7 @@ const etiquetaDe = (i: number) => {
   return {data: d.labels[i], ev: leer('edicion/eventos.json').etiquetas[d.labels[i].ev ?? i]};
 };
 const arrastrar = async (page: Page, sel: string, dx: number, dy: number) => {
+  await page.locator(sel).first().scrollIntoViewIfNeeded();
   const b = (await page.locator(sel).first().boundingBox())!;
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2);
   await page.mouse.down();
@@ -32,7 +33,12 @@ test('editar elementos, subtítulos y notas', async () => {
   await arrastrar(page, '[data-testid=seleccion] > div', 0, -120);
   await hasta(() => (etiquetaDe(0).ev.dy ?? 0) < dy0 - 100);
   const dy = etiquetaDe(0).ev.dy;
-  await hasta(() => etiquetaDe(0).data.dy === dy, 40_000);
+  await hasta(() => etiquetaDe(0).data.dy === dy, 40_000).catch(async (e) => {
+    console.log('DIAG2 dy', dy, 'data', JSON.stringify(etiquetaDe(0).data));
+    console.log('DIAG2 trabajos', JSON.stringify((await page.evaluate(() => window.reel.trabajos())).map((t) => [t.titulo, t.estado, t.ultimo])));
+    console.log('DIAG2 avisos', await page.getByTestId('avisos').innerText(), '|', await page.getByTestId('estado-guardado').innerText());
+    throw e;
+  });
   await expect(page.getByTestId('estado-guardado')).toHaveText('guardado');
   await page.screenshot({path: 'test-results/movida.png'});
 
@@ -51,8 +57,14 @@ test('editar elementos, subtítulos y notas', async () => {
 
   // --- línea de tiempo: mover la segunda etiqueta → nueva ancla pegada a una palabra
   const en0 = JSON.stringify(etiquetaDe(1).ev.en);
+  const caja1 = await page.getByTestId('bloque-labels-1').boundingBox();
   await arrastrar(page, '[data-testid=bloque-labels-1]', 70, 0);
-  await hasta(() => JSON.stringify(etiquetaDe(1).ev.en) !== en0);
+  await hasta(() => JSON.stringify(etiquetaDe(1).ev.en) !== en0).catch(async (e) => {
+    console.log('DIAG en0', en0, 'ahora', JSON.stringify(etiquetaDe(1).ev.en), 'data', JSON.stringify(etiquetaDe(1).data), 'caja', JSON.stringify(caja1));
+    console.log('DIAG avisos', await page.getByTestId('avisos').innerText(), 'guardado', await page.getByTestId('estado-guardado').innerText());
+    console.log('DIAG sel', await page.getByTestId('inspector').locator('h3').first().innerText().catch(() => '-'));
+    throw e;
+  });
   expect(typeof etiquetaDe(1).ev.en).toBe('string');
   await hasta(() => Math.abs(etiquetaDe(1).data.a - etiquetaDe(1).data.a) === 0 && leer('src/data.json').labels[1].a > 0, 40_000);
 

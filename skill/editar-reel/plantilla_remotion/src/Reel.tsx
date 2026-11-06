@@ -12,7 +12,7 @@ import {Globo} from './components/Globo';
 import {Calendario, EmojiSticker, Gamer, Monto} from './components/Extras';
 import {IntroEspacioCapa} from './components/IntroEspacio';
 import {BRoll, Counter, EndCard, FastBadge, Images, Labels, NameTag, Sound, Transition} from './components/Overlays';
-import {CIERRE_LEN, CUT, D, Datos, E, VLOG, derivado, setDatos, totalFrames} from './theme';
+import {CIERRE_LEN, CUT, D, Datos, E, VLOG, cargarFuentes, derivado, setDatos, totalFrames} from './theme';
 
 // duración con los datos por defecto (src/data.json); la app calcula la suya con totalFrames(data)
 export const TOTAL_FRAMES = totalFrames(D);
@@ -32,10 +32,11 @@ const CameraFX: React.FC = () => {
   );
 };
 
-// props (todas opcionales): {data, estilo, vlog, land, base, proxy}. Sin props usa los JSON de src/ (render normal);
+// props (todas opcionales): {data, estilo, vlog, land, base, proxy, fuentes}. Sin props usa los JSON de src/ (render normal);
 // `reel render --borrador` pasa {proxy: true}.
 export const Reel: React.FC<Datos> = (props) => {
   setDatos(props);
+  cargarFuentes(props.fuentes); // sin props: public/fonts del proyecto
   return <ReelCapas />;
 };
 

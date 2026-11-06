@@ -16,6 +16,12 @@ test('abre el proyecto y reproduce la vista previa', async () => {
   // ir a un cuadro y comprobar el tiempo
   await page.keyboard.press('Shift+ArrowRight');
   await expect(page.getByTestId('tiempo')).toContainText('0:01.00');
+  // fuentes locales (sin internet): todas las de la plantilla cargadas desde reel-media://…/__plantilla/fonts/
+  await expect
+    .poll(() => page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded' && f.family.replace(/"/g, '') === 'Montserrat').length))
+    .toBeGreaterThan(0);
+  const google = await page.evaluate(() => performance.getEntriesByType('resource').filter((r) => /fonts\.(googleapis|gstatic)/.test(r.name)).length);
+  expect(google).toBe(0);
   await page.waitForTimeout(1500);
   await page.screenshot({path: 'test-results/visor.png'});
   await app.close();

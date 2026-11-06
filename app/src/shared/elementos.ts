@@ -196,9 +196,15 @@ export const bloques = (data: Obj): Bloque[] => {
       out.push({sel: {lista: l, i}, a, b, texto: String(texto ?? ''), color: LISTAS[l].color});
     });
   }
-  (data.hook?.elementos ?? []).forEach((el: Obj, i: number) => {
-    const a = el.at ?? 2 + i * 8;
-    out.push({sel: {lista: 'hook', i}, a, b: Math.max(a + 6, data.hookEnd ?? a + 30), texto: el.texto ?? el.tipo, color: LISTAS.hook.color});
+  // gancho: cada elemento ocupa hasta que aparece el siguiente (todos siguen en pantalla hasta hookEnd, pero así se ven en fila)
+  const els: Obj[] = data.hook?.elementos ?? [];
+  const ats = els.map((el, i) => el.at ?? 2 + i * 8);
+  const orden = [...ats].sort((x, y) => x - y);
+  els.forEach((el, i) => {
+    const a = ats[i];
+    const sig = orden.find((x) => x > a);
+    const b = Math.max(a + 6, sig ?? data.hookEnd ?? a + 30);
+    out.push({sel: {lista: 'hook', i}, a, b, texto: el.texto ?? el.tipo, color: LISTAS.hook.color});
   });
   return out;
 };

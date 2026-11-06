@@ -61,7 +61,11 @@ export type Trabajo = {
 
 export type CambioArchivo = {proyecto: string; archivo: Archivo | 'public/cut.mp4'; hash: string | null};
 
-export type Herramientas = {python: string; reel: string; toolkit: boolean; detalles: string[]};
+export type Herramientas = {python: string; reel: string; skill: string; toolkit: boolean; detalles: string[]};
+
+export type Preferencias = {skill: string; python: string; tema: 'oscuro' | 'claro'; calidad: 'proxy' | 'completa'};
+
+export type EstadoActualizacion = {repo: string; rama: string; atras: number; adelante: number; cambiosLocales: boolean; ultimo: string; error?: string};
 
 // API que el preload expone en window.reel
 export type ReelAPI = {
@@ -83,6 +87,12 @@ export type ReelAPI = {
   herramientas: () => Promise<Herramientas>;
   mostrarEnFinder: (ruta: string) => Promise<void>;
   copiarAPublic: (id: string, origen: string, destinoRel: string) => Promise<string>;
+  preferencias: () => Promise<Preferencias>;
+  guardarPreferencias: (p: Partial<Preferencias>) => Promise<Preferencias>;
+  buscarActualizaciones: () => Promise<EstadoActualizacion>;
+  actualizarApp: () => Promise<string>;
+  repararToolkit: () => Promise<string>;
+  reiniciar: () => Promise<void>;
   estilos: () => Promise<{estilos: {id: string; nombre: string; descripcion?: string}[]; marcas: {id: string; nombre: string}[]}>;
   leerEstilo: (id: string) => Promise<unknown>;
   guardarEstilo: (id: string, contenido: unknown) => Promise<void>;

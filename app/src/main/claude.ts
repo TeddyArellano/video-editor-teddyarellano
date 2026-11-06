@@ -4,7 +4,7 @@
 import {spawn, type ChildProcess} from 'node:child_process';
 import crypto from 'node:crypto';
 import type {EventoClaude} from '../shared/tipos';
-import {PYTHON, entorno, reelPy} from './rutas';
+import {entorno, python, reelPy} from './rutas';
 
 const sesiones = new Map<string, ChildProcess>();
 
@@ -13,7 +13,7 @@ export const CONTEXTO = (ruta: string) =>
     `Estás dentro de Reel Studio (la app de escritorio de la skill /editar-reel). Proyecto: ${ruta}.`,
     'Usa la skill /editar-reel y sus reglas. El creador tiene la app abierta: relee cualquier archivo justo antes de cambiarlo,',
     'respeta dx/dy/escala/rot de eventos.json y, después de cambiar eventos.json, plan.json o estilo.json, corre los pasos que',
-    `correspondan (p. ej. ${PYTHON} ${reelPy()} datos -p "${ruta}"). No renderices el video final salvo que te lo pida.`,
+    `correspondan (p. ej. ${python()} ${reelPy()} datos -p "${ruta}"). No renderices el video final salvo que te lo pida.`,
     'Responde en español, breve: qué cambiaste y por qué.',
   ].join(' ');
 
@@ -24,7 +24,7 @@ export const preguntar = (ruta: string, prompt: string, avisar: (e: EventoClaude
     '--append-system-prompt', CONTEXTO(ruta),
     '--output-format', 'stream-json', '--verbose',
     '--permission-mode', 'acceptEdits',
-    '--allowedTools', `Bash(${PYTHON}:*)`, 'Read', 'Edit', 'Write', 'Glob', 'Grep',
+    '--allowedTools', `Bash(${python()}:*)`, 'Read', 'Edit', 'Write', 'Glob', 'Grep',
   ];
   const p = spawn('claude', args, {cwd: ruta, env: entorno()});
   sesiones.set(sesion, p);

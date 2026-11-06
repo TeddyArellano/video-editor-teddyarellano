@@ -19,6 +19,8 @@ Vuelve a correrlo después de un `git pull`: la plantilla de la skill va empaque
 
 No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada; `instalar.sh` le quita la cuarentena.
 
+**Primer arranque:** si falta el toolkit, la biblioteca lo avisa y ofrece **Instalar / reparar**, que corre `install.sh`.
+
 **Abrir un proyecto:**
 - desde la biblioteca, con "Abrir carpeta…";
 - arrastrando la carpeta al ícono;
@@ -36,7 +38,8 @@ No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada
 | **Cortes** | El plan como piezas de transcripción. Tachar palabras, recortar o extender por palabra, dividir (Alt+clic), reordenar, velocidad, ganancia y márgenes. Escuchar el clip original. **Re-cortar** corre `edl → cortar --verificar → datos`. |
 | **Pipeline** | Todos los pasos de `reel.py` con botones y cola de trabajos con progreso: inventario, SDR, micrófono externo, transcribir, zooms, énfasis, recorte, intro 3D, borrador, render final (con nota / 4K), SRT + portada, logos, QR, b-roll y limpiar caché. |
 | **Notas** | Notas de revisión en el cuadro actual (`edicion/notas.json`). Claude las aplica y las marca. |
-| **Claude** | Pide cambios de criterio a Claude Code (tu sesión, con la skill). Ves lo que hace, la vista previa se actualiza sola y puedes **revertir** con un clic. |
+| **Claude** | Pide cambios de criterio a Claude Code (tu sesión, con la skill). Con **revisar antes de aplicar** (por defecto) ves el diff campo por campo de lo que propone y decides **Aplicar** o **Descartar**. Sin revisar, se aplica directo y puedes **Revertir**. |
+| **⚙ Preferencias** | Ruta de la skill y del Python del toolkit, tema claro u oscuro, calidad de la vista previa al abrir, lista de atajos, estado del toolkit (**Instalar / reparar**) y **Buscar actualizaciones**. Esta última hace `git fetch` del repo; **Actualizar ahora** hace `git pull --ff-only` y reinstala la app, que luego se reinicia. |
 
 **Atajos:**
 - Espacio o K: play/pausa.
@@ -100,5 +103,6 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 - **Video de la vista previa:**
   - El `<video>` de Chromium se ve unos 10 niveles (de 255) más claro que el render.
   - Al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto.
-- **Fuentes:** se cargan de Google Fonts, así que la primera vez hace falta internet.
+- **Fuentes:** las 15 van en `plantilla_remotion/public/fonts` (OFL), así que no hace falta internet.
+- **Atajos:** se consultan en Preferencias, pero no se pueden cambiar.
 - **Re-cortar** reconstruye el corte con `reel cortar`. Los pasos manuales hechos después de cortar (p. ej. un `insertar.py`) hay que repetirlos.

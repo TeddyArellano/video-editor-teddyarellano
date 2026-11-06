@@ -30,9 +30,6 @@
       "@/*": [
         "./src/renderer/src/*"
       ],
-      "@remotion/google-fonts/*": [
-        "./node_modules/@remotion/google-fonts/dist/cjs/*"
-      ],
       "*": [
         "./node_modules/@types/*",
         "./node_modules/*"
