@@ -6,17 +6,17 @@
 // Palabras de ÉNFASIS (eventos.json → "enfasis"): salen SOLAS, ~2× más grandes, en color acento, con un golpe rápido.
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
-import {CUT, D, E, FPS, SIDE, W, Word, enGancho, font, stroke, topLibre} from '../theme';
+import {CUT, D, E, FPS, SIDE, W, Word, derivado, enGancho, font, stroke, topLibre} from '../theme';
 
 type Chunk = {words: Word[]; from: number; to: number; enf?: boolean};
-const S = E.subtitulos;
 const LEAD = 1; // cuadros de adelanto de cada palabra (se percibe en sincronía con la voz)
 const CONECTORES = new Set(['y', 'e', 'o', 'u', 'de', 'del', 'la', 'el', 'los', 'las', 'a', 'al', 'en', 'con', 'por', 'para', 'que', 'un', 'una',
   'mi', 'mis', 'tu', 'tus', 'su', 'sus', 'lo', 'le', 'les', 'me', 'te', 'se', 'nos', 'no', 'es', 'muy', 'más', 'como', 'sobre', 'pero']);
 const bare = (t: string) => t.toLowerCase().replace(/[^\wáéíóúñü]/g, '');
 const fr = (w: Word) => Math.round(w.start * FPS) - LEAD;
 
-const CHUNKS: Chunk[] = (() => {
+export const CHUNKS = derivado((): Chunk[] => {
+  const S = E.subtitulos;
   const out: Chunk[] = [];
   let cur: Word[] = [];
   const soloConectores = (ws: Word[]) => ws.length > 0 && ws.every((x) => CONECTORES.has(bare(x.text)));
@@ -66,7 +66,7 @@ const CHUNKS: Chunk[] = (() => {
     if (sec) c.to = Math.min(c.to, sec.b - 1);
   });
   return out;
-})();
+});
 
 const ent = (frame: number, at: number, d = 3) =>
   interpolate(frame, [at, at + d], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.back(1.8))});
@@ -78,7 +78,8 @@ export const Captions: React.FC = () => {
   if (D.images.some((im) => (im.src.startsWith('perfiles/') || im.pos === 'completa') && frame >= im.a && frame < im.b)) return null;
   // con estilo.etiqueta.ocultar_subs, mientras hay etiqueta no hay subtítulo (repetían las mismas palabras; Brigadas Otoño 2026)
   if ((E.etiqueta as unknown as {ocultar_subs?: boolean}).ocultar_subs && D.labels.some((l) => frame >= l.a && frame < l.b)) return null;
-  const chunk = CHUNKS.find((c) => frame >= c.from && frame < c.to);
+  const S = E.subtitulos;
+  const chunk = CHUNKS().find((c) => frame >= c.from && frame < c.to);
   if (!chunk) return null;
   // si hay una tarjeta (QR) abajo, los subtítulos suben arriba
   const cardBelow = D.images.some((im) => im.pos === 'abajo' && frame >= im.a && frame < im.b);
@@ -87,7 +88,7 @@ export const Captions: React.FC = () => {
     const t = (S.mayus ? w.text.toUpperCase() : w.text).replace(/[.,…]+$/, '');
     const size = Math.min(S.size * 2, Math.floor((W - 2 * 150) / (Math.max(1, t.length) * 0.7)));
     const p = ent(frame, chunk.from, 4);
-    const giro = (CHUNKS.indexOf(chunk) % 2 ? 1 : -1) * 3;
+    const giro = (CHUNKS().indexOf(chunk) % 2 ? 1 : -1) * 3;
     return (
       <AbsoluteFill style={{top: cardBelow ? topLibre(frame) : S.top - size * 0.35, alignItems: 'center'}}>
         <div style={{fontFamily: font(S.fuente), fontWeight: S.peso ?? 900, fontStyle: S.italic ? 'italic' : 'normal', fontSize: size, lineHeight: 1,

@@ -6,8 +6,8 @@
 //   imagen   → logo (public/<src>)
 // Todo centrado en x = 540 dentro de la zona segura. Sin subtítulos mientras dura el gancho.
 import React from 'react';
-import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {HOOK_START, D, E, HookEl, SIDE, W, clamp, fitSize, font, stroke} from '../theme';
+import {AbsoluteFill, Img, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {HOOK_START, D, E, HookEl, SIDE, W, asset, clamp, fitSize, font, libre, stroke} from '../theme';
 
 const Line: React.FC<{el: HookEl; at: number}> = ({el, at}) => {
   const frame = useCurrentFrame();
@@ -110,7 +110,7 @@ const Box: React.FC<{el: HookEl; at: number}> = ({el, at}) => {
   const p = spring({frame: frame - at, fps, config: {damping: 12, stiffness: 200}});
   // antes de `at` se dibuja invisible para que el bloque no salte al aparecer
   if (el.tipo === 'imagen')
-    return <Img src={staticFile(el.src ?? '')} style={{width: el.ancho ?? 300, marginTop: el.mt ?? 0, transform: `scale(${interpolate(p, [0, 1], [0.4, 1], clamp)})`, opacity: Math.min(1, p * 2)}} />;
+    return <Img src={asset(el.src ?? '')} style={{width: el.ancho ?? 300, marginTop: el.mt ?? 0, transform: `scale(${interpolate(p, [0, 1], [0.4, 1], clamp)})`, opacity: Math.min(1, p * 2)}} />;
   const nota = el.tipo === 'nota';
   return (
     <div
@@ -134,6 +134,9 @@ const Box: React.FC<{el: HookEl; at: number}> = ({el, at}) => {
   );
 };
 
+// posición libre de un elemento del gancho: dx/dy/escala (rot ya es propio del elemento y se aplica dentro)
+const mover = (el: HookEl) => libre({dx: (el as {dx?: number}).dx, dy: (el as {dy?: number}).dy, escala: (el as {escala?: number}).escala});
+
 // capa: 'todo' (normal) | 'detras' | 'delante'. Con gancho.detras se dibuja dos veces (detrás y delante de la persona);
 // en cada pasada los elementos de la otra capa quedan invisibles para conservar el mismo acomodo.
 export const Hook: React.FC<{capa?: 'todo' | 'detras' | 'delante'}> = ({capa = 'todo'}) => {
@@ -146,7 +149,7 @@ export const Hook: React.FC<{capa?: 'todo' | 'detras' | 'delante'}> = ({capa = '
       {/* elementos con "top": posición absoluta (p. ej. logo arriba de la cabeza; Brigadas Otoño 2026) */}
       {h.elementos.map((el, i) =>
         el.top === undefined ? null : (
-          <div key={'abs' + i} style={{position: 'absolute', top: el.top, left: 0, width: W, display: 'flex', justifyContent: 'center'}}>
+          <div key={'abs' + i} data-reel={`hook:${i}`} style={{position: 'absolute', top: el.top, left: 0, width: W, display: 'flex', justifyContent: 'center', transform: mover(el)}}>
             <Box el={{...el, mt: 0}} at={el.at ?? 2} />
           </div>
         ),
@@ -158,7 +161,7 @@ export const Hook: React.FC<{capa?: 'todo' | 'detras' | 'delante'}> = ({capa = '
           const visible = capa === 'todo' || (capa === 'delante') === !!el.delante;
           const node = el.tipo === 'texto' ? <Line el={el} at={at} /> : el.tipo === 'stickers' ? <Stickers el={el} at={at} /> : <Box el={el} at={at} />;
           return (
-            <div key={i} style={{visibility: visible ? 'visible' : 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', alignSelf: 'stretch'}}>
+            <div key={i} data-reel={`hook:${i}`} style={{visibility: visible ? 'visible' : 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', alignSelf: 'stretch', transform: mover(el)}}>
               {node}
             </div>
           );

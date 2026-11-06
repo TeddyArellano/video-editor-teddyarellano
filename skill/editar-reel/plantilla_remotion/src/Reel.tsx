@@ -9,18 +9,18 @@ import {Hook} from './components/Hook';
 import {GV, GanchoCinetico, hookCam} from './components/GanchoCinetico';
 import {Fotos} from './components/Fotos';
 import {Globo} from './components/Globo';
-import vlog from './vlog.json';
 import {Calendario, EmojiSticker, Gamer, Monto} from './components/Extras';
 import {IntroEspacioCapa} from './components/IntroEspacio';
 import {BRoll, Counter, EndCard, FastBadge, Images, Labels, NameTag, Sound, Transition} from './components/Overlays';
-import {CIERRE_LEN, CUT, D, E} from './theme';
+import {CIERRE_LEN, CUT, D, Datos, E, VLOG, derivado, setDatos, totalFrames} from './theme';
 
-export const TOTAL_FRAMES = CUT + CIERRE_LEN;
+// duración con los datos por defecto (src/data.json); la app calcula la suya con totalFrames(data)
+export const TOTAL_FRAMES = totalFrames(D);
 
 // blanco y negro puntual (recurso cómico, p. ej. "no, no me refiero a…"): vlog.json → "bn": [[a, b], …]
-const BN = ((vlog as {bn?: [number, number][]}).bn ?? []) as [number, number][];
+const BN = derivado(() => ((VLOG as {bn?: [number, number][]}).bn ?? []) as [number, number][]);
 const bn = (f: number) => {
-  const r = BN.find(([a, b]) => f >= a && f < b);
+  const r = BN().find(([a, b]) => f >= a && f < b);
   return r ? `grayscale(${interpolate(f, [r[0], r[0] + 3], [0, 1], {extrapolateRight: 'clamp'})}) contrast(1.15)` : undefined;
 };
 const CameraFX: React.FC = () => {
@@ -32,7 +32,14 @@ const CameraFX: React.FC = () => {
   );
 };
 
-export const Reel: React.FC = () => (
+// props (todas opcionales): {data, estilo, vlog, land, base, proxy}. Sin props usa los JSON de src/ (render normal);
+// `reel render --borrador` pasa {proxy: true}.
+export const Reel: React.FC<Datos> = (props) => {
+  setDatos(props);
+  return <ReelCapas />;
+};
+
+const ReelCapas: React.FC = () => (
   <AbsoluteFill style={{background: '#000'}}>
     <Sequence durationInFrames={CUT}>
       <CameraFX />
@@ -44,7 +51,7 @@ export const Reel: React.FC = () => (
     ))}
     <IntroEspacioCapa />
     <Gamer />
-    {GV ? <GanchoCinetico /> : <Hook capa={D.hook?.detras ? 'detras' : 'todo'} />}
+    {GV() ? <GanchoCinetico /> : <Hook capa={D.hook?.detras ? 'detras' : 'todo'} />}
     {D.hook?.detras && <HookForeground />}
     {D.hook?.detras && <Hook capa="delante" />}
     <Counter />

@@ -33,6 +33,9 @@ Comandos (en orden de uso):
   limpiar -p P                    borra la caché pesada del proyecto
   prueba                          prueba de humo de toda la skill con un clip sintético (~35 s)
 P = carpeta proyecto_remotion (o la carpeta del material que lo contiene).
+
+--json (o REEL_JSON=1) en cualquier comando: la salida sale como líneas JSON {"tipo": ok|aviso|error|siguiente|progreso|info,
+"msg": …, "pct": 0–100} para Reel Studio (la app). El código de salida no cambia (0 = bien, 1 = error).
 """
 import argparse
 import concurrent.futures as cf
@@ -102,6 +105,55 @@ def need_toolkit():
         sys.exit("✗ toolkit incompleto: corre  zsh ~/.claude/skills/editar-reel/setup.sh")
 
 
+def progreso(i, n, msg=''):
+    """línea de avance "… [i/n] msg"; con --json sale como {"tipo": "progreso", "pct": …}"""
+    print(f"… [{i}/{n}] {msg}".rstrip(), flush=True)
+
+
+class SalidaJSON:
+    """Envuelve stdout: cada línea de texto se convierte en un objeto JSON según su prefijo (✓ ✗ ⚠ → …)."""
+    TIPOS = {'✓': 'ok', '✗': 'error', '⚠': 'aviso', '→': 'siguiente', '…': 'progreso'}
+
+    def __init__(self, real):
+        self.real, self.buf = real, ''
+
+    def write(self, t):
+        self.buf += t
+        while '\n' in self.buf:
+            linea, self.buf = self.buf.split('\n', 1)
+            self.emitir(linea)
+        return len(t)
+
+    def emitir(self, linea, tipo=None):
+        if not linea.strip():
+            return
+        s = linea.strip()
+        tipo = tipo or self.TIPOS.get(s[0], 'info')
+        if tipo == 'info' and s.startswith('siguiente'):
+            tipo = 'siguiente'
+        obj = {"tipo": tipo, "msg": s.lstrip('✓✗⚠→… ').strip() if tipo != 'info' else linea.rstrip()}
+        m = re.match(r'^…\s*\[(\d+)/(\d+)\]', s)
+        if m:
+            obj['pct'] = round(100 * int(m.group(1)) / max(1, int(m.group(2))), 1)
+        self.real.write(json.dumps(obj, ensure_ascii=False) + '\n')
+        self.real.flush()
+
+    def flush(self):
+        if self.buf:
+            self.emitir(self.buf)
+            self.buf = ''
+        self.real.flush()
+
+    def isatty(self):
+        return False
+
+    def fileno(self):
+        return self.real.fileno()
+
+
+JSON_MODE = False
+
+
 class Proyecto:
     def __init__(self, p):
         p = Path(p).expanduser().resolve()
@@ -113,7 +165,14 @@ class Proyecto:
         self.ed = p / 'edicion'
         self.cfg = jload(self.ed / 'proyecto.json')
         self.fuentes = Path(self.cfg['fuentes'])
-        self.cache = TK / 'cache' / hashlib.md5(str(p).encode()).hexdigest()[:10]
+        # id de caché ESTABLE (guardado en proyecto.json): mover o renombrar la carpeta ya no pierde la caché.
+        # Proyectos viejos: se toma el id que tenían (md5 de la ruta) y se guarda una sola vez.
+        if not self.cfg.get('id'):
+            self.cfg['id'] = hashlib.md5(str(p).encode()).hexdigest()[:10]
+            st = (self.ed / 'proyecto.json').stat()
+            jsave(self.ed / 'proyecto.json', self.cfg)
+            os.utime(self.ed / 'proyecto.json', ns=(st.st_atime_ns, st.st_mtime_ns))  # transcribir compara esta fecha
+        self.cache = TK / 'cache' / self.cfg['id']
         self.cache.mkdir(parents=True, exist_ok=True)
 
     def videos(self):
@@ -361,7 +420,8 @@ def cmd_sdr(a):
         return f"{stem}: {r.stdout.strip() or r.stderr.strip()}"
 
     with cf.ThreadPoolExecutor(2) as ex:
-        for msg in ex.map(one, clips):
+        for i, msg in enumerate(ex.map(one, clips), 1):
+            progreso(i, len(clips), 'SDR')
             print(msg)
 
 
@@ -456,7 +516,8 @@ def cmd_transcribir(a):
     (pr.cache / 'wav').mkdir(exist_ok=True)
     (pr.ed / 'palabras').mkdir(exist_ok=True)
     prompt = a.prompt or pr.cfg.get('prompt', '')
-    for stem in clips:
+    for k, stem in enumerate(clips):
+        progreso(k, len(clips), f'transcribiendo {stem}')
         wav = pr.cache / 'wav' / f'{stem}.wav'
         aud, off = pr.audio(stem)
         if not wav.exists() or wav.stat().st_mtime < pr.ed.joinpath('proyecto.json').stat().st_mtime:
@@ -686,6 +747,7 @@ def cmd_cortar(a):
     out = pr.P / 'public' / 'cut.mp4'
     out.parent.mkdir(exist_ok=True)
     for it in range(a.iter + 1):
+        progreso(it, a.iter + 1, f'pasada {it + 1}')
         n = build_master(pr, E, out)
         sil = [s for s in silences(out, a.db, a.min) if (s[1] or n / FPS) - s[0] > a.min]
         print(f"  pasada {it + 1}: {len(E)} tramos, {n / FPS:.1f} s, silencios > {a.min}s: {len(sil)}")
@@ -845,6 +907,23 @@ class Anchors:
 
 
 def face_track(pr, n, secs, cfg_secs, caras_def=None):
+    """Seguimiento de caras del corte. Se guarda en caché (track.json) con la huella de cut.mp4 + secciones + caras:
+    si nada de eso cambió (p. ej. solo se movió un texto en Reel Studio), `datos` no vuelve a analizar el video (~1 s)."""
+    cut = pr.P / 'public' / 'cut.mp4'
+    st = cut.stat()
+    huella = hashlib.md5(json.dumps([st.st_size, st.st_mtime_ns, n, secs, {k: v.get('caras') for k, v in cfg_secs.items()}, caras_def],
+                                    sort_keys=True, default=str).encode()).hexdigest()
+    tj = pr.cache / 'track.json'
+    if tj.exists():
+        c = json.loads(tj.read_text())
+        if c.get('huella') == huella:
+            return c['x'], c['y']
+    tx, ty = _face_track(pr, n, secs, cfg_secs, caras_def)
+    tj.write_text(json.dumps({'huella': huella, 'x': tx, 'y': ty}))
+    return tx, ty
+
+
+def _face_track(pr, n, secs, cfg_secs, caras_def=None):
     frames = pr.cache / 'ffc'
     if frames.exists():
         shutil.rmtree(frames)
@@ -978,15 +1057,19 @@ def cmd_datos(a):
         b0 = A.f(e['hasta']) if e.get('hasta') is not None else a0 + round(e.get('dur', dur_def) * FPS)
         return a0, b0
 
-    names = [dict(zip(('a', 'b'), span(x, 3.0)), nombre=x['nombre'], sub=x.get('sub', ''), color=x.get('color')) for x in ev.get('nombres', [])]
-    labels = [dict(zip(('a', 'b'), span(x, 3.0)), texto=x['texto'], color=x.get('color')) for x in ev.get('etiquetas', [])]
+    # posición libre (Reel Studio): dx/dy en px, escala y rot se copian tal cual; "ev" = índice en la lista de eventos.json
+    libre = lambda x, j: {**{k: x[k] for k in ('dx', 'dy', 'escala', 'rot') if k in x}, 'ev': j}
+    names = [dict(zip(('a', 'b'), span(x, 3.0)), nombre=x['nombre'], sub=x.get('sub', ''), color=x.get('color'), **libre(x, j)) for j, x in enumerate(ev.get('nombres', []))]
+    labels = [dict(zip(('a', 'b'), span(x, 3.0)), texto=x['texto'], color=x.get('color'), **libre(x, j)) for j, x in enumerate(ev.get('etiquetas', []))]
     images = [dict(zip(('a', 'b'), span(x, 2.5)), src=x['src'], pos=x.get('pos', 'arriba'), ancho=x.get('ancho', 420),
-                   titulo=x.get('titulo'), texto=x.get('texto'), tarjeta=x.get('tarjeta', True), **({'top': x['top']} if 'top' in x else {})) for x in ev.get('imagenes', [])]
-    broll = [dict(zip(('a', 'b'), span(x, 2.5)), src=x['src']) for x in ev.get('broll', [])]
-    montos = [dict(zip(('a', 'b'), span(x, 2.5)), texto=x['texto'], **{k: x[k] for k in ('top', 'size', 'color', 'sub') if k in x}) for x in ev.get('montos', [])]
-    emojis = [dict(zip(('a', 'b'), span(x, 2.0)), emoji=x['emoji'], texto=x.get('texto')) for x in ev.get('emojis', [])]
-    calendario = [dict(zip(('a', 'b'), span(x, 2.5)), dia=str(x['dia']), mes=x['mes'], **{k: x[k] for k in ('texto', 'top', 'color') if k in x})
-                  for x in ev.get('calendario', [])]
+                   titulo=x.get('titulo'), texto=x.get('texto'), tarjeta=x.get('tarjeta', True), **({'top': x['top']} if 'top' in x else {}), **libre(x, j))
+              for j, x in enumerate(ev.get('imagenes', []))]
+    broll = [dict(zip(('a', 'b'), span(x, 2.5)), src=x['src'], ev=j) for j, x in enumerate(ev.get('broll', []))]
+    montos = [dict(zip(('a', 'b'), span(x, 2.5)), texto=x['texto'], **{k: x[k] for k in ('top', 'size', 'color', 'sub') if k in x}, **libre(x, j))
+              for j, x in enumerate(ev.get('montos', []))]
+    emojis = [dict(zip(('a', 'b'), span(x, 2.0)), emoji=x['emoji'], texto=x.get('texto'), **libre(x, j)) for j, x in enumerate(ev.get('emojis', []))]
+    calendario = [dict(zip(('a', 'b'), span(x, 2.5)), dia=str(x['dia']), mes=x['mes'], **{k: x[k] for k in ('texto', 'top', 'color') if k in x}, **libre(x, j))
+                  for j, x in enumerate(ev.get('calendario', []))]
     trans = []
     for t in ev.get('transiciones', []):
         s = next(x for x in secs if x['id'] == t['antes_de'])
@@ -1536,7 +1619,7 @@ def cmd_dividir(a):
         sdr_dst.parent.mkdir(parents=True, exist_ok=True)
         if (pr.cache / 'sdr').exists() and not sdr_dst.exists():
             sdr_dst.symlink_to(pr.cache / 'sdr', target_is_directory=True)
-        cfg = {**pr.cfg, "nombre": nombre}
+        cfg = {**pr.cfg, "nombre": nombre, "id": hashlib.md5(str(dest.resolve()).encode()).hexdigest()[:10]}  # caché propia
         jsave(dest / 'edicion' / 'proyecto.json', cfg)
         for stale in ('edl.json', 'edl_final.json', 'cambios.md', 'verificacion.txt'):
             (dest / 'edicion' / stale).unlink(missing_ok=True)
@@ -1625,6 +1708,27 @@ def loudness(path):
     return I, (float(pk.group(1)) if pk and pk.group(1) != '-inf' else None)
 
 
+def remotion_render(args, cwd):
+    """npx remotion render …; con --json lee el avance de Remotion ("Rendered 120/900") y lo emite como progreso"""
+    if not JSON_MODE:
+        return run(['npx', 'remotion', 'render', *args, '--log=error'], cwd=cwd)
+    p = subprocess.Popen([str(c) for c in ['npx', 'remotion', 'render', *args, '--log=verbose']], cwd=cwd,
+                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+    ultimo, cola = -1, []
+    for linea in p.stdout:
+        cola = (cola + [linea])[-30:]
+        m = re.search(r'(?:Rendered|Encoded)\s+(\d+)/(\d+)', linea)
+        if m:
+            i, n = int(m.group(1)), int(m.group(2))
+            pct = int(100 * i / max(1, n))
+            if pct != ultimo:
+                ultimo = pct
+                progreso(i, n, 'render' if 'Rendered' in linea else 'codificando')
+    if p.wait() != 0:
+        sys.stderr.write(''.join(cola))
+        raise subprocess.CalledProcessError(p.returncode, 'remotion render')
+
+
 def cmd_render(a):
     need_toolkit()
     pr = Proyecto(a.proyecto)
@@ -1638,8 +1742,8 @@ def cmd_render(a):
         if not proxy.exists() or proxy.stat().st_mtime < cut.stat().st_mtime:
             ff('-i', cut, '-vf', 'scale=540:960', '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '24', '-g', '15', '-c:a', 'copy', proxy)
         print("… borrador (540x960, proxy)")
-        run(['npx', 'remotion', 'render', 'src/index.ts', 'Reel', raw, '--codec=h264', '--crf=26', '--scale=0.5',
-             '--color-space=bt709', '--log=error', '--props={"proxy":true}'], cwd=pr.P)
+        remotion_render(['src/index.ts', 'Reel', raw, '--codec=h264', '--crf=26', '--scale=0.5',
+                         '--color-space=bt709', '--props={"proxy":true}'], cwd=pr.P)
         I, _ = loudness(raw)
         ff('-i', raw, '-c:v', 'copy', '-af', f"volume={round(a.lufs - I, 2)}dB,alimiter=limit=0.89:attack=1:release=60:level=disabled",
            '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', out)
@@ -1650,8 +1754,8 @@ def cmd_render(a):
     # REEL_HW=1: codificador de hardware (VideoToolbox) + 8 hilos → 4K ~2× más rápido en Apple Silicon (M5: 240 cuadros 4K en ~20 s)
     calidad = (['--hardware-acceleration=if-possible', '--concurrency=8', f"--video-bitrate={'80M' if a.k4 else '25M'}"]
                if os.environ.get('REEL_HW') == '1' else ['--crf=17'])
-    run(['npx', 'remotion', 'render', 'src/index.ts', 'Reel', raw, '--codec=h264', *calidad, '--audio-bitrate=320k',
-         '--color-space=bt709', '--log=error', *(['--scale=2'] if a.k4 else [])], cwd=pr.P)
+    remotion_render(['src/index.ts', 'Reel', raw, '--codec=h264', *calidad, '--audio-bitrate=320k',
+                     '--color-space=bt709', *(['--scale=2'] if a.k4 else [])], cwd=pr.P)
     I, _ = loudness(raw)
     g = round(a.lufs - I, 2)
     name = a.salida or (pr.cfg['nombre'] + (' 4K' if a.k4 else '') + '.mp4')
@@ -1946,8 +2050,30 @@ def main():
     s.add_argument('--dur', type=float, default=3.0); s.add_argument('--nombre'); s.set_defaults(fn=cmd_broll)
     s = sp.add_parser('dividir'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('--partes', nargs='+', required=True, help='"intro,p1,p2" "p3,p4"')
     s.add_argument('--nombres', nargs='+', required=True); s.set_defaults(fn=cmd_dividir)
-    a = ap.parse_args()
-    a.fn(a)
+    global JSON_MODE
+    argv = sys.argv[1:]
+    if '--json' in argv or os.environ.get('REEL_JSON') == '1':
+        argv = [x for x in argv if x != '--json']
+        JSON_MODE = True
+    a = ap.parse_args(argv)
+    if not JSON_MODE:
+        return a.fn(a)
+    out = SalidaJSON(sys.stdout)
+    sys.stdout = out
+    try:
+        a.fn(a)
+        out.flush()
+    except SystemExit as e:
+        out.flush()
+        if e.code not in (None, 0):
+            if isinstance(e.code, str):
+                for linea in e.code.splitlines():
+                    out.emitir(linea, 'error' if linea.strip().startswith('✗') else 'info')
+            raise SystemExit(1)
+    except subprocess.CalledProcessError as e:
+        out.flush()
+        out.emitir(f"✗ falló un proceso externo: {e.cmd if isinstance(e.cmd, str) else ' '.join(map(str, e.cmd))[:300]}", 'error')
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

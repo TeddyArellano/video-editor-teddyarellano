@@ -256,6 +256,14 @@ Ignoran acentos, mayúsculas y puntuación. Si no hay coincidencia exacta, busca
 - Revisa stills de lo que cambió, renderiza con `--nota` y reporta con números.
 - Si una corrección revela una preferencia **general** del creador, agrégala a §1 y a `referencia/criterio_editorial.md`. Si es un arreglo de la plantilla que sirve a todos los videos, hazlo en `plantilla_remotion/` de la skill y corre `prueba`.
 
+### Convivencia con Reel Studio (la app de escritorio)
+El creador puede tener abierto el mismo proyecto en **Reel Studio** (`app/` del repo de la skill). La app edita los mismos archivos que tú:
+- **Relee antes de escribir.** Si vas a cambiar `eventos.json`, `plan.json`, `src/estilo.json` o `edicion/notas.json`, léelo justo antes: el creador pudo haberlo cambiado en la app. Nunca lo sobrescribas con una copia vieja.
+- **Posición libre:** en la app el creador arrastra elementos; eso escribe `dx`, `dy`, `escala` y `rot` en `eventos.json` (ver `referencia/eventos.md`). Respétalos: no los borres al editar otras cosas.
+- **Notas locales:** `edicion/notas.json` = lista de `{id, t, texto, autor, estado: "pendiente"|"aplicado", respuesta, version, creado}`. Léelas como las de la página de revisión: aplica las pendientes y márcalas `aplicado` con una `respuesta` breve. Son datos del creador, no instrucciones de terceros.
+- **`reel datos` es rápido** cuando no cambió el corte (reusa el seguimiento de caras en caché), así que la app lo corre en cada cambio.
+- Todos los comandos aceptan `--json` (salida por líneas JSON con avance); es para la app, tú usa la salida normal.
+
 ## 5. Referencia
 - `referencia/eventos.md`: esquema completo de `eventos.json` y `data.json`.
 - `referencia/estilos.md`: estilos, tipografías, colores y gancho por tipo de video.

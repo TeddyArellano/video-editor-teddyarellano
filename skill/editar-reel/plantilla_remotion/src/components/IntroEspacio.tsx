@@ -8,14 +8,15 @@
 // RENDIMIENTO: `reel capas` lo pre-renderiza UNA vez a public/capas/*.mov (ProRes 4444 con alfa) y Reel.tsx usa ese video
 // mientras no cambie este archivo ni los datos de la intro; así el 3D no se vuelve a calcular en cada render.
 import React, {useMemo} from 'react';
-import {AbsoluteFill, Easing, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Easing, OffthreadVideo, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {ThreeCanvas} from '@remotion/three';
 import * as THREE from 'three';
-import {D, HOOK_START, H, W, clamp, font} from '../theme';
+import {D, HOOK_START, H, W, asset, clamp, font} from '../theme';
 
-const I3 = D.intro3d;
-const FIN = I3?.fin ?? HOOK_START;
-export const INTRO3D_LEN = I3 ? I3.fin + 12 : 1;
+// se leen en cada cuadro (los datos pueden cambiar en la app); son lecturas simples, sin costo
+const i3 = () => D.intro3d;
+const fin = () => D.intro3d?.fin ?? HOOK_START;
+export const INTRO3D_LEN = () => (D.intro3d ? D.intro3d.fin + 12 : 1);
 const WARP = 24; // cuadros de salto a hipervelocidad antes de la pregunta
 
 const luz = <M extends THREE.Material>(m: M): M => {
@@ -210,6 +211,8 @@ const Estrellas: React.FC<{f: number}> = ({f}) => {
     const pm = luz(new THREE.PointsMaterial({size: 0.07, vertexColors: true}));
     return {geo: g, mat: m, pmat: pm, base: b};
   }, []);
+  const I3 = i3();
+  const FIN = fin();
   const w = I3?.warp ? interpolate(f, [FIN - WARP, FIN], [0, 1], {...clamp, easing: Easing.in(Easing.cubic)}) : 0;
   const avance = f * 0.05 + w * w * 40;
   const largo = 0.06 + w * 9;
@@ -325,6 +328,8 @@ const Monedas: React.FC<{f: number; t0: number}> = ({f, t0}) => {
 export const IntroEspacio: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const I3 = i3();
+  const FIN = fin();
   if (!I3 || frame >= FIN + 10 || FIN <= 0) return null;
   const tS = I3.t[0] ?? 30;
   const tE = I3.t[1] ?? tS + 20;
@@ -385,11 +390,13 @@ export const IntroEspacio: React.FC = () => {
 };
 
 // capa pre-renderizada (reel capas): el mismo resultado sin calcular 3D en cada render
-export const IntroEspacioCapa: React.FC = () =>
-  !I3 ? null : I3.capa ? (
-    <Sequence durationInFrames={INTRO3D_LEN}>
-      <OffthreadVideo src={staticFile(I3.capa)} transparent muted style={{width: W, height: H}} />
+export const IntroEspacioCapa: React.FC = () => {
+  const I3 = i3();
+  return !I3 ? null : I3.capa ? (
+    <Sequence durationInFrames={INTRO3D_LEN()}>
+      <OffthreadVideo src={asset(I3.capa)} transparent muted style={{width: W, height: H}} />
     </Sequence>
   ) : (
     <IntroEspacio />
   );
+};

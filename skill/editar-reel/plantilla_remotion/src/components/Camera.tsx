@@ -1,15 +1,15 @@
 // Cámara virtual: un encuadre por sección (sigue las caras), acercamiento lento, cambios con easing (sin "golpes")
 // y zooms suaves a las manos/objeto (data.zooms). El mismo transform se usa para los recortes del gancho "detrás".
 import React from 'react';
-import {AbsoluteFill, Easing, Img, OffthreadVideo, getInputProps, interpolate, staticFile, useCurrentFrame} from 'remotion';
-import {CUT, D, E, H, W, clamp} from '../theme';
+import {AbsoluteFill, Easing, Img, OffthreadVideo, interpolate, useCurrentFrame} from 'remotion';
+import {CUT, D, E, H, PROXY, W, asset, clamp, derivado} from '../theme';
 
 // Gancho "zoom-in rápido" (Brigadas Otoño 2026, lo pidió el creador): de toma abierta a cerrada en pocos cuadros,
 // se sostiene y luego se asienta suave al encuadre de la sección. estilo.json → camara.gancho_zoom = {de, a, dur, hasta, suave}
 type GZ = {de: number; a: number; dur: number; hasta: number; suave: number};
-const GZOOM = (E.camara as unknown as {gancho_zoom?: GZ}).gancho_zoom;
+const GZOOM = derivado(() => (E.camara as unknown as {gancho_zoom?: GZ}).gancho_zoom);
 const hookZoom = (f: number, z: number) => {
-  const g = GZOOM;
+  const g = GZOOM();
   if (!g || f >= g.hasta + g.suave) return z;
   if (f < g.dur) return interpolate(f, [0, g.dur], [g.de, g.a], {...clamp, easing: Easing.out(Easing.cubic)});
   if (f < g.hasta) return g.a;
@@ -36,14 +36,13 @@ const objZoom = (f: number) => {
   return {k: 0, cx: 0.5, cy: 0.5, z: 1};
 };
 
-// `reel render --borrador` pasa {proxy:true}: usa el corte en baja resolución (mucho más rápido)
-const PROXY = !!(getInputProps() as {proxy?: boolean}).proxy;
+// `reel render --borrador` pasa {proxy:true} (theme.ts → PROXY): usa el corte en baja resolución (mucho más rápido)
 
 type AT = {de: number; a: number; y: number; z?: number};
-const TRAMOS = ((E.camara as unknown as {tramos?: AT[]}).tramos ?? []).map((t) => ({...t, fa: Math.round(t.de * 30), fb: Math.round(t.a * 30)}));
+const TRAMOS = derivado(() => ((E.camara as unknown as {tramos?: AT[]}).tramos ?? []).map((t) => ({...t, fa: Math.round(t.de * 30), fb: Math.round(t.a * 30)})));
 const tramoK = (f: number, t: {fa: number; fb: number}) => interpolate(f, [t.fa - 10, t.fa, t.fb, t.fb + 10], [0, 1, 1, 0], {...clamp, easing: Easing.inOut(Easing.cubic)});
-const anclaY = (f: number) => TRAMOS.reduce((y, t) => y + (t.y - y) * tramoK(f, t), E.camara.ancla_y);
-const zTramo = (f: number, z: number) => TRAMOS.reduce((zz, t) => (t.z ? zz + (t.z - zz) * tramoK(f, t) : zz), z);
+const anclaY = (f: number) => TRAMOS().reduce((y, t) => y + (t.y - y) * tramoK(f, t), E.camara.ancla_y);
+const zTramo = (f: number, z: number) => TRAMOS().reduce((zz, t) => (t.z ? zz + (t.z - zz) * tramoK(f, t) : zz), z);
 
 export const camTransform = (frame: number) => {
   const f = Math.max(0, Math.min(frame, CUT - 1));
@@ -66,7 +65,7 @@ export const Camera: React.FC = () => {
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <div style={{position: 'absolute', width: W, height: H, transformOrigin: '0 0', transform: camTransform(frame)}}>
-        <OffthreadVideo src={staticFile(PROXY ? 'cut_proxy.mp4' : 'cut.mp4')} style={{width: W, height: H}} />
+        <OffthreadVideo src={asset(PROXY ? 'cut_proxy.mp4' : 'cut.mp4')} style={{width: W, height: H}} />
       </div>
     </AbsoluteFill>
   );
@@ -79,7 +78,7 @@ export const HookForeground: React.FC = () => {
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <div style={{position: 'absolute', width: W, height: H, transformOrigin: '0 0', transform: camTransform(frame)}}>
-        <Img src={staticFile(`hookfg/${String(frame).padStart(4, '0')}.png`)} style={{width: W, height: H}} />
+        <Img src={asset(`hookfg/${String(frame).padStart(4, '0')}.png`)} style={{width: W, height: H}} />
       </div>
     </AbsoluteFill>
   );

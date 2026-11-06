@@ -1,8 +1,9 @@
 // Elementos sobre el video. Todos dentro de la zona segura (SAFE) y los bloques centrados con márgenes simétricos.
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, Freeze, Img, OffthreadVideo, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Easing, Freeze, Img, OffthreadVideo, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Camera} from './Camera';
-import {CIERRE_LEN, CUT, D, E, H, SAFE, SIDE, W, clamp, font, secAt, stroke, topLibre} from '../theme';
+import {Pos} from './Pos';
+import {CIERRE_LEN, CUT, D, E, H, SAFE, SIDE, W, asset, clamp, font, secAt, stroke, topLibre} from '../theme';
 
 const useSpan = (a: number, b: number) => {
   const frame = useCurrentFrame();
@@ -85,18 +86,21 @@ const wipe = (frame: number, a: number) => interpolate(frame, [a, a + 9], [0, 1]
 /* ---------- etiqueta de nombre (arriba a la derecha) ---------- */
 export const NameTag: React.FC = () => {
   const frame = useCurrentFrame();
-  const t = D.names.find((x) => frame >= x.a && frame < x.b);
+  const i = D.names.findIndex((x) => frame >= x.a && frame < x.b);
+  const t = D.names[i];
   const {p, out} = useSpan(t?.a ?? 0, t?.b ?? 0);
   if (!t) return null;
   const color = t.color ?? secAt(t.a).color ?? E.colores.pildora;
   return (
     <AbsoluteFill style={{top: SAFE.top + 10, right: SAFE.right, left: 'auto', width: 520, alignItems: 'flex-end', opacity: out}}>
+      <Pos k={`names:${i}`} o={t} align="flex-end">
       <div style={{fontFamily: font('Anton'), fontSize: 74, lineHeight: 1, color: '#fff', ...stroke(9, '#000'), transform: `translateX(${(1 - p) * 300}px) rotate(-3deg)`}}>{t.nombre}</div>
       {t.sub && (
         <div style={{marginTop: 6, marginRight: 20}}>
           <Marker p={wipe(frame, t.a + 6)} bg={E.colores.acento} color="#111" size={34} fuente="Montserrat" rot={-3}>{t.sub}</Marker>
         </div>
       )}
+      </Pos>
     </AbsoluteFill>
   );
 };
@@ -149,7 +153,8 @@ const LabelVar: React.FC<{v: string; texto: string; f: number}> = ({v, texto, f}
 
 export const Labels: React.FC = () => {
   const frame = useCurrentFrame();
-  const t = D.labels.find((x) => frame >= x.a && frame < x.b);
+  const i = D.labels.findIndex((x) => frame >= x.a && frame < x.b);
+  const t = D.labels[i];
   const {out} = useSpan(t?.a ?? 0, t?.b ?? 0);
   if (!t) return null;
   const L = E.etiqueta;
@@ -157,12 +162,12 @@ export const Labels: React.FC = () => {
   if (v)
     return (
       <AbsoluteFill style={{top: L.top, alignItems: 'center', opacity: out}}>
-        <LabelVar v={v} texto={t.texto} f={frame - t.a} />
+        <Pos k={`labels:${i}`} o={t}><LabelVar v={v} texto={t.texto} f={frame - t.a} /></Pos>
       </AbsoluteFill>
     );
   return (
     <AbsoluteFill style={{top: L.top, alignItems: 'center', opacity: out}}>
-      <Marker p={wipe(frame, t.a)} bg={t.color ?? E.colores.pildora} color="#fff" size={L.size}>{t.texto}</Marker>
+      <Pos k={`labels:${i}`} o={t}><Marker p={wipe(frame, t.a)} bg={t.color ?? E.colores.pildora} color="#fff" size={L.size}>{t.texto}</Marker></Pos>
     </AbsoluteFill>
   );
 };
@@ -194,7 +199,7 @@ export const Images: React.FC = () => {
     const s = interpolate(p, [0, 1], [0.85, 1], clamp);
     return (
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.35)'}}>
-        <Img src={staticFile(im.src)} style={{width: im.ancho ?? 1020, display: 'block', borderRadius: 18, transform: `scale(${s})`, boxShadow: '0 24px 60px rgba(0,0,0,0.55)'}} />
+        <Pos k={`images:${idx}`} o={im}><Img src={asset(im.src)} style={{width: im.ancho ?? 1020, display: 'block', borderRadius: 18, transform: `scale(${s})`, boxShadow: '0 24px 60px rgba(0,0,0,0.55)'}} /></Pos>
       </AbsoluteFill>
     );
   }
@@ -203,8 +208,8 @@ export const Images: React.FC = () => {
     const s = interpolate(p, [0, 1], [0.55, 1], clamp);
     return (
       <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: out * Math.min(1, p * 3)}}>
-        <Img src={staticFile(im.src)} style={{width: im.ancho, display: 'block', borderRadius: 34, transform: `scale(${s * interpolate(frame, [im.a, im.b], [1, 1.03])})`,
-          boxShadow: '0 24px 60px rgba(0,0,0,0.55)'}} />
+        <Pos k={`images:${idx}`} o={im}><Img src={asset(im.src)} style={{width: im.ancho, display: 'block', borderRadius: 34, transform: `scale(${s * interpolate(frame, [im.a, im.b], [1, 1.03])})`,
+          boxShadow: '0 24px 60px rgba(0,0,0,0.55)'}} /></Pos>
       </AbsoluteFill>
     );
   }
@@ -212,22 +217,22 @@ export const Images: React.FC = () => {
     // tarjeta blanca SOLO para QR (para que se lea); logos e imágenes van sin tarjeta (preferencia del creador)
     return (
       <AbsoluteFill style={{top: im.top ?? top, alignItems: 'center', opacity: out}}>
-        <div style={{maxWidth: W - 2 * SIDE, transform: `scale(${interpolate(p, [0, 1], [0.5, 1], clamp)})`}}>
+        <Pos k={`images:${idx}`} o={im}><div style={{maxWidth: W - 2 * SIDE, transform: `scale(${interpolate(p, [0, 1], [0.5, 1], clamp)})`}}>
           {/* sin título ni texto = QR "sencillo y funcional" (Brigadas Otoño 2026): solo un borde blanco delgado, el QR grande */}
           <div style={{background: '#fff', borderRadius: im.titulo || im.texto ? 34 : 16, padding: im.titulo || im.texto ? '26px 30px' : 10, textAlign: 'center', boxShadow: im.titulo || im.texto ? undefined : '0 10px 30px rgba(0,0,0,0.4)'}}>
             {im.titulo && <div style={{fontFamily: font('Montserrat'), fontWeight: 800, fontSize: 30, color: '#777', marginBottom: 6}}>{im.titulo}</div>}
             {im.texto && <div style={{fontFamily: font('Montserrat'), fontWeight: 900, fontSize: 40, color: '#111', marginBottom: 16}}>{im.texto}</div>}
-            <Img src={staticFile(im.src)} style={{width: im.ancho, display: 'block', margin: '0 auto'}} />
+            <Img src={asset(im.src)} style={{width: im.ancho, display: 'block', margin: '0 auto'}} />
           </div>
-        </div>
+        </div></Pos>
       </AbsoluteFill>
     );
   }
   return (
     <AbsoluteFill style={{top, alignItems: 'center', opacity: out * Math.min(1, p * 3)}}>
-      <div style={{transform: `${tr} translateY(${flota}px)`}}>
-        <Img src={staticFile(im.src)} style={{width: im.ancho, maxWidth: W - 2 * 110, display: 'block', borderRadius: im.src.startsWith('perfiles/') ? 28 : 0}} />
-      </div>
+      <Pos k={`images:${idx}`} o={im}><div style={{transform: `${tr} translateY(${flota}px)`}}>
+        <Img src={asset(im.src)} style={{width: im.ancho, maxWidth: W - 2 * 110, display: 'block', borderRadius: im.src.startsWith('perfiles/') ? 28 : 0}} />
+      </div></Pos>
     </AbsoluteFill>
   );
 };
@@ -256,7 +261,7 @@ export const BRoll: React.FC<{src: string; len: number}> = ({src, len}) => {
   // CORTE DIRECTO, sin fundido (Brigadas Otoño 2026: "no pongas un degradado, solo pon el video de golpe")
   return (
     <AbsoluteFill>
-      <OffthreadVideo src={staticFile(src)} muted style={{width: W, height: H, objectFit: 'cover', transform: `scale(${interpolate(frame, [0, len], [1.1, 1])})`}} />
+      <OffthreadVideo src={asset(src)} muted style={{width: W, height: H, objectFit: 'cover', transform: `scale(${interpolate(frame, [0, len], [1.1, 1])})`}} />
     </AbsoluteFill>
   );
 };
@@ -294,12 +299,12 @@ export const Sound: React.FC = () => (
   <>
     {D.sfx.map((s, i) => (
       <Sequence key={i} from={s.f} durationInFrames={Math.max(1, s.len)}>
-        <Audio src={staticFile(`sfx/${s.src}.wav`)} volume={s.v} />
+        <Audio src={asset(`sfx/${s.src}.wav`)} volume={s.v} />
       </Sequence>
     ))}
     {D.musica && (
       <Sequence durationInFrames={CUT + CIERRE_LEN}>
-        <Audio src={staticFile(D.musica.src)} volume={D.musica.vol ?? 0.12} />
+        <Audio src={asset(D.musica.src)} volume={D.musica.vol ?? 0.12} />
       </Sequence>
     )}
   </>

@@ -5,10 +5,12 @@
 //   gancho.decoracion = "gamer" → esquinas HUD + símbolos △○✕□ flotando durante el gancho (promo esports)
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {D, E, SAFE, SIDE, W, clamp, font, stroke, topLibre} from '../theme';
+import {D, E, Libre, SAFE, SIDE, W, clamp, font, stroke, topLibre} from '../theme';
 import {Marker} from './Overlays';
+import {Pos} from './Pos';
 
 const active = <T extends {a: number; b: number}>(list: T[] | undefined, f: number) => (list ?? []).find((x) => f >= x.a && f < x.b);
+const idx = <T extends {a: number; b: number}>(list: T[] | undefined, x: T) => (list ?? []).indexOf(x);
 
 const MontoPixel: React.FC = () => {
   const frame = useCurrentFrame();
@@ -19,6 +21,7 @@ const MontoPixel: React.FC = () => {
   const out = interpolate(frame, [m.b - 6, m.b], [1, 0], clamp);
   return (
     <AbsoluteFill style={{top: m.top ?? 430, alignItems: 'center', opacity: out}}>
+      <Pos k={`montos:${idx(D.montos, m)}`} o={m as Libre}>
       <div
         style={{
           maxWidth: W - 2 * SIDE,
@@ -36,6 +39,7 @@ const MontoPixel: React.FC = () => {
         {m.texto.slice(0, chars)}
         {cursor}
       </div>
+      </Pos>
     </AbsoluteFill>
   );
 };
@@ -46,7 +50,7 @@ const BILLETES = ['💵', '💸', '🪙', '💵', '💰', '🪙', '💵', '💸'
 const MontoGolpe: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const m = active(D.montos, frame) as (typeof D.montos)[number] & {sub?: string} | undefined;
+  const m = active(D.montos, frame) as (NonNullable<typeof D.montos>[number] & {sub?: string}) | undefined;
   if (!m) return null;
   const t = frame - m.a;
   const p = spring({frame: t, fps, config: {damping: 9, stiffness: 240, mass: 0.7}});
@@ -63,7 +67,7 @@ const MontoGolpe: React.FC = () => {
   const top = m.top ?? 300;
   const base: React.CSSProperties = {fontFamily: font('Anton'), fontSize: fs, lineHeight: 1.05, whiteSpace: 'pre', letterSpacing: 2};
   return (
-    <AbsoluteFill style={{opacity: out, transform: `translate(${sx}px, ${sy}px)`}}>
+    <AbsoluteFill style={{opacity: out, transform: `translate(${sx + ((m as Libre).dx ?? 0)}px, ${sy + ((m as Libre).dy ?? 0)}px)`}}>
       {/* destello */}
       <div style={{position: 'absolute', left: W / 2 - 260, top: top + fs * 0.55 - 260, width: 520, height: 520, borderRadius: '50%',
         border: '18px solid #FFD60A', opacity: anilloO, transform: `scale(${anillo})`, boxShadow: '0 0 60px #FFD60A'}} />
@@ -81,6 +85,7 @@ const MontoGolpe: React.FC = () => {
         );
       })}
       <AbsoluteFill style={{top, alignItems: 'center'}}>
+        <Pos k={`montos:${idx(D.montos, m)}`} o={{escala: (m as Libre).escala, rot: (m as Libre).rot}}>
         <div style={{position: 'relative', transform: `scale(${escala * outS * latido}) rotate(${interpolate(p, [0, 1], [-12, -3])}deg)`}}>
           {/* capa trasera: contorno negro + sombra dura */}
           <div style={{...base, color: '#0B3D1A', WebkitTextStroke: '22px #000', textShadow: '10px 12px 0 #000'}}>{m.texto}</div>
@@ -94,6 +99,7 @@ const MontoGolpe: React.FC = () => {
               border: '5px solid #000', boxShadow: '6px 6px 0 #000'}}>{m.sub}</div>
           )}
         </div>
+        </Pos>
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -113,12 +119,14 @@ export const EmojiSticker: React.FC = () => {
   const w = interpolate(frame, [e.a + 5, e.a + 14], [0, 1], clamp);
   return (
     <AbsoluteFill style={{top, alignItems: 'center', opacity: out}}>
+      <Pos k={`emojis:${idx(D.emojis, e)}`} o={e as Libre}>
       <div style={{fontSize: 190, lineHeight: 1, transform: `scale(${interpolate(p, [0, 1], [0, 1], clamp)}) rotate(${Math.sin(frame / 5) * 8}deg)`}}>{e.emoji}</div>
       {e.texto && (
         <div style={{marginTop: 14}}>
           <Marker p={w} bg="#fff" color="#111" size={46} rot={3}>{e.texto}</Marker>
         </div>
       )}
+      </Pos>
     </AbsoluteFill>
   );
 };
@@ -133,11 +141,13 @@ export const Calendario: React.FC = () => {
   return (
     // arriba, en el espacio libre (no tapa la cara); `top` en eventos.json para moverlo
     <AbsoluteFill style={{top: c.top ?? topLibre(c.a) + 20, alignItems: 'center', opacity: out}}>
+      <Pos k={`calendario:${idx(D.calendario, c)}`} o={c as Libre}>
       <div style={{width: 300, borderRadius: 26, overflow: 'hidden', boxShadow: '0 16px 36px rgba(0,0,0,0.45)', transform: `rotate(-4deg) scale(${interpolate(p, [0, 1], [0.3, 1], clamp)})`}}>
         <div style={{background: c.color ?? E.colores.pildora, color: '#fff', fontFamily: font(E.etiqueta.fuente), fontWeight: 900, fontSize: 42, textAlign: 'center', padding: '10px 0'}}>{c.mes}</div>
         <div style={{background: '#fff', color: '#111', fontFamily: font(E.etiqueta.fuente), fontWeight: 900, fontSize: 150, lineHeight: 1.05, textAlign: 'center'}}>{c.dia}</div>
         {c.texto && <div style={{background: '#fff', color: '#555', fontFamily: font('Montserrat'), fontWeight: 800, fontSize: 30, textAlign: 'center', paddingBottom: 16}}>{c.texto}</div>}
       </div>
+      </Pos>
     </AbsoluteFill>
   );
 };
