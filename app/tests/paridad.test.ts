@@ -12,6 +12,7 @@ describe.skipIf(!f)('paridad de anclas con reel.py', () => {
     const cache = new Map<string, Anclas>();
     let malos = 0;
     for (const c of casos) {
+      if (!fs.existsSync(path.join(c.proyecto, 'src/data.json'))) continue; // proyecto borrado o movido desde la foto
       if (!cache.has(c.proyecto)) cache.set(c.proyecto, new Anclas(JSON.parse(fs.readFileSync(path.join(c.proyecto, 'src/data.json'), 'utf8')).words));
       let t: number | null;
       try {
