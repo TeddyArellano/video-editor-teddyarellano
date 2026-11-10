@@ -33,6 +33,7 @@ Comandos (en orden de uso):
   marca -p P ID                   aplica un kit de marca (colores + logos)
   actualizar -p P                 copia la plantilla nueva de la skill al proyecto (con respaldo)
   limpiar -p P                    borra la caché pesada del proyecto
+  proyectos [--buscar CARPETA]    lista los videos registrados (los "recientes" de Reel Studio); --buscar agrega los que encuentre
   prueba                          prueba de humo de toda la skill con un clip sintético (~35 s)
 P = carpeta proyecto_remotion (o la carpeta del material que lo contiene).
 
@@ -336,6 +337,75 @@ def cmd_marca(a):
     aplicar_marca(Proyecto(a.proyecto).P, a.marca)
 
 
+# ---------------------------------------------------------------- registro de proyectos (los "recientes" de Reel Studio)
+# Cada comando que toca un proyecto lo anota aquí: así aparece en la app aunque se haya editado solo con la skill.
+def _registro():
+    return Path(os.environ.get('REEL_REGISTRO') or TK / 'proyectos.json')
+
+
+def _ruta_proyecto(p):
+    p = Path(p).expanduser().resolve()
+    return p / 'proyecto_remotion' if not (p / 'edicion' / 'proyecto.json').exists() and (p / 'proyecto_remotion' / 'edicion' / 'proyecto.json').exists() else p
+
+
+def _entrada_proyecto(p, editado):
+    cfg = jload(p / 'edicion' / 'proyecto.json')
+    return {"ruta": str(p), "nombre": cfg.get('nombre') or p.parent.name, "estilo": cfg.get('estilo', ''), "editado": editado}
+
+
+def _guardar_registro(entradas):
+    f = _registro()
+    f.parent.mkdir(parents=True, exist_ok=True)
+    tmp = f.with_name(f'{f.name}.{os.getpid()}.tmp')  # escritura atómica: la app vigila este archivo
+    tmp.write_text(json.dumps(sorted(entradas.values(), key=lambda x: -x['editado']), ensure_ascii=False, indent=1))
+    os.replace(tmp, f)
+
+
+def _leer_registro():
+    try:
+        return {x['ruta']: x for x in json.loads(_registro().read_text())}
+    except (OSError, ValueError, KeyError, TypeError):
+        return {}
+
+
+def registrar_proyecto(proyecto):
+    """Anota el proyecto como editado ahora. Nunca rompe el comando que lo llama. Las copias temporales y la autoprueba no cuentan."""
+    try:
+        p = _ruta_proyecto(proyecto)
+        temporales = (str(TK) + '/', '/tmp/', '/private/tmp/', '/private/var/folders/', '/var/folders/')
+        if not (p / 'edicion' / 'proyecto.json').exists() or (not os.environ.get('REEL_REGISTRO') and str(p).startswith(temporales)):
+            return
+        import time
+        r = _leer_registro()
+        r[str(p)] = _entrada_proyecto(p, int(time.time() * 1000))
+        _guardar_registro(r)
+    except Exception:
+        pass
+
+
+def cmd_proyectos(a):
+    r = _leer_registro()
+    if a.buscar:
+        raiz, nuevos = Path(a.buscar).expanduser().resolve(), 0
+        if not raiz.is_dir():
+            sys.exit(f"✗ {raiz} no es una carpeta")
+        for d, subs, archivos in os.walk(raiz):
+            subs[:] = [x for x in subs if x not in ('node_modules', '.git', 'public', 'src', 'out', 'build') and not x.startswith('.')]
+            if Path(d).name == 'edicion' and 'proyecto.json' in archivos:
+                subs[:] = []
+                p = Path(d).parent
+                if str(p) in r:
+                    continue
+                candidatos = [p / 'edicion' / x for x in ('edl_final.json', 'eventos.json', 'plan.json', 'proyecto.json')]
+                r[str(p)] = _entrada_proyecto(p, int(max(x.stat().st_mtime for x in candidatos if x.exists()) * 1000))  # fecha real de su última edición
+                nuevos += 1
+        _guardar_registro(r)
+        print(f"✓ {nuevos} proyectos nuevos registrados ({len(r)} en total)")
+    r = {k: v for k, v in r.items() if (Path(k) / 'edicion' / 'proyecto.json').exists()}
+    for x in sorted(r.values(), key=lambda x: -x['editado']):
+        print(f"  {x['nombre']}  [{x['estilo']}]  {x['ruta']}")
+
+
 def cmd_nuevo(a):
     carpeta = Path(a.carpeta).expanduser().resolve()
     est = SKILL / 'estilos' / f'{a.estilo}.json'
@@ -359,6 +429,7 @@ def cmd_nuevo(a):
     jsave(dest / 'edicion' / 'proyecto.json', {"fuentes": str(carpeta), "estilo": a.estilo, "nombre": nombre, **({"marca": a.marca} if a.marca else {})})
     if a.marca:
         aplicar_marca(dest, a.marca)
+    registrar_proyecto(dest)
     print(f"✓ proyecto en {dest}\n  estilo: {a.estilo} | video final: {nombre}.mp4\n  siguiente: reel inventario -p \"{dest}\"")
 
 
@@ -604,12 +675,31 @@ def word_end(w):
     return min(w[2], w[1] + 0.08 * len(w[0]) + 0.25)
 
 
+def unir_pegadas(piezas):
+    """Una pieza con "pegada": true (dividida desde Reel Studio) sigue justo a la anterior: mientras nada las separe es una sola toma,
+    sin corte ni bloque de subtítulos nuevo. Dividir por sí solo no debe cambiar cómo suena el video."""
+    out = []
+    for pz in piezas:
+        ant = out[-1] if out else None
+        if pz.get('pegada') and ant and ant['src'] == pz['src'] and pz['de'] == ant['a'] + 1 and ant.get('sec') == pz.get('sec') \
+                and ant.get('speed', 1.0) == pz.get('speed', 1.0) and ant.get('gain_db', 0.0) == pz.get('gain_db', 0.0):
+            ant['a'] = pz['a']
+            if pz.get('quitar'):
+                ant['quitar'] = ant.get('quitar', []) + pz['quitar']
+            ant.pop('mas_final', None)
+            if 'mas_final' in pz:
+                ant['mas_final'] = pz['mas_final']
+        else:
+            out.append(dict(pz))
+    return out
+
+
 def cmd_edl(a):
     pr = Proyecto(a.proyecto)
     plan = jload(pr.ed / 'plan.json')
     out = []
     bloque = 0
-    for pz in plan['piezas']:
+    for pz in unir_pegadas(plan['piezas']):
         W_ = pr.palabras(pz['src'])
         quitar = set(pz.get('quitar', []))
         idx = [i for i in range(pz['de'], pz['a'] + 1) if i not in quitar]
@@ -658,6 +748,7 @@ def cmd_edl(a):
                         "speed": pz.get('speed', 1.0), "gain_db": pz.get('gain_db', 0.0), "words": ws,
                         "text": ' '.join(x[0] for x in ws)})
     jsave(pr.ed / 'edl.json', out)
+    jsave(pr.ed / 'plan_edl.json', plan)  # `cortar` lo vuelve plan_cortado.json al terminar: con eso la app sabe qué recortes faltan por aplicar
     tot = sum((p['out'] - p['in']) / p['speed'] for p in out)
     print(f"✓ edl: {len(out)} tramos, ~{tot:.1f} s → edicion/edl.json")
 
@@ -783,6 +874,8 @@ def cmd_cortar(a):
             print("    ⚠ quedan silencios que no se pueden quitar sin cortar voz; revísalos a mano (edicion/edl.json)")
             break
     jsave(pr.ed / 'edl_final.json', E)
+    if (pr.ed / 'plan_edl.json').exists():
+        shutil.copy(pr.ed / 'plan_edl.json', pr.ed / 'plan_cortado.json')
     print(f"✓ public/cut.mp4  {n} cuadros ({n / FPS:.1f} s) | edicion/edl_final.json")
     if pr.cfg.get('lentes'):
         quitar_reflejo(pr, pr.cfg['lentes'].get('sec', 'intro'), pr.cfg['lentes'].get('fuerza', 0.88))
@@ -1648,6 +1741,7 @@ def cmd_dividir(a):
             if ajena(el.get('en')):
                 el.pop('en')  # entra por cuadro (`at`); el gancho de esta parte hay que reescribirlo de todos modos
         jsave(dest / 'edicion' / 'eventos.json', e2)
+        registrar_proyecto(dest)
         # la parte usa los mismos clips SDR del proyecto original (si no, `cortar` tomaría el HDR crudo del iPhone)
         sdr_dst = TK / 'cache' / hashlib.md5(str(dest.resolve()).encode()).hexdigest()[:10] / 'sdr'
         sdr_dst.parent.mkdir(parents=True, exist_ok=True)
@@ -2081,11 +2175,17 @@ def cmd_enfasis(a):
 
 
 # ---------------------------------------------------------------- CLI
+def _anotar(a):
+    if getattr(a, 'proyecto', None) and a.cmd != 'limpiar':
+        registrar_proyecto(a.proyecto)
+
+
 def main():
     ap = argparse.ArgumentParser(prog='reel', description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sp = ap.add_subparsers(dest='cmd', required=True)
     s = sp.add_parser('nuevo'); s.add_argument('carpeta'); s.add_argument('--estilo', required=True); s.add_argument('--nombre')
     s.add_argument('--destino'); s.add_argument('--forzar', action='store_true'); s.add_argument('--marca'); s.set_defaults(fn=cmd_nuevo)
+    s = sp.add_parser('proyectos', help='videos registrados (recientes de Reel Studio)'); s.add_argument('--buscar'); s.set_defaults(fn=cmd_proyectos)
     s = sp.add_parser('marca'); s.add_argument('-p', '--proyecto', required=True); s.add_argument('marca'); s.set_defaults(fn=cmd_marca)
     for name, fn in (('inventario', cmd_inventario), ('datos', cmd_datos), ('edl', cmd_edl), ('limpiar', cmd_limpiar), ('actualizar', cmd_actualizar),
                      ('proxy', cmd_proxy)):
@@ -2139,11 +2239,14 @@ def main():
         JSON_MODE = True
     a = ap.parse_args(argv)
     if not JSON_MODE:
-        return a.fn(a)
+        r = a.fn(a)
+        _anotar(a)
+        return r
     out = SalidaJSON(sys.stdout)
     sys.stdout = out
     try:
         a.fn(a)
+        _anotar(a)
         out.flush()
     except SystemExit as e:
         out.flush()

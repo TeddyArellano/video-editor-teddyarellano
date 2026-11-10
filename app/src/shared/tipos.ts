@@ -10,6 +10,7 @@ export const ARCHIVOS = [
   'edicion/proyecto.json',
   'edicion/notas.json',
   'edicion/edl_final.json',
+  'edicion/plan_cortado.json',
 ] as const;
 export type Archivo = (typeof ARCHIVOS)[number];
 
@@ -33,13 +34,15 @@ export type ProyectoInfo = {
   nombre: string;
   estilo: string;
   base: string; // URL base de public/ para la vista previa (reel-media://p/<id>/)
+  versionCorte: number; // cambia cuando se regenera el video: obliga al reproductor a pedir el archivo nuevo
   estado: EstadoProyecto;
   clips: string[]; // clips con transcripción (edicion/palabras/*.json)
 };
 
 export type Snapshot = {info: ProyectoInfo; archivos: Record<Archivo, ContenidoArchivo>};
 
-export type Reciente = {ruta: string; nombre: string; abierto: number; estilo?: string};
+// abierto = última vez en la app (0 si solo se ha editado con la skill) · editado = último comando de reel.py
+export type Reciente = {ruta: string; nombre: string; abierto: number; editado: number; estilo?: string};
 
 export type ResultadoEscritura = {ok: true; hash: string} | {ok: false; conflicto: true; actual: ContenidoArchivo};
 
@@ -70,6 +73,9 @@ export type EstadoActualizacion = {repo: string; rama: string; atras: number; ad
 // API que el preload expone en window.reel
 export type ReelAPI = {
   recientes: () => Promise<Reciente[]>;
+  miniatura: (ruta: string) => Promise<string | null>;
+  buscarProyectos: (carpeta: string) => Promise<string>;
+  onRecientes: (fn: () => void) => () => void;
   elegirCarpeta: (titulo?: string) => Promise<string | null>;
   elegirArchivo: (filtros?: {name: string; extensions: string[]}[]) => Promise<string | null>;
   abrir: (ruta: string) => Promise<Snapshot>;

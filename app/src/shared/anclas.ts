@@ -21,16 +21,20 @@ export class Anclas {
   t(an: Ancla | null | undefined, offDef = 0): number | null {
     if (an === null || an === undefined) return null;
     if (typeof an === 'number') return an;
+    if (typeof an === 'object' && 't' in an) return an.t + (an.offset ?? 0);
+    const off = typeof an === 'object' && 'palabra' in an ? (an.offset ?? offDef) : offDef;
+    return this.words[this.indice(an)].start + off;
+  }
+
+  // índice de la palabra a la que apunta un ancla de texto; lanza Error si no existe
+  indice(an: string | {palabra: string; sec?: string; n?: number; offset?: number}): number {
     let word: string;
     let sec: string | undefined;
     let n = 0;
-    let off = offDef;
     if (typeof an === 'object') {
-      if ('t' in an) return an.t + (an.offset ?? 0);
       word = an.palabra;
       sec = an.sec;
       n = an.n ?? 0;
-      off = an.offset ?? offDef;
     } else {
       const m = an.trim().match(/^(?:([\w-]+):)?(.+?)(?:#(\d+))?$/u);
       if (!m) throw new Error(`ancla inválida: ${an}`);
@@ -42,13 +46,15 @@ export class Anclas {
     const hits: number[] = [];
     for (let i = 0; i + q.length <= this.words.length; i++) {
       if (sec && this.words[i].sec !== sec) continue;
-      if (q.every((x, k) => norm(this.words[i + k].text) === x)) hits.push(this.words[i].start);
+      if (q.every((x, k) => norm(this.words[i + k].text) === x)) hits.push(i);
     }
     if (!hits.length && q.length === 1 && q[0].length >= 4) {
-      for (const w of this.words) if ((!sec || w.sec === sec) && norm(w.text).includes(q[0])) hits.push(w.start);
+      this.words.forEach((w, i) => {
+        if ((!sec || w.sec === sec) && norm(w.text).includes(q[0])) hits.push(i);
+      });
     }
     if (hits.length <= n) throw new Error(`${JSON.stringify(an)} (coincidencias: ${hits.length})`);
-    return hits[n] + off;
+    return hits[n];
   }
 
   f(an: Ancla, off = 0): number {
@@ -88,6 +94,12 @@ export class Anclas {
     return best;
   }
 
+  // la misma ancla que deIndice, en forma de objeto (para conservar un offset)
+  objetoDe(i: number, offset?: number): {palabra: string; sec: string; n: number; offset?: number} {
+    const an = this.deIndice(i);
+    return {palabra: an.replace(/^[\w-]+:/u, '').replace(/#\d+$/, ''), sec: this.words[i].sec, n: Number(an.match(/#(\d+)$/)?.[1] ?? 0), ...(offset !== undefined ? {offset} : {})};
+  }
+
   // ancla para el cuadro f: la palabra más cercana + offset (s) si no cae justo (con Alt: sin pegar)
   paraCuadro(f: number, pegar = true): Ancla {
     if (!this.words.length) return +(f / FPS).toFixed(3);
@@ -96,6 +108,6 @@ export class Anclas {
     const base = this.t(an) as number;
     const off = +(f / FPS - base).toFixed(2);
     if (pegar || Math.abs(off) < 0.02) return an;
-    return {palabra: an.replace(/^[\w-]+:/u, '').replace(/#\d+$/, ''), sec: this.words[i].sec, n: Number(an.match(/#(\d+)$/)?.[1] ?? 0), offset: off};
+    return this.objetoDe(i, off);
   }
 }

@@ -39,12 +39,12 @@ test('cortes: tachar una palabra y re-cortar con reel.py', async () => {
   const pieza = plan0.piezas[0];
   await page.getByTestId('cortes').getByTitle(new RegExp(`^#${pieza.a} `)).first().click();
   await hasta(() => leer('edicion/plan.json').piezas[0].a === pieza.a - 1);
-  await expect(page.getByText('corte desactualizado')).toBeVisible();
+  await expect(page.getByText('recortes sin aplicar')).toBeVisible();
   await page.getByTestId('recortar').click();
   // edl → cortar --verificar → datos (tarda: reconstruye el master)
   await hasta(() => leer('src/data.json').n < n0, 540_000);
   await expect(page.getByText('Verificación del corte')).toBeVisible({timeout: 60_000});
-  await expect(page.getByText('corte desactualizado')).toHaveCount(0);
+  await expect(page.getByText('recortes sin aplicar')).toHaveCount(0);
   console.log(`corte: ${n0} → ${leer('src/data.json').n} cuadros`);
   await app.close();
   limpiarCache(FIXTURE);

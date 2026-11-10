@@ -1,5 +1,29 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-acento: #f43f5e;
+}
+
+/* lo que se va a quitar del corte */
+.rayado {
+  background: repeating-linear-gradient(-45deg, #4c0519 0 5px, #881337 5px 10px);
+}
+
+.zoom-slider {
+  appearance: none;
+  height: 3px;
+  border-radius: 2px;
+  background: #3f3f46;
+}
+.zoom-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #e4e4e7;
+  cursor: pointer;
+}
+
 html,
 body,
 #root {

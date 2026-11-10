@@ -71,6 +71,9 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
     - Se cargan con `FontFace` y `delayRender`, sin internet.
     - Golden test contra Google Fonts: 139 de 141 stills idénticos; los otros 2 difieren solo en imágenes escaladas durante su animación, no en texto.
 
+15. **Registro de proyectos.** Cada comando de `reel.py` que toca un proyecto lo anota en `~/.reels-toolkit/proyectos.json` (excepto copias temporales y la autoprueba). Reel Studio lo combina con los que se abrieron en la app y lo vigila para actualizar Recientes en vivo.
+16. **Recortes sin esperar.** `modeloCorte` (`app/src/shared/cortes.ts`) alinea `edl_final.json` con `plan.json` palabra por palabra (subsecuencia común más larga, para distinguir palabras usadas dos veces). De ahí salen los bloques de la pista Corte y las zonas que la vista previa salta antes de aplicar.
+
 ## Datos por proyecto (`proyecto_remotion/edicion/`)
 - `proyecto.json`: fuentes, estilo, nombre, marca, `recorte_x`, `audio_externo` y `revision_url`.
 - `inventario.json` y `hojas/`.
@@ -78,6 +81,7 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
 - `tomas.txt`.
 - `plan.json`.
 - `edl.json` y `edl_final.json`.
+- `plan_cortado.json`: copia del plan que produjo el `cut.mp4` actual; compararlo con `plan.json` dice qué recortes faltan por aplicar.
 - `verificacion.txt`.
 - `eventos.json`.
 - `revision/` (stills, cuadrículas, zooms y página de revisión).

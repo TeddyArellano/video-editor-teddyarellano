@@ -14,7 +14,7 @@ export const usePropsPlantilla = (): Datos | null => {
   return useMemo(
     () =>
       data
-        ? {data, estilo: estilo ?? undefined, vlog: vlog ?? VACIO, base: info?.base ?? null, proxy: calidad === 'proxy' && !!info?.estado.proxy, fuentes: info ? `${info.base}__plantilla/fonts/` : null}
+        ? {data, estilo: estilo ?? undefined, vlog: vlog ?? VACIO, base: info ? `${info.base}__v${info.versionCorte}/` : null, proxy: calidad === 'proxy' && !!info?.estado.proxy, fuentes: info ? `${info.base}__plantilla/fonts/` : null}
         : null,
     [data, estilo, vlog, info, calidad],
   );

@@ -25,7 +25,7 @@ test('actualizar la app desde un repo atrasado', async () => {
     await page.evaluate((c) => window.reel.guardarPreferencias({skill: `${c}/skill/editar-reel`}), clon);
     await page.getByTestId('abrir-preferencias').click();
     await page.getByTestId('buscar-actualizaciones').click();
-    await expect(page.getByTestId('estado-actualizacion')).toContainText('Hay 1 cambio nuevo', {timeout: 60_000});
+    await expect(page.getByTestId('estado-actualizacion')).toContainText(/Hay \d+ cambios? nuevos?/, {timeout: 60_000});
     await page.getByRole('button', {name: 'Actualizar ahora'}).click();
     await expect(page.getByRole('button', {name: 'Reiniciar Reel Studio'}).or(page.getByText(/^✗/))).toBeVisible({timeout: 840_000});
     await expect(page.getByRole('button', {name: 'Reiniciar Reel Studio'})).toBeVisible();

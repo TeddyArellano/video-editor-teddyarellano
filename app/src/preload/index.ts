@@ -10,6 +10,9 @@ const on = <T>(canal: string, fn: (x: T) => void) => {
 
 const api: ReelAPI = {
   recientes: () => ipcRenderer.invoke('recientes'),
+  miniatura: (r) => ipcRenderer.invoke('miniatura', r),
+  buscarProyectos: (c) => ipcRenderer.invoke('buscarProyectos', c),
+  onRecientes: (fn) => on<void>('recientes-cambio', fn),
   elegirCarpeta: (t) => ipcRenderer.invoke('elegirCarpeta', t),
   elegirArchivo: (f) => ipcRenderer.invoke('elegirArchivo', f),
   abrir: (r) => ipcRenderer.invoke('abrir', r),
