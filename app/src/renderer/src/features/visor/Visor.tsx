@@ -4,8 +4,8 @@ import {Player, type PlayerRef} from '@remotion/player';
 import {Reel} from '@plantilla/Reel';
 import {totalFrames, type Data} from '@plantilla/theme';
 import React, {useEffect, useRef, useState} from 'react';
-import {useEditor} from '@/store';
-import {player, useReloj} from '@/reloj';
+import {modeloDe, useEditor} from '@/store';
+import {enScrub, player, useReloj} from '@/reloj';
 import {usePropsPlantilla} from '@/plantilla';
 import {Lienzo} from './Lienzo';
 
@@ -41,7 +41,20 @@ export const Visor: React.FC = () => {
     const p = ref.current;
     player.ref = p;
     if (!p) return;
-    const fu = (e: {detail: {frame: number}}) => useReloj.setState({frame: e.detail.frame});
+    const fu = (e: {detail: {frame: number}}) => {
+      if (enScrub()) return;
+      const f = e.detail.frame;
+      // lo recortado y aún no aplicado se salta al reproducir: el resultado se oye sin esperar a re-cortar
+      const z = useReloj.getState().jugando ? modeloDe(useEditor.getState())?.zonas.find(([a, b]) => f >= a && f < b) : undefined;
+      if (z) {
+        if (z[1] >= useReloj.getState().total) {
+          p.pause();
+          p.seekTo(Math.max(0, z[0] - 1));
+        } else p.seekTo(z[1]);
+        return;
+      }
+      useReloj.setState({frame: f});
+    };
     const pl = () => useReloj.setState({jugando: true});
     const pa = () => useReloj.setState({jugando: false});
     p.addEventListener('frameupdate', fu);

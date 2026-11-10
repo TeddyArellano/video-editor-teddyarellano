@@ -129,3 +129,16 @@ Arreglado: `vlog.py` cae a `sdr_global()` con la misma clave que `reel.py` (`Pro
 - **Arreglo:**
   - El clip sintético se genera con `-fflags +bitexact`, que no escribe la etiqueta `Lavf`.
   - El paso `inventario` de la prueba ahora exige que `CLIP01` esté en `videos`.
+
+## Re-cortar en Reel Studio dejaba el video viejo o rompía anclas (noviembre 2026)
+- **Síntomas:**
+  - Después de re-cortar, la vista previa podía seguir mostrando el video anterior: `cut.mp4` cambiaba, pero su URL no.
+  - Al borrar una palabra con un evento anclado, `reel datos` se detenía. Si se borraba una aparición anterior de esa palabra, `sec:palabra#n` caía en otra sin avisar.
+- **Arreglo:**
+  - La URL del video lleva la versión del corte (`__v<mtime>`).
+  - `aplicarCorte` (app) reescribe las anclas con el `edl_final.json` real, entre `cortar` y `datos`. También las de los estados del historial, para que deshacer siga siendo válido. Si la palabra se borró, el evento pasa a la siguiente que sobrevive y la app lo avisa.
+
+## Dividir una pieza cambiaba cómo sonaba (noviembre 2026)
+- **Síntoma:** dividir una frase agregaba un microcorte y partía los subtítulos en ese punto, aunque no se quitara nada.
+- **Causa:** `edl` calculaba márgenes propios para cada pieza.
+- **Arreglo:** las piezas divididas llevan `"pegada": true` y `edl` las une con la anterior mientras sigan contiguas y con los mismos parámetros. El `edl.json` resultante es idéntico al de la pieza sin dividir.

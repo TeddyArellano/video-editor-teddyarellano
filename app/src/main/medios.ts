@@ -38,6 +38,7 @@ export const resolverMedio = (url: string): string | null => {
   const raices: Record<string, string> = {__edicion: path.join(p.ruta, 'edicion'), __fuente: p.fuentes, __plantilla: path.join(plantillaDir(), 'public')};
   const base = raices[partes[0]] ?? path.join(p.ruta, 'public');
   if (partes[0] in raices) partes.shift();
+  else if (/^__v\d+$/.test(partes[0] ?? '')) partes.shift(); // versión del corte: solo sirve para que el reproductor no reuse el video viejo
   const f = path.resolve(base, ...partes);
   if (!f.startsWith(base + path.sep)) return null;
   return f;

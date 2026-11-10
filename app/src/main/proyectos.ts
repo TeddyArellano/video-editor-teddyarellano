@@ -1,13 +1,14 @@
 // Proyectos de /editar-reel: abrir, estado, recientes y vigilancia de cambios hechos por otros (Claude, reel.py).
 import {app} from 'electron';
 import chokidar, {type FSWatcher} from 'chokidar';
+import {execFile} from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {ARCHIVOS, type Archivo, type CambioArchivo, type ProyectoInfo, type Reciente, type Snapshot} from '../shared/tipos';
 import {hashArchivo, leerJSON} from './archivos';
 import {baseDe, dejarDeServir, servirProyecto} from './medios';
-import {plantillaDir} from './rutas';
+import {TOOLKIT, entorno, plantillaDir} from './rutas';
 
 type Abierto = {id: string; ruta: string; vigilante: FSWatcher};
 export const abiertos = new Map<string, Abierto>();
@@ -67,6 +68,7 @@ export const infoDe = (ruta: string): ProyectoInfo => {
     nombre: cfg.nombre ?? path.basename(carpeta),
     estilo: cfg.estilo ?? '',
     base: baseDe(id),
+    versionCorte: Math.round(Math.max(mtime(cut), mtime(proxy))),
     clips,
     estado: {
       transcrito: clips.length > 0,
@@ -89,18 +91,60 @@ export const snapshot = (ruta: string): Snapshot => {
 
 // ---------------------------------------------------------------- recientes
 const fRecientes = () => path.join(app.getPath('userData'), 'recientes.json');
-export const recientes = (): Reciente[] => {
+// el registro lo escribe reel.py cada vez que la skill toca un proyecto: así aparece aunque nunca se haya abierto en la app
+const fRegistro = () => process.env.REEL_REGISTRO || path.join(TOOLKIT, 'proyectos.json');
+const leerLista = <T>(f: string): T[] => {
   try {
-    const l = JSON.parse(fs.readFileSync(fRecientes(), 'utf8')) as Reciente[];
-    return l.filter((r) => fs.existsSync(path.join(r.ruta, 'edicion', 'proyecto.json')));
+    return JSON.parse(fs.readFileSync(f, 'utf8')) as T[];
   } catch {
     return [];
   }
 };
+const existe = (r: {ruta: string}) => fs.existsSync(path.join(r.ruta, 'edicion', 'proyecto.json'));
+export const recientes = (): Reciente[] => {
+  const m = new Map<string, Reciente>();
+  for (const r of leerLista<Reciente>(fRecientes())) m.set(r.ruta, {...r, editado: r.editado ?? 0});
+  for (const r of leerLista<Omit<Reciente, 'abierto'>>(fRegistro())) {
+    const a = m.get(r.ruta);
+    m.set(r.ruta, {ruta: r.ruta, nombre: r.nombre, estilo: r.estilo, abierto: a?.abierto ?? 0, editado: Math.max(r.editado ?? 0, a?.editado ?? 0)});
+  }
+  return [...m.values()].filter(existe).sort((a, b) => Math.max(b.abierto, b.editado) - Math.max(a.abierto, a.editado));
+};
 const anotarReciente = (info: ProyectoInfo) => {
-  const l = [{ruta: info.ruta, nombre: info.nombre, abierto: Date.now(), estilo: info.estilo}, ...recientes().filter((r) => r.ruta !== info.ruta)].slice(0, 30);
+  const propios = leerLista<Reciente>(fRecientes()).filter((r) => r.ruta !== info.ruta);
+  const l = [{ruta: info.ruta, nombre: info.nombre, abierto: Date.now(), editado: 0, estilo: info.estilo}, ...propios].slice(0, 200);
   fs.mkdirSync(path.dirname(fRecientes()), {recursive: true});
   fs.writeFileSync(fRecientes(), JSON.stringify(l, null, 2));
+};
+
+// avisa a la biblioteca cuando la skill registra un video con la app abierta
+let vigiaRegistro: FSWatcher | null = null;
+export const vigilarRegistro = (avisar: () => void) => {
+  vigiaRegistro?.close();
+  vigiaRegistro = chokidar.watch(fRegistro(), {ignoreInitial: true, awaitWriteFinish: {stabilityThreshold: 150, pollInterval: 50}});
+  vigiaRegistro.on('add', avisar).on('change', avisar);
+};
+export const dejarDeVigilarRegistro = () => vigiaRegistro?.close();
+
+// póster de la tarjeta: un cuadro del corte, en caché mientras el video no cambie (de uno en uno: ffmpeg es pesado)
+let filaMiniaturas: Promise<unknown> = Promise.resolve();
+export const miniatura = (ruta: string): Promise<string | null> => {
+  const hacer = async () => {
+    const video = ['cut_proxy.mp4', 'cut.mp4'].map((x) => path.join(ruta, 'public', x)).find((x) => fs.existsSync(x));
+    if (!video) return null;
+    const dir = path.join(app.getPath('userData'), 'miniaturas');
+    const f = path.join(dir, `${crypto.createHash('md5').update(`${ruta}:${mtime(video)}`).digest('hex')}.jpg`);
+    if (!fs.existsSync(f)) {
+      fs.mkdirSync(dir, {recursive: true});
+      await new Promise<void>((ok, mal) =>
+        execFile('ffmpeg', ['-nostdin', '-v', 'error', '-y', '-ss', '1.2', '-i', video, '-frames:v', '1', '-vf', 'scale=270:-2', '-q:v', '5', f], {env: entorno(), timeout: 20_000}, (e) => (e ? mal(e) : ok())),
+      );
+    }
+    return `data:image/jpeg;base64,${fs.readFileSync(f).toString('base64')}`;
+  };
+  const r = filaMiniaturas.then(hacer, hacer).catch(() => null);
+  filaMiniaturas = r;
+  return r;
 };
 
 // ---------------------------------------------------------------- abrir / cerrar

@@ -122,3 +122,9 @@ Hechas a partir de una lista de áreas de mejora:
 - El recorte de persona incluía bolsas que tapaban el gancho → `"delante": true` por línea.
 
 Resultados en [validacion.md](validacion.md).
+
+## 9. Reel Studio: línea de tiempo para recortar (noviembre 2026)
+El creador dijo: "siento que no puedo mover tanto la línea del tiempo o hacer cambios rápido". También pidió que todos los videos editados con la skill aparecieran en Recientes.
+- **Por qué se sentía pesada:** cada cuadro redibujaba el editor completo. Ahora el cabezal se mueve por DOM directo y las pistas van memoizadas.
+- **Recortes:** la pista Corte se volvió editable (dividir, quitar, recuperar, bordes por palabra). Lo quitado se ve tachado y la vista previa lo salta al instante; "Aplicar recortes" regenera el video.
+- **Recientes:** `reel.py` registra cada proyecto que toca en `~/.reels-toolkit/proyectos.json` y la biblioteca lo vigila.

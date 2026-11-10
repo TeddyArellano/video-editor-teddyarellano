@@ -7,7 +7,7 @@ import {escribirJSON, leerJSON} from './archivos';
 import {abrirSesionInteractiva, cancelarClaude, preguntar} from './claude';
 import {manejarProtocolo, registrarEsquema} from './medios';
 import {alAvisar, cancelar, detenerTodo, encolar, encolarCadena, lista} from './procesos';
-import {abrir, cerrar, infoDe, propias, recientes, rutaDe} from './proyectos';
+import {abrir, cerrar, dejarDeVigilarRegistro, infoDe, miniatura, propias, recientes, rutaDe, vigilarRegistro} from './proyectos';
 import {TOOLKIT, entorno, python, reelPy, repoDir, skillDir} from './rutas';
 import {guardarPreferencias, preferencias} from './preferencias';
 import {execFileSync} from 'node:child_process';
@@ -56,6 +56,8 @@ const dentro = (raiz: string, rel: string) => {
 
 const registrarIPC = () => {
   ipcMain.handle('recientes', () => recientes());
+  ipcMain.handle('miniatura', (_e, ruta: string) => miniatura(ruta));
+  ipcMain.handle('buscarProyectos', (_e, carpeta: string) => encolar('', carpeta, 'Buscar videos', ['proyectos', '--buscar', carpeta]));
   ipcMain.handle('elegirCarpeta', async (_e, titulo?: string) => {
     const r = await dialog.showOpenDialog(ventana!, {title: titulo ?? 'Abrir proyecto', properties: ['openDirectory', 'createDirectory']});
     return r.canceled ? null : r.filePaths[0];
@@ -182,6 +184,7 @@ const registrarIPC = () => {
   });
   ipcMain.handle('claudeCancelar', (_e, s: string) => cancelarClaude(s));
   alAvisar((t: Trabajo) => enviar('trabajo', t));
+  vigilarRegistro(() => enviar('recientes-cambio', null));
 };
 
 app.whenReady().then(() => {
@@ -191,4 +194,7 @@ app.whenReady().then(() => {
   app.on('activate', () => BrowserWindow.getAllWindows().length === 0 && crearVentana());
 });
 app.on('window-all-closed', () => app.quit());
-app.on('before-quit', () => detenerTodo());
+app.on('before-quit', () => {
+  detenerTodo();
+  dejarDeVigilarRegistro();
+});

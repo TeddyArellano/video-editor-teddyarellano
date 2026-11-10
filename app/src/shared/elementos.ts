@@ -184,6 +184,27 @@ export const quitarEvento = (data: Obj, eventos: Obj, sel: Sel): {data: Obj; eve
   return {data: d, eventos: e};
 };
 
+// copia del elemento justo después del original (mismo texto y duración)
+export const duplicarEvento = (data: Obj, eventos: Obj, sel: Sel): {data: Obj; eventos: Obj; sel: Sel} | null => {
+  if (sel.lista === 'hook') return null;
+  const d = clon(data);
+  const e = clon(eventos ?? {});
+  const key = LISTAS[sel.lista].eventos;
+  const x = d[sel.lista]?.[sel.i];
+  const orig = eventoDe(e, data, sel);
+  if (!x || !orig || !Array.isArray(e[key])) return null;
+  const copia = {...clon(x)};
+  e[key].push(clon(orig));
+  const j = e[key].length - 1;
+  if (typeof copia.ev === 'number') copia.ev = j;
+  d[sel.lista].push(copia);
+  const nuevo: Sel = {lista: sel.lista, i: d[sel.lista].length - 1};
+  const a = sel.lista === 'sfx' ? x.f : x.a;
+  const b = sel.lista === 'sfx' ? x.f + 15 : x.b;
+  const r = aplicarTiempo(d, e, nuevo, b, b + (b - a), true);
+  return {...r, sel: nuevo};
+};
+
 // lista de elementos con tiempo para la línea de tiempo
 export type Bloque = {sel: Sel; a: number; b: number; texto: string; color: string};
 export const bloques = (data: Obj): Bloque[] => {

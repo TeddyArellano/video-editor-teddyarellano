@@ -1,6 +1,6 @@
 // Raíz: biblioteca ↔ editor, y la conexión con el proceso principal (cambios en disco y trabajos de reel.py).
 import React, {useEffect} from 'react';
-import {aceptarDataExterna, ARCHIVO_DE, conPausa, docDeArchivo, prefs, useEditor, type Doc} from './store';
+import {aceptarDataExterna, ARCHIVO_DE, docDeArchivo, prefs, useEditor, type Doc} from './store';
 import {aplicarTema} from './features/preferencias/Preferencias';
 import {Biblioteca} from './features/biblioteca/Biblioteca';
 import {Editor} from './features/editor/Editor';
@@ -34,9 +34,10 @@ export const App: React.FC = () => {
         if (aceptarDataExterna()) await s.recargar('data');
         return;
       }
+      if (s.aplicando && doc !== 'planCortado') return; // aplicarCorte() recarga al terminar
       if (s.sucios.includes(doc)) return; // la app tiene cambios propios sin guardar: al guardar se detecta el conflicto
       await s.recargar(doc);
-      if (doc !== 'edl' && doc !== 'proyecto') s.avisar('info', `${ARCHIVO_DE[doc as Doc]} cambió fuera de la app; se recargó.`);
+      if (doc !== 'edl' && doc !== 'proyecto' && doc !== 'planCortado') s.avisar('info', `${ARCHIVO_DE[doc as Doc]} cambió fuera de la app; se recargó.`);
     });
     const quitarTrabajo = window.reel.onTrabajo(async (t) => {
       const s = useEditor.getState();
@@ -48,11 +49,15 @@ export const App: React.FC = () => {
           if (t.estado === 'error') s.avisar('error', `reel datos: ${t.ultimo ?? 'error'}`);
           else if (aceptarDataExterna()) await s.recargar('data');
         } else {
+          if (s.aplicando) {
+            // aplicarCorte() coordina el resto: aquí no se recarga nada para no pisar las anclas nuevas
+            if (t.estado === 'error') s.avisar('error', `${t.titulo}: ${t.ultimo ?? 'error'}`);
+            return;
+          }
           s.avisar(t.estado === 'ok' ? 'ok' : 'error', `${t.titulo}: ${t.estado === 'ok' ? 'listo' : t.ultimo ?? 'error'}`);
           const info = await window.reel.info(s.info.id);
           useEditor.setState({info});
-          for (const d of ['data', 'edl', 'plan', 'eventos', 'estilo', 'proyecto', 'vlog'] as Doc[]) await s.recargar(d);
-          if (['cortar', 'datos'].includes(t.comando[0]) && t.estado === 'ok') conPausa(() => useEditor.setState({corteDesactualizado: false}));
+          for (const d of ['data', 'edl', 'plan', 'planCortado', 'eventos', 'estilo', 'proyecto', 'vlog'] as Doc[]) await s.recargar(d);
           if (t.comando[0] === 'proxy' && t.estado === 'ok') useEditor.setState({calidad: 'proxy'});
         }
       }

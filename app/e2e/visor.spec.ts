@@ -8,7 +8,7 @@ test('abre el proyecto y reproduce la vista previa', async () => {
   await expect(page.getByTestId('visor')).toBeVisible();
   // el video del corte se sirve por reel-media:// y carga
   const video = page.locator('[data-testid=visor] video').first();
-  await expect(video).toHaveAttribute('src', /^reel-media:\/\/p\/[0-9a-f]+\/cut(_proxy)?\.mp4(#t=.*)?$/);
+  await expect(video).toHaveAttribute('src', /^reel-media:\/\/p\/[0-9a-f]+\/(__v\d+\/)?cut(_proxy)?\.mp4(#t=.*)?$/);
   await expect.poll(async () => video.evaluate((v: HTMLVideoElement) => v.readyState), {timeout: 30_000}).toBeGreaterThanOrEqual(2);
   // línea de tiempo con bloques de eventos y subtítulos
   await expect(page.getByTestId('timeline')).toBeVisible();

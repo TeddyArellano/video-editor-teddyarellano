@@ -22,6 +22,7 @@ No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada
 **Primer arranque:** si falta el toolkit, la biblioteca lo avisa y ofrece **Instalar / reparar**, que corre `install.sh`.
 
 **Abrir un proyecto:**
+- desde Recientes: cada video editado con la skill aparece solo, con su póster y un buscador. Para agregar videos antiguos usa "Buscar videos…" (o `reel proyectos --buscar <carpeta>`);
 - desde la biblioteca, con "Abrir carpeta…";
 - arrastrando la carpeta al ícono;
 - o con `open -a "Reel Studio" "<carpeta del material>"`.
@@ -31,7 +32,7 @@ No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada
 | Panel | Para qué |
 |---|---|
 | **Vista previa** | La composición `Reel` de la plantilla (la misma del render) en `@remotion/player`. Clic en un texto = seleccionarlo; arrastrar = moverlo; esquina = escalar; perilla = rotar. Imanes al centro (x 540) y a la zona segura (Alt los desactiva). |
-| **Línea de tiempo** | Secciones, tramos del corte, bloques de subtítulos, gancho, eventos, zooms, SFX y notas. Arrastrar mueve; los bordes estiran. Al soltar, el inicio se pega a la palabra más cercana (Alt = libre). ⌘/Ctrl + rueda = zoom. |
+| **Línea de tiempo** | Secciones, corte editable, subtítulos, gancho, eventos, zooms, SFX y notas. **Posicionarse:** clic en cualquier pista o arrastrar en la regla. **Corte:** arrastrar selecciona palabras; los bordes recortan por palabra; cuchilla o S divide. Lo quitado se ve tachado y la vista previa lo salta; **Aplicar recortes** (Enter) regenera el video. **Elementos:** arrastrar mueve y los bordes estiran, con imán a palabras, cabezal y bordes (Alt = libre). **Zoom:** pellizco, ⌘ o Alt + rueda, botones o deslizador. La altura se ajusta arrastrando el borde superior. |
 | **Elementos** | Inspector del elemento seleccionado (texto, colores, ancla, duración, posición…) y paleta para agregar etiquetas, nombres, imágenes, montos, emojis, calendario, zooms y SFX en el cuadro actual. |
 | **Subtítulos** | Transcripción sincronizada. Corregir palabra (`fix`), resaltar, énfasis y "cortar bloque aquí" (`cortes`). |
 | **Estilo** | `src/estilo.json` por secciones, cambio de preset, marca y "guardar como preset". |
@@ -48,7 +49,9 @@ No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada
 - Home / End: inicio y final.
 - ⌘Z / ⇧⌘Z: deshacer y rehacer.
 - ⌘S: guardar.
-- Supr: borrar el elemento.
+- S: dividir. B / V: cuchilla / selección. Q / W: recortar inicio / final hasta el cabezal.
+- I / O: marcar rango. X / Supr: quitar lo seleccionado. R: recuperar lo tachado. Enter: aplicar recortes.
+- ↑ / ↓: corte anterior / siguiente. , / .: mover el elemento un cuadro. ⌘D: duplicar. + / − / 0: zoom.
 - Esc: deseleccionar.
 
 ## Cómo funciona
@@ -87,7 +90,7 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 - visor y medios;
 - mover en el lienzo hasta que `data.json` queda regenerado por `reel datos`;
 - inspector y deshacer;
-- arrastre en la línea de tiempo;
+- línea de tiempo (`timeline.spec.ts`): posicionarse, zoom, dividir, quitar, recuperar, bordes, deshacer, re-corte real, elementos con imán y recientes en vivo (requiere `REEL_FIXTURE2`);
 - cambio externo (como lo haría Claude);
 - agregar y borrar elementos;
 - subtítulos y notas;

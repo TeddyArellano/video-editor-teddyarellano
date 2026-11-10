@@ -12,6 +12,8 @@
 - [ ] Commit inicial y push de este repo (cuando el creador lo pida).
 
 ## Reel Studio: pendientes
+- **Extender un tramo más allá del corte actual:** ya se puede, pero lo agregado solo se ve y se oye después de aplicar.
+- **Reordenar tramos arrastrando:** hoy se mueven con los botones de la barra o desde el panel Cortes.
 - **Vista previa de proyectos con componentes propios:** cargar los `src/components` del proyecto en el Player (hoy muestra "vista aproximada" con los de la skill).
 - **Color de la vista previa:** el `<video>` de Chromium se ve ~10/255 más claro que el render; estudiar una corrección CSS/WebGL.
 - **Firmar la app** (cuenta de Apple Developer) si se reparte al equipo.

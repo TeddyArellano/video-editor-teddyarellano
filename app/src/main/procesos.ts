@@ -22,7 +22,7 @@ const argv = (t: Interno): string[] => {
   const [c, ...resto] = t.comando;
   if (c === '__sh') return ['/bin/zsh', ...resto];
   if (c.endsWith('.py')) return [python(), `${skillDir()}/scripts/${c}`, ...resto.map((x) => (x === '{P}' ? t.ruta : x))];
-  const sinProyecto = ['nuevo', 'prueba'].includes(c);
+  const sinProyecto = ['nuevo', 'prueba', 'proyectos'].includes(c);
   return [python(), reelPy(), c, ...(sinProyecto ? [] : ['-p', t.ruta]), ...resto, '--json'];
 };
 

@@ -260,6 +260,8 @@ Ignoran acentos, mayúsculas y puntuación. Si no hay coincidencia exacta, busca
 ### Convivencia con Reel Studio (la app de escritorio)
 El creador puede tener abierto el mismo proyecto en **Reel Studio** (`app/` del repo de la skill). Tú lo abres ahí después del primer borrador (paso 12b). La app edita los mismos archivos que tú:
 - **Relee antes de escribir.** Si vas a cambiar `eventos.json`, `plan.json`, `src/estilo.json` o `edicion/notas.json`, léelo justo antes: el creador pudo haberlo cambiado en la app. Nunca lo sobrescribas con una copia vieja.
+- **Recientes:** cada comando `reel` que toca un proyecto lo anota en `~/.reels-toolkit/proyectos.json`, y la app lo muestra en Recientes sin que tengas que abrirlo. Para agregar videos antiguos: `reel proyectos --buscar <carpeta>`.
+- **Recortes desde la línea de tiempo:** cambian `plan.json` y el corte queda pendiente hasta que el creador presiona "Aplicar recortes". `plan.json` puede ir por delante de `public/cut.mp4`; compáralo con `edicion/plan_cortado.json` (el plan del último `cortar`). Una pieza con `"pegada": true` es una división sin corte audible: `edl` la une con la anterior mientras sigan contiguas y con la misma sección, velocidad y ganancia. No la quites al editar.
 - **Posición libre:** en la app el creador arrastra elementos; eso escribe `dx`, `dy`, `escala` y `rot` en `eventos.json` (ver `referencia/eventos.md`). Respétalos: no los borres al editar otras cosas.
 - **Notas locales:** `edicion/notas.json` = lista de `{id, t, texto, autor, estado: "pendiente"|"aplicado", respuesta, version, creado}`.
   - Para listarlas: `reel notas -p P`. Da el tiempo, el cuadro y el id de cada pendiente.

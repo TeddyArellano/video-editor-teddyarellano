@@ -2,26 +2,10 @@
 // recortar/extender por palabras, reordenar, velocidad, ganancia y márgenes; agregar piezas desde la transcripción de
 // cualquier clip; escuchar el tramo original; y Re-cortar (edl → cortar --verificar → datos) con progreso.
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {agregarPieza, alternarQuitar, dividirPieza, duracionPieza, editarPieza, moverPieza, quitarPieza, textoPieza, type PalabraClip, type Pieza, type Plan} from '@shared/cortes';
-import {useEditor} from '@/store';
+import {agregarPieza, alternarQuitar, dividirPieza, duracionPieza, editarPieza, moverPieza, quitarPieza, textoPieza, type Pieza, type Plan} from '@shared/cortes';
+import {aplicarCorte, useCortePendiente, useEditor} from '@/store';
 import {pausar} from '@/reloj';
 import {Boton, Etiqueta, inputCls, Seccion, Vacio} from '@/ui';
-
-const usePalabras = () => {
-  const info = useEditor((s) => s.info)!;
-  const [pal, setPal] = useState<Record<string, PalabraClip[]>>({});
-  useEffect(() => {
-    (async () => {
-      const r: Record<string, PalabraClip[]> = {};
-      for (const c of info.clips) {
-        const t = await window.reel.leerTexto(info.id, `edicion/palabras/${c}.json`);
-        if (t) r[c] = JSON.parse(t);
-      }
-      setPal(r);
-    })();
-  }, [info.id, info.clips.join(',')]);
-  return pal;
-};
 
 // reproduce un tramo del clip original (para escuchar dónde corta)
 const useEscuchar = () => {
@@ -79,10 +63,12 @@ const Niveles: React.FC = () => {
 export const Cortes: React.FC = () => {
   const info = useEditor((s) => s.info)!;
   const plan = useEditor((s) => s.plan) as Plan | null;
-  const corte = useEditor((s) => s.corteDesactualizado);
-  const pal = usePalabras();
+  const corte = useCortePendiente();
+  const pal = useEditor((s) => s.palabras);
+  const aplicando = useEditor((s) => s.aplicando);
   const escuchar = useEscuchar();
-  const [abierta, setAbierta] = useState<number | null>(null);
+  const abierta = useEditor((s) => s.piezaAbierta);
+  const setAbierta = (n: number | null) => useEditor.getState().set({piezaAbierta: n});
   const [clip, setClip] = useState<string>('');
   const [rango, setRango] = useState<[number, number] | null>(null);
   const [sec, setSec] = useState('');
@@ -97,11 +83,7 @@ export const Cortes: React.FC = () => {
   const secs = [...new Set(piezas.map((p) => p.sec))];
 
   const recortar = async () => {
-    const ok = await window.reel.cadena(info.id, [
-      {titulo: 'EDL', comando: ['edl']},
-      {titulo: 'Cortar', comando: ['cortar', '--verificar']},
-      {titulo: 'Datos', comando: ['datos']},
-    ]);
+    const ok = await aplicarCorte({verificar: true});
     if (ok) setVerif(await window.reel.leerTexto(info.id, 'edicion/verificacion.txt'));
   };
 
@@ -112,7 +94,7 @@ export const Cortes: React.FC = () => {
       <Seccion
         titulo={`Plan · ${piezas.length} piezas · ~${totalSeg.toFixed(1)} s`}
         acciones={
-          <Boton v={corte ? 'primario' : 'normal'} onClick={recortar} data-testid="recortar" title="edl → cortar --verificar → datos">
+          <Boton v={corte ? 'primario' : 'normal'} disabled={aplicando} onClick={recortar} data-testid="recortar" title="edl → cortar --verificar → datos">
             Re-cortar
           </Boton>
         }

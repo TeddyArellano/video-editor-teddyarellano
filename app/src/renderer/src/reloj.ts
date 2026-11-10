@@ -13,6 +13,23 @@ export const ir = (f: number) => {
   player.ref?.seekTo(g);
   useReloj.setState({frame: g});
 };
+// para arrastrar el cabezal: el cuadro se pinta al instante y el reproductor busca una vez por fotograma de pantalla
+let busqueda: number | null = null;
+let scrubHasta = 0;
+// mientras se arrastra, los avisos del reproductor llegan atrasados: si se aceptaran, el cabezal saltaría a un cuadro anterior
+export const enScrub = () => performance.now() < scrubHasta;
+export const irSuave = (f: number) => {
+  const g = Math.max(0, Math.min(useReloj.getState().total - 1, Math.round(f)));
+  useReloj.setState({frame: g});
+  scrubHasta = performance.now() + 250;
+  if (busqueda === null) {
+    requestAnimationFrame(() => {
+      if (busqueda !== null) player.ref?.seekTo(busqueda);
+      busqueda = null;
+    });
+  }
+  busqueda = g;
+};
 export const mover = (d: number) => ir((player.ref?.getCurrentFrame() ?? useReloj.getState().frame) + d);
 export const alternar = () => player.ref?.toggle();
 export const pausar = () => player.ref?.pause();
