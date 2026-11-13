@@ -47,10 +47,20 @@ const componentesPropios = (ruta: string): string[] => {
     if (!fs.existsSync(a)) return;
     if (!fs.existsSync(b) || fs.readFileSync(a, 'utf8') !== fs.readFileSync(b, 'utf8')) out.push(rel);
   };
-  for (const f of ['Reel.tsx', 'Root.tsx', 'theme.ts']) revisar(f);
+  // Root.tsx solo registra composiciones (p. ej. una intro que se renderiza aparte): no cambia lo que dibuja Reel
+  for (const f of ['Reel.tsx', 'theme.ts']) revisar(f);
   const comps = path.join(ruta, 'src', 'components');
   if (fs.existsSync(comps)) for (const f of fs.readdirSync(comps)) if (/\.tsx?$/.test(f)) revisar(path.join('components', f));
-  return out;
+  // un componente que solo existe en el proyecto cuenta solo si lo importa algo fuera de Root.tsx (si no, no sale en el reel)
+  const fuentes = [path.join(ruta, 'src', 'Reel.tsx'), path.join(ruta, 'src', 'theme.ts'), ...(fs.existsSync(comps) ? fs.readdirSync(comps).map((f) => path.join(comps, f)) : [])]
+    .filter((f) => /\.tsx?$/.test(f) && fs.existsSync(f))
+    .map((f) => ({f, txt: fs.readFileSync(f, 'utf8')}));
+  return out.filter((rel) => {
+    if (fs.existsSync(path.join(pl, rel))) return true;
+    const nombre = path.basename(rel).replace(/\.tsx?$/, '');
+    const re = new RegExp(`from ['"][./]*(components/)?${nombre}['"]`);
+    return fuentes.some(({f, txt}) => !f.endsWith(path.basename(rel)) && re.test(txt));
+  });
 };
 
 export const infoDe = (ruta: string): ProyectoInfo => {

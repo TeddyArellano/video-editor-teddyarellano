@@ -86,3 +86,36 @@ describe('bloques', () => {
     expect(h).toEqual([['A', 3, 10], ['B', 20, 60], ['C', 10, 20]]);
   });
 });
+
+describe('patrocinadores y fechas', () => {
+  const d = () => ({
+    n: 200,
+    words,
+    patrocinadores: [{a: 6, b: 90, fila: 'arriba', logos: [{src: 'sponsors/a.png', ar: 2}, {src: 'sponsors/b.png', ar: 1}], ev: 0}],
+    fechas: [{a: 26, b: 120, f2: 56, fl: 52, dia1: '30', mes1: 'NOVIEMBRE', dia2: '9', mes2: 'DICIEMBRE', ev: 0}],
+  });
+  const e = () => ({
+    patrocinadores: [{en: 0.2, dur: 2.8, fila: 'arriba', logos: ['sponsors/a.png', 'sponsors/b.png']}],
+    fechas: [{en: 'uno', segunda: 'dos', flecha: 'dos', hasta: 'cuatro', dia1: '30', mes1: 'NOVIEMBRE', dia2: '9', mes2: 'DICIEMBRE'}],
+  });
+  it('aparecen en la línea de tiempo con un texto legible', () => {
+    const b = bloques(d());
+    expect(b.find((x) => x.sel.lista === 'patrocinadores')?.texto).toBe('a, b');
+    expect(b.find((x) => x.sel.lista === 'fechas')?.texto).toBe('30 NOVIEMBRE → 9 DICIEMBRE');
+  });
+  it('fechas: al moverlas, la 2ª hoja y la flecha se mueven con la 1ª', () => {
+    const r = aplicarTiempo(d(), e(), {lista: 'fechas', i: 0}, 60, 150);
+    expect(r.data.fechas[0]).toMatchObject({a: 60, f2: 90, fl: 86});
+    expect(r.eventos.fechas[0]).toMatchObject({en: 'a:dos', segunda: 'a:tres', flecha: 'a:tres'});
+    expect(r.eventos.fechas[0]).not.toHaveProperty('hasta');
+  });
+  it('patrocinadores: editar logos cambia eventos (rutas)', () => {
+    const r = aplicarCampos(d(), e(), {lista: 'patrocinadores', i: 0}, {logos: ['sponsors/c.png']});
+    expect(r.eventos.patrocinadores[0].logos).toEqual(['sponsors/c.png']);
+  });
+  it('agregar fechas en un cuadro deja 2ª hoja y flecha después', () => {
+    const r = agregarEvento({n: 200, words}, {}, 'fechas', 60);
+    expect(r.data.fechas[0]).toMatchObject({a: 60, f2: 90, fl: 84});
+    expect(r.eventos.fechas[0]).toMatchObject({en: 'a:dos', dur: 3, dia1: '1', mes1: 'ENERO'});
+  });
+});

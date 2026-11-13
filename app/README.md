@@ -105,7 +105,7 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 
 ## Límites conocidos
 
-- **Proyectos con componentes propios** en `src/components` muestran "vista aproximada": la vista previa usa la plantilla de la skill y el render usa los del proyecto. `reel actualizar` (en Pipeline) los iguala si no son cambios intencionales.
+- **Proyectos con componentes propios** en `src/components` muestran "vista aproximada": la vista previa usa la plantilla de la skill y el render usa los del proyecto. `reel actualizar` (en Pipeline) los iguala si no son cambios intencionales. Por eso los gráficos nuevos van en la plantilla con datos de `eventos.json` (así pasó con `patrocinadores` y `fechas` de Zumpango).
 - **Video de la vista previa:**
   - El `<video>` de Chromium se ve unos 10 niveles (de 255) más claro que el render.
   - Al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto.

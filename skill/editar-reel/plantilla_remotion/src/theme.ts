@@ -95,7 +95,13 @@ export type Data = {
     planeta: boolean; cohete: boolean; warp: boolean; capa?: string};
   emojis?: (Span & {emoji: string; texto?: string})[];
   calendario?: (Span & {dia: string; mes: string; texto?: string; top?: number; color?: string})[];
+  patrocinadores?: (Span & {fila: 'arriba' | 'abajo'; logos: (Logo | string)[]; top?: number})[];
+  fechas?: Fecha[];
 };
+export type Logo = {src: string; ar: number}; // ar = ancho / alto
+// rango de fechas: a = 1ª hoja, f2 = 2ª hoja, fl = flecha, b = fin (cuadros)
+export type Fecha = Span & {f2: number; fl: number; dia1: string; mes1: string; tag1?: string; color1?: string;
+  dia2: string; mes2: string; tag2?: string; color2?: string; banner?: string; top?: number; ocultar_subs?: boolean};
 
 export type Estilo = {
   colores: {acento: string; texto: string; contorno: string; a: string; b: string; pildora: string};

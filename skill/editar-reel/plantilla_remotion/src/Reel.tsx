@@ -11,6 +11,8 @@ import {Fotos} from './components/Fotos';
 import {Globo} from './components/Globo';
 import {Calendario, EmojiSticker, Gamer, Monto} from './components/Extras';
 import {IntroEspacioCapa} from './components/IntroEspacio';
+import {Patrocinadores} from './components/Patrocinadores';
+import {Fechas} from './components/Fechas';
 import {BRoll, Counter, EndCard, FastBadge, Images, Labels, NameTag, Sound, Transition} from './components/Overlays';
 import {CIERRE_LEN, CUT, D, Datos, E, VLOG, cargarFuentes, derivado, setDatos, totalFrames} from './theme';
 
@@ -65,6 +67,8 @@ const ReelCapas: React.FC = () => (
     <EmojiSticker />
     <Calendario />
     <Monto />
+    <Patrocinadores />
+    <Fechas />
     <Captions />
     {D.transitions.map((t, i) => (
       <Sequence key={i} from={t.f} durationInFrames={t.len}>
