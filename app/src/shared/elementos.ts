@@ -4,7 +4,7 @@
 //   - a eventos (lo que se guarda; luego `reel datos` regenera data con la lógica oficial)
 import {Ancla, Anclas, FPS} from './anclas';
 
-export type Lista = 'names' | 'labels' | 'images' | 'broll' | 'montos' | 'emojis' | 'calendario' | 'hook' | 'zooms' | 'sfx';
+export type Lista = 'names' | 'labels' | 'images' | 'broll' | 'montos' | 'emojis' | 'calendario' | 'patrocinadores' | 'fechas' | 'hook' | 'zooms' | 'sfx';
 
 export type InfoLista = {
   lista: Lista;
@@ -23,12 +23,14 @@ export const LISTAS: Record<Lista, InfoLista> = {
   montos: {lista: 'montos', eventos: 'montos', nombre: 'Monto', durDef: 2.5, movible: true, color: '#84cc16'},
   emojis: {lista: 'emojis', eventos: 'emojis', nombre: 'Emoji', durDef: 2, movible: true, color: '#eab308'},
   calendario: {lista: 'calendario', eventos: 'calendario', nombre: 'Calendario', durDef: 2.5, movible: true, color: '#ec4899'},
+  patrocinadores: {lista: 'patrocinadores', eventos: 'patrocinadores', nombre: 'Patrocinadores', durDef: 3, movible: true, color: '#14b8a6'},
+  fechas: {lista: 'fechas', eventos: 'fechas', nombre: 'Fechas', durDef: 3, movible: true, color: '#e11d48'},
   broll: {lista: 'broll', eventos: 'broll', nombre: 'B-roll', durDef: 2.5, movible: false, color: '#64748b'},
   zooms: {lista: 'zooms', eventos: 'zooms', nombre: 'Zoom', durDef: 1.7, movible: false, color: '#3b82f6'},
   sfx: {lista: 'sfx', eventos: 'sfx', nombre: 'SFX', durDef: 1.5, movible: false, color: '#f97316'},
 };
 
-export const LISTAS_TIEMPO: Lista[] = ['labels', 'names', 'images', 'montos', 'emojis', 'calendario', 'broll', 'zooms', 'sfx'];
+export const LISTAS_TIEMPO: Lista[] = ['labels', 'names', 'images', 'montos', 'emojis', 'calendario', 'patrocinadores', 'fechas', 'broll', 'zooms', 'sfx'];
 
 export type Sel = {lista: Lista; i: number}; // i = índice en data (para hook: índice del elemento)
 
@@ -115,6 +117,16 @@ export const aplicarTiempo = (data: Obj, eventos: Obj, sel: Sel, a: number, b: n
     }
     return {data: d, eventos: e};
   }
+  if (sel.lista === 'fechas' && x) {
+    // la 2ª hoja y la flecha se mueven con la 1ª (mismo ritmo); sus anclas se vuelven a pegar a la palabra más cercana
+    const delta = fa - x.a;
+    x.f2 += delta;
+    x.fl += delta;
+    if (ev && delta) {
+      ev.segunda = A.paraCuadro(x.f2 + 4, pegar);
+      ev.flecha = A.paraCuadro(x.fl + 3, pegar);
+    }
+  }
   if (x) {
     x.a = fa;
     x.b = fa + Math.round(dur * FPS);
@@ -135,6 +147,8 @@ export const PLANTILLAS_EVENTO: Partial<Record<Lista, Obj>> = {
   montos: {texto: '$1,000'},
   emojis: {emoji: '🔥', texto: ''},
   calendario: {dia: '1', mes: 'ENERO', texto: ''},
+  patrocinadores: {fila: 'arriba', logos: []},
+  fechas: {dia1: '1', mes1: 'ENERO', dia2: '7', mes2: 'ENERO'},
   images: {src: 'logos/logo.png', pos: 'arriba', ancho: 420, tarjeta: false},
   zooms: {cx: 0.5, cy: 0.5, z: 1.5},
   sfx: {sfx: 'pop', vol: 0.4},
@@ -160,6 +174,7 @@ export const agregarEvento = (data: Obj, eventos: Obj, lista: Lista, f: number, 
   else {
     const item: Obj = {a: fa, b: fa + len, ev: j, ...base};
     if (lista === 'images') item.titulo = item.titulo ?? null;
+    if (lista === 'fechas') Object.assign(item, {f2: fa + 30, fl: fa + 24});
     d[lista].push(item);
   }
   return {data: d, eventos: e, sel: {lista, i: d[lista].length - 1}};
@@ -213,7 +228,12 @@ export const bloques = (data: Obj): Bloque[] => {
     (data[l] ?? []).forEach((x: Obj, i: number) => {
       const a = l === 'sfx' ? x.f : x.a;
       const b = l === 'sfx' ? x.f + Math.min(x.len ?? 15, 15) : x.b;
-      const texto = x.texto ?? x.nombre ?? x.emoji ?? (x.dia ? `${x.dia} ${x.mes}` : undefined) ?? x.src ?? (l === 'zooms' ? `×${x.z}` : '');
+      const texto =
+        l === 'patrocinadores'
+          ? (x.logos ?? []).map((g: Obj | string) => String(typeof g === 'string' ? g : g.src).split('/').pop()!.replace(/\.\w+$/, '')).join(', ') || 'sin logos'
+          : l === 'fechas'
+            ? (x.banner ?? `${x.dia1} ${x.mes1} → ${x.dia2} ${x.mes2}`)
+            : x.texto ?? x.nombre ?? x.emoji ?? (x.dia ? `${x.dia} ${x.mes}` : undefined) ?? x.src ?? (l === 'zooms' ? `×${x.z}` : '');
       out.push({sel: {lista: l, i}, a, b, texto: String(texto ?? ''), color: LISTAS[l].color});
     });
   }

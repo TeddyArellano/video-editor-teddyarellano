@@ -7,6 +7,7 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
 import {CUT, D, E, FPS, SIDE, W, Word, derivado, enGancho, font, stroke, topLibre} from '../theme';
+import {fechasOcultanSubs} from './Fechas';
 
 type Chunk = {words: Word[]; from: number; to: number; enf?: boolean};
 const LEAD = 1; // cuadros de adelanto de cada palabra (se percibe en sincronía con la voz)
@@ -74,6 +75,7 @@ const ent = (frame: number, at: number, d = 3) =>
 export const Captions: React.FC = () => {
   const frame = useCurrentFrame();
   if (enGancho(frame) || frame >= CUT) return null;
+  if (fechasOcultanSubs(frame)) return null; // rango de fechas en pantalla (eventos.json → fechas)
   // mientras se ve una captura de perfil (public/perfiles/) no hay subtítulos: el perfil va centrado
   if (D.images.some((im) => (im.src.startsWith('perfiles/') || im.pos === 'completa') && frame >= im.a && frame < im.b)) return null;
   // con estilo.etiqueta.ocultar_subs, mientras hay etiqueta no hay subtítulo (repetían las mismas palabras; Brigadas Otoño 2026)

@@ -142,3 +142,9 @@ Arreglado: `vlog.py` cae a `sdr_global()` con la misma clave que `reel.py` (`Pro
 - **Síntoma:** dividir una frase agregaba un microcorte y partía los subtítulos en ese punto, aunque no se quitara nada.
 - **Causa:** `edl` calculaba márgenes propios para cada pieza.
 - **Arreglo:** las piezas divididas llevan `"pegada": true` y `edl` las une con la anterior mientras sigan contiguas y con los mismos parámetros. El `edl.json` resultante es idéntico al de la pieza sin dividir.
+
+## Reel Studio no mostraba los patrocinadores ni las fechas de Zumpango (noviembre 2026)
+- **Síntoma:** en la vista previa de la app faltaban los logos de patrocinadores y el calendario "DEL 30 → AL 9"; el render sí los traía.
+- **Causa:** eran componentes propios del proyecto (`src/components/Patrocinadores.tsx` + `src/sponsors.json`, `Fechas.tsx` con textos fijos). La app dibuja con la plantilla de la skill, que no los tenía.
+- **Arreglo:** ahora son capas de la plantilla alimentadas por `eventos.json` → `"patrocinadores"` y `"fechas"` (ver `referencia/eventos.md`). Se ven, se mueven y se editan en Reel Studio.
+- **Regla:** si un video necesita un gráfico nuevo, hazlo en la plantilla con datos de `eventos.json` (no un componente suelto en el proyecto), o no se verá en la app.
