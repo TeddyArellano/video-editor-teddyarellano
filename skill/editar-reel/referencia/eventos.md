@@ -127,13 +127,43 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
 ## Cortes de subtítulos
 `"cortes": ["sec:palabra#n", …]`: esa palabra empieza un bloque de subtítulos nuevo (además de los cortes automáticos por puntuación, sección y tramo). Lo usa Reel Studio en el panel Subtítulos.
 
-## Posición libre (Reel Studio)
-`nombres`, `etiquetas`, `imagenes`, `montos`, `emojis`, `calendario`, `fechas`, `patrocinadores` y los `elementos` del gancho aceptan además:
+## Posición libre y fotogramas clave (Reel Studio)
+`nombres`, `etiquetas`, `imagenes`, `montos`, `emojis`, `calendario`, `fechas`, `patrocinadores`, `textos`, `formas`, `superpuestos` y los `elementos` del gancho aceptan además:
 - `dx`, `dy`: desplazamiento en px sobre su posición normal (lienzo 1080×1920; `dy` positivo = hacia abajo).
 - `escala`: 1 = tamaño normal.
 - `rot`: grados. En los elementos del gancho `rot` ya existía (giro propio del elemento) y se respeta igual.
+- `opacidad`: 0–1 (1 = normal).
+- `claves` (fotogramas clave, no en el gancho): `[{"t": 0, "dx": -40}, {"t": 1.2, "dx": 40, "escala": 1.2, "opacidad": 1}]`. `t` = segundos desde que aparece el elemento. Cada propiedad se interpola suave (ease-in-out) entre las claves que la definen; antes de la primera y después de la última se queda en su valor. Con claves, la app edita la clave del cuadro actual al mover el elemento.
 
 Sin estos campos todo se dibuja exactamente como antes. Los escribe Reel Studio al arrastrar un elemento en el lienzo; se pueden editar a mano. Mantén el elemento dentro de la zona segura (x 125–905, y 260–1500).
+
+## Capas libres (estilo CapCut, Reel Studio)
+Capas que el creador agrega a mano desde la app (o tú, si te lo pide). Todas usan las anclas de siempre (`en`, `hasta`, `dur`, `offset`) y `"todo": true` = todo el video. No se mueven por el gancho. Se dibujan con `components/Capas.tsx`; sin estas listas el reel queda idéntico.
+```jsonc
+{
+  // texto libre: x/y = centro en px (por defecto 540, 960). Animaciones: entrada / salida / bucle (ver abajo)
+  "textos": [{"en": "dos", "dur": 2.5, "texto": "TU TEXTO", "y": 760, "fuente": "Anton", "size": 110, "color": "#fff",
+              "bg": "#E63946", "contorno": 10, "contorno_color": "#000", "sombra": true, "mayus": true, "resaltar": "TEXTO",
+              "align": "center", "ancho": 900, "entrada": "pop", "salida": "fundido", "bucle": "flotar", "dur_entrada": 0.35}],
+  // formas: flecha | circulo | rect | subrayado | estrella | corazon | check | equis | burbuja (entrada por defecto "dibujar")
+  "formas": [{"en": "botella", "dur": 2, "forma": "circulo", "color": "#FFD600", "ancho": 300, "alto": 300, "grosor": 14, "relleno": false, "x": 540, "y": 960}],
+  // superpuesto: video o imagen encima (PiP) o a pantalla completa. Sin dur, un video dura lo que el archivo.
+  // .webm con alfa (reel sinfondo) o "… sin fondo.png" = persona recortada, sin tarjeta
+  "superpuestos": [{"en": "mochila", "src": "medios/clip.mp4", "ancho": 560, "alto": null, "x": 760, "y": 520, "completo": false,
+                    "recorte": "circulo", "radio": 28, "borde": 6, "borde_color": "#fff", "sombra": true, "ajuste": "cubrir",
+                    "desde": 1.5, "velocidad": 1, "vol": 0, "entrada": "pop"}],
+  // pistas de audio (música, voz en off, ambiente). Sin dur: lo que dura el archivo (sin pasarse del final).
+  // ducking 0–1: cuánto baja mientras alguien habla (0.6 = queda al 40 %), con ataque rápido y relajación lenta
+  "audios": [{"todo": true, "src": "audio/musica.mp3", "vol": 0.15, "fade_in": 0.5, "fade_out": 1, "ducking": 0.6, "desde": 0, "velocidad": 1}],
+  // ajuste de color sobre el video y el b-roll: filtro (ninguno | bn | calido | frio | vintage | cine | vivo | suave | noche | drama)
+  // con intensidad, más ajustes manuales en −100…100 (tono en grados, viñeta y desenfoque 0–100). Entra y sale en 4 cuadros.
+  "ajustes": [{"en": "botella", "dur": 3, "filtro": "cine", "intensidad": 0.8, "brillo": 5, "contraste": 10, "saturacion": -20, "temperatura": 15, "tono": 0, "vineta": 30, "desenfoque": 0}],
+  // transición en un corte: fundido | negro | blanco | zoom | barrido | destello | glitch | giro | deslizar | desenfoque.
+  // Su centro se pega al corte entre tramos más cercano (±0.4 s). dur por defecto 0.4 s
+  "transiciones_corte": [{"en": "lápiz", "tipo": "barrido", "dur": 0.5}]
+}
+```
+**Animaciones** (`textos`, `formas`, `superpuestos`): `entrada` = ninguna | fundido | pop | rebote | zoom | deslizar-arriba | deslizar-abajo | deslizar-izq | deslizar-der | girar | desenfoque | maquina (máquina de escribir, solo textos); `salida` = ninguna | fundido | pop | zoom | deslizar-* | desenfoque; `bucle` = ninguno | flotar | latido | temblor | balanceo | parpadeo | girar.
 
 ## Reglas automáticas de `reel datos`
 - Nombres, etiquetas, imágenes, montos, emojis, calendario o fechas que empezarían durante el gancho se mueven a cuando termina (misma duración). Los patrocinadores no.
@@ -158,4 +188,4 @@ Sin estos campos todo se dibuja exactamente como antes. Los escribe Reel Studio 
   `ffmpeg -ss <inicio> -t <dur> -i sdr.mp4 -an -vf "fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920" -c:v libx264 -crf 17 P/public/broll/x.mp4`
 
 ## Qué genera `reel datos` → `src/data.json`
-`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `patrocinadores` (`fila`, `logos[]` con `src`/`ar`, `top`), `fechas` (`f2`, `fl`, `dia1`…), `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. `patrocinadores` y `fechas` solo aparecen si `eventos.json` los trae. Cada elemento de `names`, `labels`, `images`, `broll`, `montos`, `emojis`, `calendario`, `patrocinadores` y `fechas` lleva `ev` (su índice en la lista de `eventos.json`) y, si los tiene, `dx`/`dy`/`escala`/`rot`. Los componentes en `src/components/` leen solo esto y `estilo.json`.
+`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `patrocinadores` (`fila`, `logos[]` con `src`/`ar`, `top`), `fechas` (`f2`, `fl`, `dia1`…), `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. `patrocinadores` y `fechas` solo aparecen si `eventos.json` los trae, igual que las capas libres: `textos`, `formas`, `superpuestos` (con `video`), `audios`, `ajustes` y `tcortes` (de `transiciones_corte`, con `a`/`b` centrados en el corte). Cada elemento de `names`, `labels`, `images`, `broll`, `montos`, `emojis`, `calendario`, `patrocinadores` y `fechas` lleva `ev` (su índice en la lista de `eventos.json`) y, si los tiene, `dx`/`dy`/`escala`/`rot`/`opacidad`/`claves`. Los componentes en `src/components/` leen solo esto y `estilo.json`.

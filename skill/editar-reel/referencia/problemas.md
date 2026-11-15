@@ -148,3 +148,25 @@ Arreglado: `vlog.py` cae a `sdr_global()` con la misma clave que `reel.py` (`Pro
 - **Causa:** eran componentes propios del proyecto (`src/components/Patrocinadores.tsx` + `src/sponsors.json`, `Fechas.tsx` con textos fijos). La app dibuja con la plantilla de la skill, que no los tenía.
 - **Arreglo:** ahora son capas de la plantilla alimentadas por `eventos.json` → `"patrocinadores"` y `"fechas"` (ver `referencia/eventos.md`). Se ven, se mueven y se editan en Reel Studio.
 - **Regla:** si un video necesita un gráfico nuevo, hazlo en la plantilla con datos de `eventos.json` (no un componente suelto en el proyecto), o no se verá en la app.
+
+## Vista del plan en negro con clips .MOV (noviembre 2026)
+- **Síntoma:** en Reel Studio, "Ver recortes sin aplicar" mostraba negro y la consola decía `MediaError`.
+- **Causa:** el protocolo `reel-media` servía los `.mov` como `video/quicktime`, y Chromium no reproduce ese tipo (el contenedor MOV con H.264/HEVC sí lo decodifica).
+- **Arreglo:** `app/src/main/medios.ts` sirve `.mov` como `video/mp4`.
+
+## Componentes propios del proyecto en la vista previa (noviembre 2026)
+La app compila `src/Reel.tsx` del proyecto con el esbuild del toolkit (`app/src/main/compilar.ts`) y lo dibuja con su propio React/Remotion (`app/src/renderer/src/deps.ts`). Tres trampas de los proyectos viejos:
+- **`getInputProps()` a nivel de módulo** (p. ej. `const PROXY = getInputProps().proxy`): dentro de un `<Player>` lanza error. El Remotion que recibe el proyecto lo reemplaza por `() => ({})`.
+- **`staticFile()` antepone `/`** aunque haya `window.remotion_staticBase` → `file:///reel-media://…` y el video no carga. El Remotion del proyecto usa un `staticFile` que apunta directo a `public/` del proyecto abierto.
+- **`@remotion/google-fonts/<Fuente>`** baja las fuentes de internet (y la CSP de la app lo bloquea). Se desvía a las fuentes locales de la plantilla (`Lilita One`, `Montserrat`…).
+- Si algo más falla, la insignia queda en "vista aproximada" y su descripción (pasa el mouse) trae el error.
+
+## La vista previa se veía más clara que el render (noviembre 2026)
+- **Síntoma:** ~10 niveles (de 255) más clara en los medios tonos; extremos iguales.
+- **Causa:** el `<video>` de Chromium y el extractor de cuadros de Remotion manejan distinto la gamma BT.709 (vista previa ≈ render^0.88).
+- **Arreglo:** filtro SVG de gamma 1.13 solo en los `<video>` de la vista previa (`Visor.tsx` → `#reel-gamma`, `.vista-video video` en `estilos.css`). Medido con `e2e/propios.spec.ts`/`fidelidad.spec.ts`: el corrimiento quedó en 0–3 niveles.
+
+## Curva de velocidad repetida en cada tramo (noviembre 2026)
+- **Síntoma:** con `"rampa": "suave"`, una pieza con pausas aceleraba y frenaba varias veces.
+- **Causa:** `edl` parte las piezas en tramos por las pausas largas y la curva se aplicaba a cada tramo.
+- **Arreglo:** `rampa_velocidad()` recibe todos los tramos de la pieza y reparte los escalones sobre su duración total (igual en `app/src/shared/cortes.ts → rampaVelocidad` para la vista del plan).

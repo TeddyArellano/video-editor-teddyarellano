@@ -142,7 +142,7 @@ El porqué de cada regla está en `referencia/criterio_editorial.md`.
 | 7 | `edl -p P`, luego `cortar -p P --verificar` | `public/cut.mp4` sincronizado y sin pausas. **Lee la transcripción de verificación.** Si una sílaba se corta, usa `mas_inicio`/`mas_final` en la pieza; si algo sobra, usa `quitar` o cambia `de`/`a`. Repetir es rápido (caché por tramo). A 2× la verificación es menos fiable: confirma en normal si dudas. |
 | 7a | `lentes -p P --sec <sec>` | (Si el creador sale con lentes y zoom) Quita el reflejo azul del antirreflejante, solo en la zona de los ojos. Queda guardado en `proyecto.json` y **se reaplica solo en cada `cortar`**. Lo pidió en Rocket Revolution. |
 | 7b | `niveles -p P [--aplicar]` | LUFS por sección; sugiere `gain_db` si una persona está > 1.5 dB más baja. |
-| 8 | **Tú escribes `edicion/eventos.json`** | Gancho, secciones, nombres, objetos, zooms, SFX, etiquetas, montos, emojis, calendario, rango de fechas, patrocinadores, logos/QR, b-roll y cierre (ver `edicion/eventos.ejemplo.json` y `referencia/eventos.md`). Logos: `logos -p P "Empresa"…`. QR: `qr -p P foto.HEIC --nombre x`. B-roll: `broll -p P CLIP --de s --dur 3`. |
+| 8 | **Tú escribes `edicion/eventos.json`** | Gancho, secciones, nombres, objetos, zooms, SFX, etiquetas, montos, emojis, calendario, rango de fechas, patrocinadores, logos/QR, b-roll y cierre (más las capas libres de Reel Studio si las pide: textos, formas, superpuestos, audios, ajustes de color y transiciones de corte) (ver `edicion/eventos.ejemplo.json` y `referencia/eventos.md`). Logos: `logos -p P "Empresa"…`. QR: `qr -p P foto.HEIC --nombre x`. B-roll: `broll -p P CLIP --de s --dur 3`. |
 | 8b | `enfasis -p P` | **Sugerencias** de palabras con énfasis en la voz (volumen, tono, duración). Elige las que llevan el sentido, súmale las clave del guion y ponlas en `eventos.json → enfasis` (~1 cada 3–5 s, algunas con SFX pequeño). Salen solas, 2× más grandes y con golpe. El creador lo pidió en el vlog IEEE ESCOM. |
 | 9 | `datos -p P` | Genera `src/data.json`. Valida **todas** las anclas y lista las que faltan. Lo que caería durante el gancho se mueve a cuando termina. |
 | 10 | `zooms -p P` | Propone `cx`/`cy` de los zooms sin centro (manos del sujeto; usa `"sujeto": "izquierda"\|"derecha"` en la sección) y genera `edicion/revision/zooms.png`, con un recuadro de lo que se verá. **Míralo**, corrige lo que no caiga en el objeto y repite el paso 9. También existe `cuadricula -p P t1 t2…` para centrar a mano. |
@@ -150,6 +150,7 @@ El porqué de cada regla está en `referencia/criterio_editorial.md`.
 | 12 | `render -p P --borrador` | Borrador a 540×960 (`edicion/borrador.mp4`): ~40 s sin 3D, ~2 min un video de 70 s con intro 3D. **Úsalo para TODAS las iteraciones** (§2b). Si hay `intro_espacio`, antes pre-renderiza la capa 3D una sola vez (`reel capas`). |
 | 12b | Abrir en Reel Studio | Después del **primer** borrador de un video, abre el proyecto en la app para que el creador ajuste a mano: `[ -d "/Applications/Reel Studio.app" ] && open -a "Reel Studio" "<carpeta del material>"`. Hazlo una sola vez por video (en las iteraciones la app recarga sola lo que cambies) y dile en una línea que ya está abierto ahí. Si la app no está instalada, sigue sin ella. |
 | 13 | `render -p P --nota "qué cambió" [--4k]` | Render final 1080×1920 (o 2160×3840 con `--4k`, ~4× más lento, solo si lo pide) bt709 a −12 LUFS con verificación automática. La versión anterior pasa a `P/versiones/` (se guardan 3) y el historial queda en `edicion/cambios.md`. |
+| 13b | `formato -p P 16:9 1:1 4:5 [--modo fondo\|recorte]` | (Si lo pide) Versiones horizontal, cuadrada o 4:5 a partir del render vertical: `fondo` = el reel entero sobre una copia desenfocada (no se pierde nada); `recorte` = llena el cuadro alrededor de la cara. También `render … --formatos 16:9,1:1`. Salen junto al final como `<nombre> 16x9.mp4`. |
 | 14 | `extras -p P` | `<nombre>.srt` (frases completas) y `<nombre> - portada.jpg` (gancho completo; elige otro cuadro con `--frame N`). **Escribe tú** `<nombre> - post.txt` con 2–3 opciones de caption y hashtags. **Miniatura con su estilo de Canva:** usa la skill `/crear-miniatura` (`miniatura.py desde-reel -p P`) → `<nombre> - miniatura.png`. |
 | 15 | Entrega | Envía el video (SendUserFile) y resume en 3–6 líneas con números. Con el disco justo, corre `limpiar -p P`. |
 
@@ -161,6 +162,10 @@ El porqué de cada regla está en `referencia/criterio_editorial.md`.
   - Los clips SDR se comparten entre proyectos (caché global): las partes nunca caen al HDR crudo.
 - **Intro del creador + intro 3D (Rocket Revolution):** el creador a cámara presentando el evento va **antes** de la pregunta. Ver §2a.
 - **Proyecto viejo con la plantilla anterior:** `actualizar -p P` copia los componentes nuevos y respalda lo reemplazado.
+- **Funciones automáticas** (las usa Reel Studio; úsalas si el creador las pide):
+  - `voz-limpia -p P [--fuerza baja|media|alta] [--quitar]`: quita ruido de fondo, retumbe y siseo de la voz del corte sin cambiar tiempos; queda en `proyecto.json → voz_limpia` y se reaplica en cada `cortar`.
+  - `sinfondo -p P <archivo de public/>`: deja solo a la persona (Vision). Video → `… sin fondo.webm` (VP9 con alfa, se ve igual en la vista previa y en el render); imagen → `… sin fondo.png`. Úsalo como `superpuestos`.
+  - `tts -p P "texto" [--voz Paulina] [--velocidad 185]`: voz en off con las voces de macOS → `public/audio/voz ….wav` (úsalo en `audios`). `tts -p P --voces` lista las voces en español.
 
 ### 2a. Intro del creador antes del gancho + intro espacial 3D
 Validado en Rocket Revolution (Semana Mundial del Espacio, oct. 2026). Ejemplo completo: `ejemplos/rocket/`.
@@ -209,6 +214,7 @@ Validado en AWS Student Community Day (oct. 2026). Ejemplo completo con el códi
 - `quitar`: palabras a eliminar; parte el tramo.
 - `sec`: sección. Cada persona o bloque es una sección, y de ella salen el encuadre, el contador, las transiciones y las anclas.
 - `speed: 2`: cámara rápida, con la voz en su tono.
+- `rampa`: curva de velocidad con `speed` ≠ 1: `"subir"` (acelera de 1× a `speed`), `"bajar"` (frena) o `"suave"` (acelera y frena). `edl` parte la pieza en escalones de igual duración a lo largo de toda la pieza. La pone Reel Studio (Cortes → Curva de velocidad).
 - `gain_db`: ganancia para emparejar volumen.
 - `mas_inicio`/`mas_final`: segundos extra cuando la verificación muestra una sílaba cortada.
 
@@ -262,7 +268,9 @@ El creador puede tener abierto el mismo proyecto en **Reel Studio** (`app/` del 
 - **Relee antes de escribir.** Si vas a cambiar `eventos.json`, `plan.json`, `src/estilo.json` o `edicion/notas.json`, léelo justo antes: el creador pudo haberlo cambiado en la app. Nunca lo sobrescribas con una copia vieja.
 - **Recientes:** cada comando `reel` que toca un proyecto lo anota en `~/.reels-toolkit/proyectos.json`, y la app lo muestra en Recientes sin que tengas que abrirlo. Para agregar videos antiguos: `reel proyectos --buscar <carpeta>`.
 - **Recortes desde la línea de tiempo:** cambian `plan.json` y el corte queda pendiente hasta que el creador presiona "Aplicar recortes". `plan.json` puede ir por delante de `public/cut.mp4`; compáralo con `edicion/plan_cortado.json` (el plan del último `cortar`). Una pieza con `"pegada": true` es una división sin corte audible: `edl` la une con la anterior mientras sigan contiguas y con la misma sección, velocidad y ganancia. No la quites al editar.
-- **Posición libre:** en la app el creador arrastra elementos; eso escribe `dx`, `dy`, `escala` y `rot` en `eventos.json` (ver `referencia/eventos.md`). Respétalos: no los borres al editar otras cosas.
+- **Posición libre y fotogramas clave:** en la app el creador arrastra elementos; eso escribe `dx`, `dy`, `escala`, `rot`, `opacidad` y `claves` en `eventos.json` (ver `referencia/eventos.md`). Respétalos: no los borres al editar otras cosas.
+- **Capas libres (estilo CapCut):** el creador puede agregar `textos`, `formas`, `superpuestos`, `audios`, `ajustes` y `transiciones_corte` desde la app (paneles Medios y Elementos). Son decisiones suyas: no las quites ni las muevas por las reglas automáticas; si una choca con algo tuyo (p. ej. un texto encima del gancho), pregúntale. Los archivos que importa la app quedan en `public/medios`, `public/img` y `public/audio`.
+- **Curvas de velocidad:** una pieza puede traer `rampa` (ver `plan.json`). Consérvala al editar el plan.
 - **Notas locales:** `edicion/notas.json` = lista de `{id, t, texto, autor, estado: "pendiente"|"aplicado", respuesta, version, creado}`.
   - Para listarlas: `reel notas -p P`. Da el tiempo, el cuadro y el id de cada pendiente.
   - Aplica cada una (como las de la página de revisión) y márcala: `reel notas -p P --marcar <id> --respuesta "qué hiciste"`.

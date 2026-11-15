@@ -27,6 +27,7 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
 | Pieza | Dónde | Qué hace |
 |---|---|---|
 | `reel.py` | `skill/editar-reel/scripts/` | CLI único con 26 subcomandos. Usa el Python del toolkit (`numpy`, `scipy`, `pillow`). |
+| Capas libres | `plantilla_remotion/src/components/Capas.tsx` | Estilo CapCut: textos, formas, superpuestos (PiP / pantalla completa / persona sin fondo en `.webm` con alfa), pistas de audio con fundidos y ducking, ajustes de color y transiciones en los cortes (`VideoBase` envuelve el video solo si hay ajustes o transiciones). Los fotogramas clave (`claves`) viven en `theme.ts → conClaves` y los aplica `<Pos>` a cualquier elemento movible. |
 | Swift | `skill/editar-reel/swift/` | `hdr_a_sdr` (AVFoundation, tone-mapping de Apple, orientación y recorte), `faces` y `hands` (Vision), `personmatte` (segmentación de persona), `qrscan`/`qrbox` (códigos) y `grab_frame_apple`. Se compilan en `~/.reels-toolkit/bin`. |
 | Plantilla Remotion | `skill/editar-reel/plantilla_remotion/` | Composición `Reel` 1080×1920 a 30 fps. Componentes: `Camera` (encuadre por sección, empuje lento, zooms a objetos, proxy), `Hook` (elementos con animaciones y capas detrás/delante), `Captions`, `Overlays` (contador, x2, nombre, etiquetas, imágenes/QR, transición VS, b-roll, cierre, sonido) `Extras` (montos, emojis, calendario, decoración gamer), `Patrocinadores` (logos en fila arriba/abajo) y `Fechas` (rango DEL → AL con flecha). Todo se lee de `data.json` + `estilo.json`. |
 | Estilos | `skill/editar-reel/estilos/` | Colores, fuentes, subtítulos, cámara y SFX automáticos por tipo de video, más un `eventos.json` de ejemplo. |
@@ -90,3 +91,12 @@ proyecto_remotion/src/data.json  +  src/estilo.json (preset + marca)
 - `borrador.mp4`.
 
 Esquema completo de `eventos.json` y `data.json`: `skill/editar-reel/referencia/eventos.md`.
+
+## Reel Studio estilo CapCut (noviembre 2026)
+- **Capas y fotogramas clave:** listas nuevas de `eventos.json` (`textos`, `formas`, `superpuestos`, `audios`, `ajustes`, `transiciones_corte`) → `reel datos` (`_capas_libres`) → `data.json` → `Capas.tsx`. En la app son listas más de `shared/elementos.ts` (`LISTAS_CAPAS`), así que la línea de tiempo y el inspector las manejan igual que lo demás. `aplicarLibre()` escribe en la clave del cuadro actual cuando el elemento tiene claves.
+- **Medios:** panel con lo que hay en `public/`; importar copia a `public/medios|img|audio`. Arrastrar a la línea de tiempo o a la vista previa (o `+`) agrega la capa (`features/medios/importar.ts`).
+- **Vista del plan:** `shared/cortes.ts → tramosPlan()` aproxima `reel edl` (sin energía ni quitar silencios) y `VistaPlan.tsx` reproduce el plan pendiente desde los clips originales (`reel-media://…/__fuente/`).
+- **Componentes propios:** `main/compilar.ts` (esbuild del toolkit, IIFE) + `renderer/src/deps.ts` (`window.__reelDeps`: React, Remotion, three…). Ver `referencia/problemas.md`.
+- **Exportar:** `features/exportar/Exportar.tsx` encadena `reel render [--4k] [--formatos] [--modo]` y `reel extras`; los formatos los hace `reel formato` con ffmpeg sobre el render vertical (sirve con cualquier versión de la plantilla).
+- **Atajos:** `shared/atajos.ts` (acciones + combinaciones por defecto, comparadas por tecla escrita y por tecla física) y `preferencias.json → atajos`.
+- **Funciones automáticas:** `reel sinfondo` (personmatte → VP9 con alfa), `reel tts` (`say`), `reel voz-limpia` (highpass + afftdn + deesser, también en `build_master`), curvas de velocidad (`rampa` en el plan → `rampa_velocidad()` en `edl`).

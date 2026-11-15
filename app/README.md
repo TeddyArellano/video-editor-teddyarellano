@@ -13,6 +13,8 @@ cd app
 
 Vuelve a correrlo después de un `git pull`: la plantilla de la skill va empaquetada dentro de la app.
 
+**Para compartirla:** `pnpm dmg` genera `dist/Reel Studio <versión>.dmg` (arrastrar a Aplicaciones). Quien la instale necesita igual el toolkit de la skill (la app ofrece **Instalar / reparar** al abrir). No va firmada: la primera vez, clic derecho → Abrir.
+
 **Requisitos:**
 - el toolkit de la skill (`install.sh` en la raíz del repo);
 - Node y pnpm.
@@ -31,28 +33,26 @@ No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada
 
 | Panel | Para qué |
 |---|---|
-| **Vista previa** | La composición `Reel` de la plantilla (la misma del render) en `@remotion/player`. Clic en un texto = seleccionarlo; arrastrar = moverlo; esquina = escalar; perilla = rotar. Imanes al centro (x 540) y a la zona segura (Alt los desactiva). |
-| **Línea de tiempo** | Secciones, corte editable, subtítulos, gancho, eventos, zooms, SFX y notas. **Posicionarse:** clic en cualquier pista o arrastrar en la regla. **Corte:** arrastrar selecciona palabras; los bordes recortan por palabra; cuchilla o S divide. Lo quitado se ve tachado y la vista previa lo salta; **Aplicar recortes** (Enter) regenera el video. **Elementos:** arrastrar mueve y los bordes estiran, con imán a palabras, cabezal y bordes (Alt = libre). **Zoom:** pellizco, ⌘ o Alt + rueda, botones o deslizador. La altura se ajusta arrastrando el borde superior. |
-| **Elementos** | Inspector del elemento seleccionado (texto, colores, ancla, duración, posición…) y paleta para agregar etiquetas, nombres, imágenes, montos, emojis, calendario, zooms y SFX en el cuadro actual. |
+| **Vista previa** | La composición `Reel` de la plantilla (la misma del render) en `@remotion/player`, con el color corregido para que coincida con el render. Clic en un texto = seleccionarlo; arrastrar = moverlo; esquina = escalar; perilla = rotar. Imanes al centro (x 540) y a la zona segura (Alt los desactiva). **Proyectos con componentes propios:** se compilan al vuelo y la vista previa usa los del proyecto, como el render (insignia "componentes del proyecto"). Soltar un archivo aquí lo agrega en el cabezal. **Ver recortes sin aplicar:** reproduce el plan nuevo (tramos movidos o extendidos) desde los clips originales, sin esperar a re-cortar. |
+| **Línea de tiempo** | Multipista: secciones, corte editable, subtítulos, gancho, capas (superpuestos, textos, formas, ajustes de color, transiciones, audio) y los gráficos de la skill, cada uno en carriles si se enciman. **Posicionarse:** clic en cualquier pista o arrastrar en la regla. **Corte:** arrastrar selecciona palabras; los bordes recortan por palabra; cuchilla o S divide; **el asa de arriba de cada tramo lo arrastra a otra posición** (reordenar). Lo quitado se ve tachado y la vista previa lo salta; **Aplicar recortes** (Enter) regenera el video. **Elementos:** arrastrar mueve y los bordes estiran, con imán a palabras, cabezal y bordes (Alt = libre). **Soltar archivos** (de Medios o de Finder) los agrega en ese punto. **Zoom:** pellizco, ⌘ o Alt + rueda, botones o deslizador. La altura se ajusta arrastrando el borde superior. |
+| **Medios** | Biblioteca del proyecto (videos, imágenes y audio de `public/`) con miniaturas y escucha. **Importar…** o soltar desde Finder. `+` agrega en el cabezal (video/imagen = superpuesto, audio = pista); `▾` = pantalla completa, b-roll, imagen animada o **Quitar fondo** (deja a la persona, `.webm` con transparencia). **Texto a voz** con las voces de macOS → pista de audio. |
+| **Elementos** | Inspector del elemento seleccionado y paleta para agregar en el cuadro actual. **Capas:** texto libre (fuente, tamaño, color, píldora, contorno, palabra resaltada), forma (flecha, círculo, subrayado…), superpuesto (PiP, círculo, bordes, recorte del clip, volumen, velocidad), audio (volumen, fundidos, ducking), ajuste de color (filtros + brillo, contraste, saturación, temperatura, tono, viñeta, desenfoque) y transición de corte (fundido, negro, blanco, zoom, barrido, destello, glitch, giro, deslizar, desenfoque). Entrada, salida y animación en bucle. **Fotogramas clave:** "◆ Clave aquí" guarda posición, escala, giro y opacidad; con claves, mover el elemento edita la clave del cuadro actual. También los gráficos de la skill (etiquetas, nombres, montos, emojis, calendario, patrocinadores, fechas, zooms, SFX). |
 | **Subtítulos** | Transcripción sincronizada. Corregir palabra (`fix`), resaltar, énfasis y "cortar bloque aquí" (`cortes`). |
 | **Estilo** | `src/estilo.json` por secciones, cambio de preset, marca y "guardar como preset". |
-| **Cortes** | Tabla de LUFS por sección ("Medir niveles" / "Igualar"). El plan como piezas de transcripción. Tachar palabras, recortar o extender por palabra, dividir (Alt+clic), reordenar, velocidad, ganancia y márgenes. Escuchar el clip original. **Re-cortar** corre `edl → cortar --verificar → datos`. |
-| **Pipeline** | Todos los pasos de `reel.py` con botones y cola de trabajos con progreso: inventario (con tabla y hojas de contacto); SDR, micrófono externo y transcribir; zooms, énfasis, recorte e intro 3D; borrador, render final (con nota / 4K) y SRT + portada; logos y QR; b-roll marcando **entrada y salida en un visor del clip original**; dividir en partes; limpiar caché y probar el toolkit. |
+| **Cortes** | Tabla de LUFS por sección ("Medir niveles" / "Igualar"). El plan como piezas de transcripción. Tachar palabras, recortar o extender por palabra, dividir (Alt+clic), reordenar, velocidad con **curva** (acelerar, frenar, acelerar y frenar), ganancia y márgenes. Escuchar el clip original. **Re-cortar** corre `edl → cortar --verificar → datos`. |
+| **Pipeline** | Todos los pasos de `reel.py` con botones y cola de trabajos con progreso: inventario (con tabla y hojas de contacto); SDR, micrófono externo y transcribir; zooms, énfasis, recorte e intro 3D; borrador, render final (con nota / 4K) y SRT + portada; logos y QR; b-roll marcando **entrada y salida en un visor del clip original**; dividir en partes; **limpiar voz** (ruido, retumbe, siseo); limpiar caché y probar el toolkit. |
+| **Exportar** (⌘E) | Borrador, final o 4K; formatos extra 16:9, 1:1 y 4:5 (fondo desenfocado o recorte a la cara); SRT y portada; carpeta de destino; **Compartir** (menú de macOS: AirDrop, Mensajes, Mail…) y Mostrar en Finder. |
 | **Notas** | Notas de revisión en el cuadro actual (`edicion/notas.json`). Claude las lista y las marca con `reel notas`. **Página de revisión:** "Preparar página" corre `reel revision --renderizar`; "Claude: publicarla" le pide a Claude que la suba a claude.ai (eso sale de tu Mac, por eso va en un botón aparte). |
 | **Claude** | Pide cambios de criterio a Claude Code (tu sesión, con la skill). Con **revisar antes de aplicar** (por defecto) ves el diff campo por campo de lo que propone y decides **Aplicar** o **Descartar**. Sin revisar, se aplica directo y puedes **Revertir**. |
 | **⚙ Preferencias** | Ruta de la skill y del Python del toolkit, tema claro u oscuro, calidad de la vista previa al abrir, lista de atajos, estado del toolkit (**Instalar / reparar**) y **Buscar actualizaciones**. Esta última hace `git fetch` del repo; **Actualizar ahora** hace `git pull --ff-only` y reinstala la app, que luego se reinicia. |
 
-**Atajos:**
-- Espacio o K: play/pausa.
-- ← / →: un cuadro (con Shift: 1 s).
-- J / L: ±1 s.
-- Home / End: inicio y final.
-- ⌘Z / ⇧⌘Z: deshacer y rehacer.
-- ⌘S: guardar.
+**Atajos:** se cambian en ⚙ Preferencias (clic en la combinación y presiona la nueva; ↺ vuelve al valor por defecto; las repetidas se marcan en ámbar). Por defecto:
+- Espacio o K: play/pausa. ← / →: un cuadro (con Shift: 1 s). J / L: ±1 s. Home / End: inicio y final.
+- ⌘Z / ⇧⌘Z: deshacer y rehacer. ⌘S: guardar. ⌘E: exportar.
 - S: dividir. B / V: cuchilla / selección. Q / W: recortar inicio / final hasta el cabezal.
 - I / O: marcar rango. X / Supr: quitar lo seleccionado. R: recuperar lo tachado. Enter: aplicar recortes.
-- ↑ / ↓: corte anterior / siguiente. , / .: mover el elemento un cuadro. ⌘D: duplicar. + / − / 0: zoom.
-- Esc: deseleccionar.
+- ↑ / ↓: corte anterior / siguiente. , / .: mover el elemento un cuadro (⇧: 5). ⌘D: duplicar. + / − / 0: zoom.
+- T: texto en el cabezal. ⌥K: fotograma clave. N: imán. Esc: deseleccionar.
 
 ## Cómo funciona
 
@@ -87,6 +87,10 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 - `public/` clonado con `cp -cR` (clon APFS: no ocupa espacio y escribir ahí no toca el original).
 
 **Qué cubren:**
+- capas (`capas.spec.ts`): medios con `+`, texto libre con fotogramas clave movido en el lienzo, transición centrada en un corte y ajuste de color;
+- edición tipo CapCut (`capcut.spec.ts`, `REEL_FIXTURE2`): reordenar un tramo por su asa, vista del plan reproduciendo el clip original, atajo propio y Exportar borrador + 1:1;
+- funciones automáticas (`automaticas.spec.ts`, `REEL_FIXTURE2`): texto a voz, quitar fondo y limpiar voz;
+- componentes propios (`propios.spec.ts`, fixture SIN `reel actualizar`): vista previa compilada = `remotion still` del proyecto, color incluido. Córrela antes que `fidelidad`, que actualiza el fixture;
 - visor y medios;
 - mover en el lienzo hasta que `data.json` queda regenerado por `reel datos`;
 - inspector y deshacer;
@@ -105,12 +109,12 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 
 ## Límites conocidos
 
-- **Proyectos con componentes propios** en `src/components` muestran "vista aproximada": la vista previa usa la plantilla de la skill y el render usa los del proyecto. `reel actualizar` (en Pipeline) los iguala si no son cambios intencionales. Por eso los gráficos nuevos van en la plantilla con datos de `eventos.json` (así pasó con `patrocinadores` y `fechas` de Zumpango).
-- **Video de la vista previa:**
-  - El `<video>` de Chromium se ve unos 10 niveles (de 255) más claro que el render.
-  - Al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto.
+- **Proyectos con componentes propios:** la vista previa los compila con el esbuild del toolkit. Si el código del proyecto usa algo que la app no tiene, la insignia queda en "vista aproximada" (la descripción trae el error) y se usa la plantilla. Sus elementos solo se pueden seleccionar en el lienzo si están envueltos en `<Pos>`. Las capas nuevas (textos, superpuestos…) solo salen en proyectos con la plantilla actual (`reel actualizar`).
+- **Video de la vista previa:** al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto. El color se corrige con una gamma (queda a 0–3 niveles del render).
+- **Vista del plan:** es una aproximación de `reel edl` (no afina con la energía de la voz ni quita silencios) y no lleva gráficos ni cámara virtual; el resultado exacto se ve al aplicar.
+- **Atajos con el teclado:** los gestos del ratón (Alt al arrastrar, ⇧ al rotar…) no se pueden cambiar.
+- **Publicar directo en TikTok o Instagram:** no está; sus APIs piden una app registrada con la cuenta del creador. "Compartir" usa el menú de macOS.
 - **Fuentes:** las 15 van en `plantilla_remotion/public/fonts` (OFL), así que no hace falta internet.
-- **Atajos:** se consultan en Preferencias, pero no se pueden cambiar.
 - **Publicar la página de revisión:** el `claude -p` que usa la app no tiene la herramienta Artifact (verificado: no aparece en las herramientas al iniciar). Por eso **"Publicar con Claude Code"** abre Terminal con una sesión interactiva en la carpeta del proyecto, con el pedido ya escrito y permiso solo para Artifact, leer y correr `reel.py`. Si es la primera vez en esa carpeta, Claude Code pregunta si confías en ella: esa respuesta es tuya. Verificado de punta a punta en noviembre de 2026: tras aceptar la confianza, la sesión publicó la página en unos 70 s, subió el borrador como asset y dejó `revision_url` en `proyecto.json`. También está "Copiar pedido". Se verificó el flujo completo de SKILL.md §4 sobre el proyecto sintético de la autoprueba:
   - publicar la página;
   - subir el borrador como asset;

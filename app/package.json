@@ -14,7 +14,8 @@
     "test": "vitest run",
     "e2e": "electron-vite build && playwright test -c e2e",
     "dist": "electron-vite build && electron-builder --mac dir",
-    "instalar": "zsh ./instalar.sh"
+    "instalar": "zsh ./instalar.sh",
+    "dmg": "electron-vite build && electron-builder --mac dmg"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",
@@ -73,6 +74,26 @@
             ]
           }
         ]
+      }
+    },
+    "dmg": {
+      "title": "Reel Studio ${version}",
+      "artifactName": "Reel Studio ${version}.dmg",
+      "contents": [
+        {
+          "x": 150,
+          "y": 190
+        },
+        {
+          "x": 410,
+          "y": 190,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 560,
+        "height": 380
       }
     }
   }

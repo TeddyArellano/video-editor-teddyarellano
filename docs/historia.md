@@ -128,3 +128,11 @@ El creador dijo: "siento que no puedo mover tanto la línea del tiempo o hacer c
 - **Por qué se sentía pesada:** cada cuadro redibujaba el editor completo. Ahora el cabezal se mueve por DOM directo y las pistas van memoizadas.
 - **Recortes:** la pista Corte se volvió editable (dividir, quitar, recuperar, bordes por palabra). Lo quitado se ve tachado y la vista previa lo salta al instante; "Aplicar recortes" regenera el video.
 - **Recientes:** `reel.py` registra cada proyecto que toca en `~/.reels-toolkit/proyectos.json` y la biblioteca lo vigila.
+
+## 10. Reel Studio como un CapCut propio (noviembre 2026)
+El creador pidió: "básicamente debería ser como un CapCut, mi propio editor de video basado en la skill de editar-reel", y que se terminaran todos los puntos que faltaban.
+- **Capas libres** sobre el mismo modelo de siempre (`eventos.json` → `reel datos` → `data.json` → plantilla): textos, formas, superpuestos, pistas de audio con ducking, ajustes de color y transiciones en los cortes. Así lo que hace la app también lo puede escribir Claude, y el render sale de la misma plantilla.
+- **Fotogramas clave** en `<Pos>`: cualquier elemento movible se anima sin tocar cada componente.
+- **Medios**, **reordenar arrastrando**, **ver recortes sin aplicar** (desde los clips originales), **curvas de velocidad**, **Exportar** con formatos (16:9/1:1/4:5 con ffmpeg sobre el render vertical, para que sirva con cualquier versión de la plantilla), **atajos configurables** y **funciones automáticas** (quitar fondo con Vision → VP9 con alfa, texto a voz con `say`, limpiar voz con ffmpeg).
+- **Deudas cerradas:** la vista previa compila los componentes propios del proyecto (ya no "aproximada") y su color coincide con el render (gamma medida contra `remotion still`).
+- **No se hizo:** publicar directo en TikTok/Instagram (pide una app registrada con la cuenta del creador) ni firmar la app (pide cuenta de Apple Developer).
