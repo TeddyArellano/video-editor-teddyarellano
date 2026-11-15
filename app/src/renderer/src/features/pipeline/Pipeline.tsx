@@ -5,7 +5,7 @@ import type {Trabajo} from '@shared/tipos';
 import {useEditor} from '@/store';
 import {useReloj} from '@/reloj';
 import {Boton, Etiqueta, inputCls, Seccion} from '@/ui';
-import {BRollMarcar, Dividir, Hojas} from './Utilidades';
+import {BRollMarcar, Dividir, Hojas, LimpiarVoz} from './Utilidades';
 
 const correr = (titulo: string, comando: string[]) => {
   const info = useEditor.getState().info!;
@@ -198,6 +198,9 @@ export const Pipeline: React.FC = () => {
           </Boton>
           <Boton onClick={() => window.reel.mostrarEnFinder(info.ruta)}>Abrir en Finder</Boton>
         </div>
+      </Seccion>
+      <Seccion titulo="Audio: limpiar voz">
+        <LimpiarVoz />
       </Seccion>
       <Seccion titulo="Dividir en partes">
         <Dividir />

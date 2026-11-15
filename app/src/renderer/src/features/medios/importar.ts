@@ -79,3 +79,33 @@ export const soltarEn = async (e: DragEvent | React.DragEvent, f: number) => {
   }
 };
 export const aceptaSoltar = (e: React.DragEvent) => e.dataTransfer.types.includes(MIME_MEDIO) || e.dataTransfer.types.includes('Files');
+
+// corre un comando de reel.py y devuelve el JSON que imprime al final (p. ej. {"archivo": "…"}); null si falla
+export const correrYLeer = async <T = Record<string, unknown>,>(titulo: string, comando: string[]): Promise<T | null> => {
+  const info = useEditor.getState().info;
+  if (!info) return null;
+  const ok = await window.reel.cadena(info.id, [{titulo, comando}]);
+  if (!ok) return null;
+  const t = (await window.reel.trabajos()).filter((x) => x.proyecto === info.id && x.titulo === titulo && x.estado === 'ok').pop();
+  for (const l of [...(t?.lineas ?? [])].reverse()) {
+    const m = l.msg.trim();
+    if (m.startsWith('{')) {
+      try {
+        return JSON.parse(m) as T;
+      } catch {
+        /* otra línea */
+      }
+    }
+  }
+  return null;
+};
+
+// quita el fondo (deja a la persona) de un video o imagen de public/ y lo agrega como superpuesto en el cuadro f
+export const quitarFondo = async (rel: string, f: number) => {
+  const s = useEditor.getState();
+  s.avisar('info', 'Quitando el fondo… (unos segundos por cada segundo de video)');
+  const r = await correrYLeer<{archivo: string}>('Quitar fondo', ['sinfondo', rel]);
+  if (!r?.archivo) return s.avisar('error', 'No se pudo quitar el fondo (revisa la cola de trabajos).');
+  await agregarMedio(r.archivo, f, 'superpuestos');
+  useEditor.getState().avisar('ok', `Listo: ${r.archivo}`);
+};

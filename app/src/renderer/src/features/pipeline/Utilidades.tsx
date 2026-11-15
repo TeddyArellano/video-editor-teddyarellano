@@ -127,3 +127,28 @@ export const Dividir: React.FC = () => {
     </div>
   );
 };
+
+// limpiar la voz del corte (ruido, retumbe, siseo): reel voz-limpia; se reaplica en cada cortar
+export const LimpiarVoz: React.FC = () => {
+  const proyecto = useEditor((s) => s.proyecto);
+  const [fuerza, setFuerza] = useState('media');
+  const actual = (proyecto as {voz_limpia?: string} | null)?.voz_limpia;
+  return (
+    <div className="flex flex-col gap-1.5" data-testid="limpiar-voz">
+      <div className="text-[11px] text-zinc-500">
+        Quita ruido de fondo constante, retumbe y siseo de la voz del corte, sin cambiar los tiempos. {actual ? <b className="text-emerald-300">Activa ({actual}).</b> : 'Ahora: audio original.'}
+      </div>
+      <div className="flex gap-1">
+        <select className={inputCls} value={fuerza} onChange={(e) => setFuerza(e.target.value)}>
+          <option value="baja">Suave</option>
+          <option value="media">Media</option>
+          <option value="alta">Fuerte</option>
+        </select>
+        <Boton v="primario" onClick={() => correr('Limpiar voz', ['voz-limpia', '--fuerza', fuerza])} data-testid="limpiar-voz-ya">
+          Limpiar voz
+        </Boton>
+        {actual && <Boton onClick={() => correr('Voz original', ['voz-limpia', '--quitar'])}>Original</Boton>}
+      </div>
+    </div>
+  );
+};

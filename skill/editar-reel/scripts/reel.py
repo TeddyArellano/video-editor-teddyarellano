@@ -801,9 +801,123 @@ def build_master(pr, E, out):
     (lst / 'a.txt').write_text(''.join(f"file '{piece_files(pr, p)[1]}'\n" for p in E))
     ff('-f', 'concat', '-safe', '0', '-i', lst / 'v.txt', '-c', 'copy', lst / 'video.mp4')
     ff('-f', 'concat', '-safe', '0', '-i', lst / 'a.txt', '-c', 'copy', lst / 'audio.wav')
+    if pr.cfg.get('voz_limpia'):  # reel voz-limpia: se reaplica en cada cortar
+        ff('-i', lst / 'audio.wav', '-af', filtro_voz(pr.cfg['voz_limpia']), '-c:a', 'pcm_s16le', lst / 'audio_limpio.wav')
+        shutil.move(str(lst / 'audio_limpio.wav'), lst / 'audio.wav')
     ff('-i', lst / 'video.mp4', '-i', lst / 'audio.wav', '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '320k',
        '-movflags', '+faststart', out)
     return t
+
+
+# ---------------------------------------------------------------- funciones automáticas (Reel Studio)
+NIVELES_VOZ = {'baja': 8, 'media': 14, 'alta': 22}
+
+
+def filtro_voz(fuerza):
+    """Limpieza de voz: quita retumbe (pasa-altos), ruido de fondo constante (afftdn con seguimiento) y siseo (deesser)."""
+    nr = NIVELES_VOZ.get(fuerza, 14) if isinstance(fuerza, str) else 14
+    return f"highpass=f=80,afftdn=nr={nr}:nf=-40:tn=1,deesser=i=0.25,alimiter=limit=0.95:attack=1:release=60:level=disabled"
+
+
+def cmd_voz_limpia(a):
+    """Limpia la voz del corte (ruido, retumbe, siseo) sin cambiar tiempos: remezcla el audio de public/cut.mp4 y deja
+    proyecto.json → voz_limpia para que cada `cortar` lo vuelva a aplicar. --quitar regresa al audio original."""
+    need_toolkit()
+    pr = Proyecto(a.proyecto)
+    cut = pr.P / 'public' / 'cut.mp4'
+    orig = pr.cache / 'voz_original.wav'
+    huella = pr.cache / 'voz_original.huella'
+    st = cut.stat()
+    marca = f"{st.st_size}:{st.st_mtime_ns}"
+    ya_limpio = huella.exists() and huella.read_text().split('|')[0] == marca
+    if not ya_limpio:  # audio tal como salió de cortar
+        ff('-i', cut, '-vn', '-c:a', 'pcm_s16le', '-ar', SR, orig)
+    tmp = pr.cache / 'cut_voz_tmp.mp4'
+    if a.quitar:
+        pr.cfg.pop('voz_limpia', None)
+        af = None
+    else:
+        pr.cfg['voz_limpia'] = a.fuerza
+        af = filtro_voz(a.fuerza)
+    ff('-i', cut, '-i', orig, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', *(['-af', af] if af else []), '-c:a', 'aac', '-b:a', '320k',
+       '-movflags', '+faststart', tmp)
+    shutil.move(str(tmp), cut)
+    st = cut.stat()
+    huella.write_text(f"{st.st_size}:{st.st_mtime_ns}|")
+    jsave(pr.ed / 'proyecto.json', pr.cfg)
+    if (pr.P / 'public' / 'cut_proxy.mp4').exists():
+        hacer_proxy(pr, forzar=True)
+    print("✓ voz original restaurada" if a.quitar else f"✓ voz limpia ({a.fuerza}) en public/cut.mp4 · se reaplica en cada cortar")
+
+
+def cmd_sinfondo(a):
+    """Quita el fondo (deja solo a la persona) de un video o una imagen de public/ con Vision de Apple.
+    Video → .webm con transparencia (VP9 + alfa, se ve en la vista previa y en el render); imagen → .png."""
+    need_toolkit()
+    pr = Proyecto(a.proyecto)
+    src = pr.P / 'public' / a.archivo
+    if not src.exists():
+        sys.exit(f"✗ no existe public/{a.archivo}")
+    video = src.suffix.lower() in ('.mp4', '.mov', '.m4v', '.webm')
+    rel = Path(a.archivo)
+    out_rel = rel.with_name(rel.stem + ' sin fondo' + ('.webm' if video else '.png'))
+    out = pr.P / 'public' / out_rel
+    tmp = pr.cache / 'sinfondo'
+    if tmp.exists():
+        shutil.rmtree(tmp)
+    (tmp / 'in').mkdir(parents=True)
+    v = next(x for x in probe(src)['streams'] if x['codec_type'] == 'video')
+    w, h = int(v['width']), int(v['height'])
+    k = min(1.0, a.ancho / w)
+    w2, h2 = round(w * k / 2) * 2, round(h * k / 2) * 2
+    if video:
+        ff('-i', src, '-vf', f'fps={FPS},scale={w2}:{h2}', '-start_number', '0', tmp / 'in' / '%05d.png')
+    else:
+        ff('-i', src, '-vf', f'scale={w2}:{h2}', tmp / 'in' / '00000.png')
+    n = len(list((tmp / 'in').glob('*.png')))
+    print(f"… recortando {n} cuadro{'s' if n != 1 else ''} ({w2}x{h2})")
+    run([BIN / 'personmatte', tmp / 'in', tmp / 'out', w2, h2], capture_output=True)
+    if video:
+        tiene_audio = any(x['codec_type'] == 'audio' for x in probe(src)['streams'])
+        ff('-framerate', FPS, '-start_number', '0', '-i', tmp / 'out' / '%05d.png', *(['-i', src, '-map', '0:v', '-map', '1:a', '-c:a', 'libopus'] if tiene_audio else []),
+           '-c:v', 'libvpx-vp9', '-pix_fmt', 'yuva420p', '-b:v', '0', '-crf', '30', '-row-mt', '1', '-auto-alt-ref', '0', '-shortest', out)
+    else:
+        shutil.copy(next((tmp / 'out').glob('*.png')), out)
+    shutil.rmtree(tmp)
+    print(f"✓ public/{out_rel}")
+    print(json.dumps({"archivo": str(out_rel)}))
+
+
+def cmd_tts(a):
+    """Texto a voz con las voces de macOS (español de México por defecto) → public/audio/<nombre>.wav."""
+    pr = Proyecto(a.proyecto)
+    voces = []  # (nombre, idioma) de `say -v ?`: "Paulina             es_MX    # Hola…"
+    for l in subprocess.run(['say', '-v', '?'], capture_output=True, text=True).stdout.splitlines():
+        m = re.match(r'^(.+?)\s+(es_[A-Z0-9]+)\s', l)
+        if m:
+            voces.append((m.group(1).strip(), m.group(2)))
+    voces.sort(key=lambda v: (v[1] != 'es_MX', v[0] != 'Paulina', v[0]))
+    if a.voces:
+        print(json.dumps({"voces": [{"nombre": n, "idioma": i} for n, i in voces]}, ensure_ascii=False))
+        return
+    voz = a.voz or (voces[0][0] if voces else 'Paulina')
+    d = pr.P / 'public' / 'audio'
+    d.mkdir(parents=True, exist_ok=True)
+    import unicodedata
+    plano = unicodedata.normalize('NFD', a.texto.lower()).encode('ascii', 'ignore').decode()
+    base = a.nombre or ('voz ' + ' '.join(re.findall(r'[a-z0-9]+', plano)[:5])).strip()
+    out = d / f"{base}.wav"
+    k = 2
+    while out.exists():
+        out = d / f"{base} {k}.wav"; k += 1
+    aiff = pr.cache / 'tts.aiff'
+    pr.cache.mkdir(parents=True, exist_ok=True)
+    run(['say', '-v', voz, '-r', str(a.velocidad), '-o', aiff, a.texto])
+    ff('-i', aiff, '-ac', '2', '-ar', SR, '-af', 'loudnorm=I=-16:TP=-1.5', out)
+    aiff.unlink()
+    rel = out.relative_to(pr.P / 'public')
+    print(f"✓ public/{rel}  (voz {voz})")
+    print(json.dumps({"archivo": str(rel)}, ensure_ascii=False))
 
 
 def silences(path, db=-40, dmin=0.35, start=0.0):
@@ -2393,6 +2507,16 @@ def main():
     s.add_argument('--formatos', default='', help='además, versiones en otros formatos: 16:9,1:1,4:5')
     s.add_argument('--modo', choices=['fondo', 'recorte'], default='fondo', help='cómo llenar los formatos: fondo desenfocado o recorte')
     s.set_defaults(fn=cmd_render)
+    s = sp.add_parser('voz-limpia', help='limpia ruido, retumbe y siseo de la voz del corte (se reaplica en cada cortar)')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('--fuerza', choices=list(NIVELES_VOZ), default='media')
+    s.add_argument('--quitar', action='store_true'); s.set_defaults(fn=cmd_voz_limpia)
+    s = sp.add_parser('sinfondo', help='quita el fondo de un video o imagen de public/ (deja a la persona, con transparencia)')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('archivo'); s.add_argument('--ancho', type=int, default=1080)
+    s.set_defaults(fn=cmd_sinfondo)
+    s = sp.add_parser('tts', help='texto a voz (voces de macOS) → public/audio/*.wav')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('texto', nargs='?', default='')
+    s.add_argument('--voz'); s.add_argument('--velocidad', type=int, default=185); s.add_argument('--nombre')
+    s.add_argument('--voces', action='store_true', help='lista las voces en español'); s.set_defaults(fn=cmd_tts)
     s = sp.add_parser('formato', help='versión 16:9 / 1:1 / 4:5 del render (fondo desenfocado o recorte a la cara)')
     s.add_argument('-p', '--proyecto', required=True); s.add_argument('formatos', nargs='+', choices=list(FORMATOS))
     s.add_argument('--modo', choices=['fondo', 'recorte'], default='fondo'); s.add_argument('--entrada'); s.add_argument('--salida')

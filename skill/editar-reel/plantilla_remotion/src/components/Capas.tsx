@@ -193,6 +193,8 @@ export const Superpuestos: React.FC = () => {
         const completo = !!x.completo;
         const w = completo ? W : x.ancho ?? 560;
         const circulo = x.recorte === 'circulo';
+        // .webm con alfa (reel sinfondo) o PNG recortado: sin fondo ni tarjeta, la persona flota sobre el video
+        const transparente = /\.webm$/i.test(x.src) || / sin fondo\.png$/i.test(x.src);
         const h = completo ? H : circulo ? w : x.alto;
         const estilo: React.CSSProperties = {
           width: w,
@@ -201,13 +203,14 @@ export const Superpuestos: React.FC = () => {
           objectFit: x.ajuste === 'contener' ? 'contain' : 'cover',
           borderRadius: circulo ? '50%' : completo ? 0 : x.radio ?? 28,
           border: x.borde ? `${x.borde}px solid ${x.borde_color ?? '#fff'}` : undefined,
-          boxShadow: x.sombra === false || completo ? undefined : '0 18px 50px rgba(0,0,0,0.55)',
+          boxShadow: x.sombra === false || completo || transparente ? undefined : '0 18px 50px rgba(0,0,0,0.55)',
           boxSizing: 'border-box',
-          background: '#000',
+          background: transparente ? undefined : '#000',
+          ...(transparente && x.sombra !== false ? {filter: 'drop-shadow(0 14px 24px rgba(0,0,0,0.5))'} : {}),
         };
         const medio = esVideo(x.src) ? (
           <Sequence from={x.a} durationInFrames={x.b - x.a} layout="none">
-            <OffthreadVideo src={asset(x.src)} startFrom={Math.round((x.desde ?? 0) * FPS)} volume={x.vol ?? 0} muted={!x.vol} playbackRate={x.velocidad ?? 1} style={estilo} />
+            <OffthreadVideo src={asset(x.src)} transparent={transparente} startFrom={Math.round((x.desde ?? 0) * FPS)} volume={x.vol ?? 0} muted={!x.vol} playbackRate={x.velocidad ?? 1} style={estilo} />
           </Sequence>
         ) : (
           <Img src={asset(x.src)} style={estilo} />
