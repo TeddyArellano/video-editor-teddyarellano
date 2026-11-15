@@ -5,7 +5,7 @@ import {create} from 'zustand';
 import {temporal} from 'zundo';
 import {useMemo} from 'react';
 import type {Archivo, ProyectoInfo, Snapshot, Trabajo} from '@shared/tipos';
-import type {Obj, Sel} from '@shared/elementos';
+import {conEv, reubicar, type Obj, type Sel} from '@shared/elementos';
 import {cuadroTrasCorte, modeloCorte, reanclar, type ModeloCorte, type Palabras, type Plan, type TramoEdl} from '@shared/cortes';
 import {ir, useReloj} from './reloj';
 import {mapaAtajos, type Atajos} from '@shared/atajos';
@@ -115,7 +115,7 @@ export const useEditor = create<Estado>()(
         set({...(cambios as Partial<Estado>), sucios, verEdicion: get().verEdicion + (afecta ? 1 : 0)});
         programarGuardado(afecta);
       },
-      seleccionar: (sel) => set({sel}),
+      seleccionar: (sel) => set({sel: conEv(get().data, sel)}),
       recargar: async (doc) => {
         const info = get().info;
         if (!info || get().sucios.includes(doc)) return; // cambios propios sin guardar: no se pisan
@@ -138,6 +138,14 @@ export const useEditor = create<Estado>()(
     },
   ),
 );
+// para diagnosticar desde las pruebas e2e (solo lectura en la práctica)
+// data.json nuevo (reel datos, recarga): la selección sigue al mismo elemento aunque cambie su índice
+useEditor.subscribe((s, prev) => {
+  if (s.data === prev.data || !s.sel) return;
+  const r = reubicar(s.data, s.sel);
+  if (r !== s.sel) useEditor.setState({sel: r});
+});
+(window as unknown as {__reelEditor?: typeof useEditor}).__reelEditor = useEditor;
 
 // cambios que vienen de fuera (reel datos, Claude): no entran al historial de deshacer
 export const conPausa = (fn: () => void) => {

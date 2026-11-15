@@ -39,7 +39,13 @@ test('reordenar, vista del plan, atajo propio y exportar', async () => {
   await page.getByTestId('vista-plan').locator('video').first().evaluate((v: HTMLVideoElement) => v.play());
   await expect.poll(() => page.getByTestId('vista-plan').locator('video').first().evaluate((v: HTMLVideoElement) => v.readyState >= 2 && !v.error), {timeout: 15_000}).toBe(true);
   await page.waitForTimeout(800);
-  await expect(page.getByTestId('subtitulo-plan')).toBeVisible(); // subtítulos sincronizados por palabra
+  // encima va la plantilla real (sin cámara) con los cuadros traducidos al plan: subtítulos y gráficos
+  await expect(page.getByTestId('graficos-plan')).toBeAttached();
+  // a media reproducción (clic en la barra de progreso del reproductor del plan) ya hay subtítulos de la plantilla
+  const vp = (await page.getByTestId('vista-plan').boundingBox())!;
+  await page.mouse.move(vp.x + vp.width / 2, vp.y + vp.height / 2);
+  await page.mouse.click(vp.x + vp.width * 0.35, vp.y + vp.height - 22);
+  await expect.poll(() => page.getByTestId('graficos-plan').evaluate((e) => (e.textContent ?? '').trim().length), {timeout: 10_000}).toBeGreaterThan(0);
   await page.screenshot({path: 'test-results/vista-plan.png'});
   await page.getByTestId('ver-plan').click();
 

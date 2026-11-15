@@ -36,7 +36,10 @@ if [ ! -d "$TK/remotion/node_modules/remotion" ] || [ "$SKILL/plantilla_remotion
 fi
 
 # 6) SFX sintetizados de la plantilla
-"$TK/venv/bin/python" "$SKILL/scripts/synth_sfx.py" "$SKILL/plantilla_remotion/public/sfx" >/dev/null
+# (la copia de la skill dentro de Reel Studio.app ya los trae: no se escribe dentro de la app firmada)
+if [[ "$SKILL" != *.app/Contents/* ]]; then
+  "$TK/venv/bin/python" "$SKILL/scripts/synth_sfx.py" "$SKILL/plantilla_remotion/public/sfx" >/dev/null
+fi
 
 echo "== listo"
 ls "$TK/bin"

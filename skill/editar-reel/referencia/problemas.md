@@ -185,3 +185,8 @@ La app compila `src/Reel.tsx` del proyecto con el esbuild del toolkit (`app/src/
 - **Síntoma:** la segunda vez que se divide un proyecto, `shutil.Error … [Errno 17] File exists: …/node_modules`.
 - **Causa:** `copytree(symlinks=True, dirs_exist_ok=True)` no puede reescribir el enlace `node_modules` que ya existe en la parte.
 - **Arreglo (ya en `reel.py`):** `node_modules` se excluye de la copia y se vuelve a enlazar al toolkit.
+
+## Reel Studio: al agregar una capa se pierde la selección (el inspector queda vacío)
+- **Síntoma:** después de agregar un texto (u otra capa) y escribir, el inspector vuelve a la paleta "Agregar en…".
+- **Causa:** la selección era solo el índice en `data.json`. Si `data.json` estaba atrasado respecto a `eventos.json` (Claude o un cambio externo quitaron elementos y `reel datos` aún no corría), el elemento nuevo quedaba en otro índice al regenerarse.
+- **Arreglo (ya en la app):** la selección guarda también su índice de eventos (`ev`) y se reubica cada vez que cambia `data.json` (`reubicar` en `shared/elementos.ts`).

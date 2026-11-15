@@ -13,7 +13,13 @@ test('vista previa = render (stills de Remotion)', async () => {
   execFileSync(PY, [REEL, 'actualizar', '-p', FIXTURE]); // el fixture usa la plantilla actual de la skill
   const d = leer('src/data.json');
   const mid = (x: {a: number; b: number}) => Math.floor((x.a + x.b) / 2);
-  const frames = [Math.floor(d.hookEnd / 2), mid(d.labels[0]), mid(d.labels[2]), mid(d.images[0]), mid(d.calendario[0]), d.secs[2].a + 20];
+  // lejos de los cortes: justo después de uno, el <video> de la vista previa busca con menos precisión (cambio de toma)
+  const inicios = (leer('edicion/edl_final.json') as {start: number}[]).map((t) => t.start).filter((x) => x > 0);
+  const lejos = (f: number) => {
+    const c = inicios.find((x) => f >= x - 3 && f < x + 12);
+    return c === undefined ? f : c + 12;
+  };
+  const frames = [Math.floor(d.hookEnd / 2), mid(d.labels[0]), mid(d.labels[2]), mid(d.images[0]), mid(d.calendario[0]), d.secs[2].a + 20].map(lejos);
   const {app, page} = await lanzar();
   await expect(page.getByTestId('visor')).toBeVisible();
   await expect(page.getByText('vista aproximada')).toHaveCount(0);

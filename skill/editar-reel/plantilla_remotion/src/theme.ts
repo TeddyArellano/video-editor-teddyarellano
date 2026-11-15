@@ -159,7 +159,8 @@ export const enGancho = (f: number) => !!D.hook && f >= HOOK_START && f < D.hook
 // Todo lo que se calcula a partir de los datos (bloques de subtítulos, tramos de cámara…) va con derivado(): se recalcula
 // solo cuando cambian los datos.
 export type Vlog = Record<string, unknown>;
-export type Datos = {data?: unknown; estilo?: unknown; vlog?: unknown; land?: unknown; base?: string | null; proxy?: boolean; fuentes?: string | null};
+// sinCamara: solo gráficos, b-roll, sonido y música sobre fondo transparente (Reel Studio los pone encima de la vista del plan)
+export type Datos = {data?: unknown; estilo?: unknown; vlog?: unknown; land?: unknown; base?: string | null; proxy?: boolean; fuentes?: string | null; sinCamara?: boolean};
 export let D: Data;
 export let E: Estilo;
 export let VLOG: Vlog;
@@ -168,6 +169,7 @@ export let CUT = 0;
 export let CIERRE_LEN = 0;
 export let HOOK_START = 0;
 export let PROXY = false;
+export let SIN_CAMARA = false;
 let BASE: string | null = null;
 let version = 0;
 const cierreLen = (d: Data) => (d.cierre ? Math.round((d.cierre.dur ?? 2.3) * FPS) : 0);
@@ -179,7 +181,9 @@ export const setDatos = (o: Datos) => {
   const l = (o.land ?? landJson) as [number, number][];
   const b = o.base ?? null;
   const px = !!o.proxy;
-  if (d === D && e === E && v === VLOG && l === LAND && b === BASE && px === PROXY) return;
+  const sc = !!o.sinCamara;
+  if (d === D && e === E && v === VLOG && l === LAND && b === BASE && px === PROXY && sc === SIN_CAMARA) return;
+  SIN_CAMARA = sc;
   D = d;
   E = e;
   VLOG = v;

@@ -13,7 +13,7 @@ describe('capas libres', () => {
     const r = agregarEvento(base(), {}, 'textos', 62);
     expect(r.eventos.textos[0]).toMatchObject({en: 'a:dos', dur: 2.5, texto: 'TU TEXTO'});
     expect(r.data.textos[0]).toMatchObject({a: 60, b: 135, ev: 0, texto: 'TU TEXTO'});
-    expect(r.sel).toEqual({lista: 'textos', i: 0});
+    expect(r.sel).toEqual({lista: 'textos', i: 0, ev: 0});
   });
   it('la transición de corte se mueve y estira como cualquier capa (en / dur)', () => {
     const r = agregarEvento(base(), {}, 'tcortes', 30);
@@ -64,5 +64,19 @@ describe('fotogramas clave', () => {
     expect(r.eventos.textos[0].claves.map((k: {t: number}) => k.t)).toEqual([0, 1]);
     r = quitarClave(quitarClave(r.data, r.eventos, c.sel, 0).data, quitarClave(r.data, r.eventos, c.sel, 0).eventos, c.sel, 1);
     expect(r.eventos.textos[0].claves).toBeUndefined();
+  });
+});
+
+describe('selección estable', () => {
+  it('sigue al elemento por su índice de eventos cuando data.json cambia', async () => {
+    const {agregarEvento, reubicar} = await import('@shared/elementos');
+    // data.json atrasado: aún trae un texto que ya no está en eventos.json
+    const viejo = {n: 300, words: [], textos: [{a: 10, b: 40, ev: 0, texto: 'VIEJO'}]};
+    const r = agregarEvento(viejo, {}, 'textos', 60);
+    expect(r.sel).toEqual({lista: 'textos', i: 1, ev: 0});
+    // reel datos regenera: solo existe el nuevo, en el índice 0
+    const nuevo = {n: 300, words: [], textos: [{a: 60, b: 120, ev: 0, texto: 'NUEVO'}]};
+    expect(reubicar(nuevo, r.sel)).toEqual({lista: 'textos', i: 0, ev: 0});
+    expect(reubicar(nuevo, {lista: 'textos', i: 0, ev: 0})).toEqual({lista: 'textos', i: 0, ev: 0});
   });
 });

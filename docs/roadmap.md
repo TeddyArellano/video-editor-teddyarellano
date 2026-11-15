@@ -24,15 +24,14 @@
 - [x] `pnpm dmg` para repartir la app.
 
 ## Reel Studio: hecho después (noviembre 2026)
-- [x] **El `.dmg` funciona sin el repo:** trae la skill dentro (`Contents/Resources/skill/editar-reel`); **Instalar / reparar** corre su `setup.sh` (toolkit + modelo) y enlaza la skill para Claude si no estaba. Firma ad-hoc.
+- [x] **El `.dmg` funciona sin el repo** (probado con un HOME vacío: `e2e/instalar.spec.ts`, `REEL_PRUEBA_INSTALAR=1`): trae la skill dentro (`Contents/Resources/skill/editar-reel`); **Instalar / reparar** corre su `setup.sh` (toolkit + modelo) y enlaza la skill para Claude si no estaba. Firma ad-hoc.
 - [x] **Publicar:** Exportar → TikTok / Instagram / YouTube Shorts abre la página de subida, muestra el video en Finder y copia el texto del post.
-- [x] **Vista del plan con subtítulos** sincronizados por palabra.
+- [x] **Vista del plan con subtítulos y gráficos:** la plantilla real va encima sin su cámara (`sinCamara`) y con los cuadros de `data.json` acomodados al plan (`app/src/shared/planDatos.ts`).
 - [x] **Clips sin conexión:** Cortes avisa si falta un clip original, Re-cortar no corre a ciegas y **Localizar…** lo vuelve a enlazar.
 
 ## Reel Studio: lo que depende de terceros
 - **Notarizar con Apple** (cuenta de Apple Developer, de pago): sin ella, la primera vez se abre con clic derecho → Abrir.
 - **Subida automática a TikTok / Instagram** (sus APIs piden una app registrada y OAuth con la cuenta del creador).
-- **Gráficos en la vista del plan:** dependen del nuevo tiempo de cada palabra, que calculan `reel cortar` + `reel datos` al aplicar.
 
 ## Siguientes mejoras (cuando el uso real lo pida)
 - **Equipo:** empaquetar la skill como plugin de Claude Code para otras personas (requieren Mac).

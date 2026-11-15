@@ -54,7 +54,10 @@ test('capas: medios, texto con claves, transición y ajuste', async () => {
   await hasta(() => ev().textos?.[0]?.texto === 'HOLA CAPCUT');
   await page.getByTestId('agregar-clave').click({timeout: 10_000}).catch(async (e) => {
     await page.screenshot({path: 'test-results/capas-diag.png'});
-    console.log('DIAG clave', (await page.getByTestId('inspector').innerText()).slice(0, 600).replace(/\n/g, ' | '));
+    console.log('DIAG clave', JSON.stringify(await page.evaluate(() => {
+      const s = (window as unknown as {__reelEditor: {getState: () => Record<string, any>}}).__reelEditor.getState();
+      return {sel: s.sel, textosData: s.data?.textos?.length, textosEv: s.eventos?.textos?.length, sucios: s.sucios};
+    })));
     throw e;
   });
   await hasta(() => (ev().textos[0].claves ?? []).length >= 1);

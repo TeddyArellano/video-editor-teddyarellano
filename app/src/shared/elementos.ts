@@ -43,7 +43,23 @@ export const LISTAS_CAPAS: Lista[] = ['superpuestos', 'textos', 'formas', 'ajust
 
 export const LISTAS_TIEMPO: Lista[] = [...LISTAS_CAPAS, 'labels', 'names', 'images', 'montos', 'emojis', 'calendario', 'patrocinadores', 'fechas', 'broll', 'zooms', 'sfx'];
 
-export type Sel = {lista: Lista; i: number}; // i = índice en data (para hook: índice del elemento)
+// i = índice en data (para hook: índice del elemento); ev = índice en la lista de eventos.json, para volver a encontrar el
+// elemento cuando `reel datos` regenera data.json y los índices cambian (p. ej. si data.json estaba atrasado)
+export type Sel = {lista: Lista; i: number; ev?: number};
+
+// la selección con su índice de eventos, y la misma selección reubicada en un data.json nuevo
+export const conEv = (data: Obj | null, sel: Sel | null): Sel | null => {
+  if (!sel || !data || sel.lista === 'hook') return sel;
+  const ev = data[sel.lista]?.[sel.i]?.ev;
+  return typeof ev === 'number' ? {...sel, ev} : {lista: sel.lista, i: sel.i};
+};
+export const reubicar = (data: Obj | null, sel: Sel | null): Sel | null => {
+  if (!sel || !data || sel.ev === undefined) return sel;
+  const l: Obj[] = data[sel.lista] ?? [];
+  if (l[sel.i]?.ev === sel.ev) return sel;
+  const k = l.findIndex((x) => x?.ev === sel.ev);
+  return k >= 0 ? {...sel, i: k} : sel;
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Obj = Record<string, any>;
@@ -196,7 +212,7 @@ export const agregarEvento = (data: Obj, eventos: Obj, lista: Lista, f: number, 
     if (lista === 'fechas') Object.assign(item, {f2: fa + 30, fl: fa + 24});
     d[lista].push(item);
   }
-  return {data: d, eventos: e, sel: {lista, i: d[lista].length - 1}};
+  return {data: d, eventos: e, sel: lista === 'sfx' || lista === 'zooms' ? {lista, i: d[lista].length - 1} : {lista, i: d[lista].length - 1, ev: j}};
 };
 
 export const quitarEvento = (data: Obj, eventos: Obj, sel: Sel): {data: Obj; eventos: Obj} => {

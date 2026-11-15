@@ -15,7 +15,7 @@ import {Patrocinadores} from './components/Patrocinadores';
 import {Fechas} from './components/Fechas';
 import {Audios, Formas, Superpuestos, Textos, TransicionesCorte, VideoBase} from './components/Capas';
 import {BRoll, Counter, EndCard, FastBadge, Images, Labels, NameTag, Sound, Transition} from './components/Overlays';
-import {CIERRE_LEN, CUT, D, Datos, E, VLOG, cargarFuentes, derivado, setDatos, totalFrames} from './theme';
+import {CIERRE_LEN, CUT, D, Datos, E, SIN_CAMARA, VLOG, cargarFuentes, derivado, setDatos, totalFrames} from './theme';
 
 // duración con los datos por defecto (src/data.json); la app calcula la suya con totalFrames(data)
 export const TOTAL_FRAMES = totalFrames(D);
@@ -35,7 +35,7 @@ const CameraFX: React.FC = () => {
   );
 };
 
-// props (todas opcionales): {data, estilo, vlog, land, base, proxy, fuentes}. Sin props usa los JSON de src/ (render normal);
+// props (todas opcionales): {data, estilo, vlog, land, base, proxy, fuentes, sinCamara}. Sin props usa los JSON de src/ (render normal);
 // `reel render --borrador` pasa {proxy: true}.
 export const Reel: React.FC<Datos> = (props) => {
   setDatos(props);
@@ -46,9 +46,11 @@ export const Reel: React.FC<Datos> = (props) => {
 // video + b-roll; con ajustes de color o transiciones de corte (capas de Reel Studio) van dentro de <VideoBase>
 const Base: React.FC = () => (
   <>
-    <Sequence durationInFrames={CUT}>
-      <CameraFX />
-    </Sequence>
+    {!SIN_CAMARA && (
+      <Sequence durationInFrames={CUT}>
+        <CameraFX />
+      </Sequence>
+    )}
     {D.broll.map((b, i) => (
       <Sequence key={i} from={b.a} durationInFrames={b.b - b.a}>
         <BRoll src={b.src} len={b.b - b.a} />
@@ -58,7 +60,7 @@ const Base: React.FC = () => (
 );
 
 const ReelCapas: React.FC = () => (
-  <AbsoluteFill style={{background: '#000'}}>
+  <AbsoluteFill style={{background: SIN_CAMARA ? 'transparent' : '#000'}}>
     {D.ajustes?.length || D.tcortes?.length ? (
       <VideoBase>
         <Base />
@@ -66,12 +68,12 @@ const ReelCapas: React.FC = () => (
     ) : (
       <Base />
     )}
-    <TransicionesCorte />
+    {!SIN_CAMARA && <TransicionesCorte />}
     <Superpuestos />
     <IntroEspacioCapa />
     <Gamer />
     {GV() ? <GanchoCinetico /> : <Hook capa={D.hook?.detras ? 'detras' : 'todo'} />}
-    {D.hook?.detras && <HookForeground />}
+    {D.hook?.detras && !SIN_CAMARA && <HookForeground />}
     {D.hook?.detras && <Hook capa="delante" />}
     <Counter />
     <FastBadge />

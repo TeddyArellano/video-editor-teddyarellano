@@ -1,10 +1,15 @@
 // Vista del plan (cambios al instante): reproduce el plan pendiente directamente desde los clips originales, en su
-// orden nuevo y con los tramos extendidos, SIN esperar a "Aplicar recortes". Video, voz y subtítulos sincronizados por
-// palabra (de la transcripción de cada clip); los gráficos, la cámara virtual y el ajuste fino de silencios se ven después
-// de aplicar (los calcula `reel cortar` + `reel datos` y dependen del nuevo tiempo de cada palabra).
+// orden nuevo y con los tramos extendidos, SIN esperar a "Aplicar recortes". Encima va la plantilla real sin su cámara
+// (sinCamara) con los cuadros de data.json traducidos al plan (shared/planDatos): subtítulos, gráficos, b-roll, capas,
+// sonidos y música. La cámara virtual y el ajuste fino de silencios se ven al aplicar (`reel cortar` + `reel datos`).
+// Sin data.json (proyecto sin corte) quedan los subtítulos propios de esta vista.
 import {Player} from '@remotion/player';
 import React, {useEffect, useMemo, useState} from 'react';
 import {AbsoluteFill, Series, Video, useCurrentFrame} from 'remotion';
+import {Reel} from '@plantilla/Reel';
+import {datosParaPlan} from '@shared/planDatos';
+import type {TramoEdl} from '@shared/cortes';
+import {usePropsPlantilla} from '@/plantilla';
 import {tramosPlan, type Plan, type TramoPlan} from '@shared/cortes';
 import {useEditor} from '@/store';
 
@@ -32,7 +37,8 @@ const Subtitulo: React.FC<{t: TramoUrl}> = ({t}) => {
   );
 };
 
-const PlanComp: React.FC<{tramos: TramoUrl[]}> = ({tramos}) => (
+const ReelPlantilla = Reel as unknown as React.FC<Record<string, unknown>>;
+const PlanComp: React.FC<{tramos: TramoUrl[]; graficos: Record<string, unknown> | null}> = ({tramos, graficos}) => (
   <AbsoluteFill style={{background: '#000'}}>
     <Series>
       {tramos.map((t, i) => (
@@ -45,10 +51,15 @@ const PlanComp: React.FC<{tramos: TramoUrl[]}> = ({tramos}) => (
             volume={Math.min(4, Math.pow(10, (t.gain_db ?? 0) / 20))}
             style={{width: '100%', height: '100%', objectFit: 'cover'}}
           />
-          <Subtitulo t={t} />
+          {!graficos && <Subtitulo t={t} />}
         </Series.Sequence>
       ))}
     </Series>
+    {graficos && (
+      <AbsoluteFill data-testid="graficos-plan">
+        <ReelPlantilla {...graficos} />
+      </AbsoluteFill>
+    )}
   </AbsoluteFill>
 );
 
@@ -67,10 +78,18 @@ export const VistaPlan: React.FC<{w: number; h: number}> = ({w, h}) => {
     .filter((t) => archivos[t.src])
     .map((t) => ({...t, url: `${info.base}__fuente/${encodeURIComponent(archivos[t.src]!)}`, frames: Math.max(1, Math.round(((t.out - t.in) / t.speed) * FPS))}));
   const total = conUrl.reduce((s, t) => s + t.frames, 0);
+  const props = usePropsPlantilla();
+  const edl = useEditor((s) => s.edl) as TramoEdl[] | null;
+  const clave = conUrl.map((t) => `${t.src}${t.in}${t.out}${t.speed}`).join('|');
+  const graficos = useMemo(() => {
+    if (!props?.data || conUrl.length !== tramos.length) return null;
+    const d = datosParaPlan(props.data as Record<string, unknown>, edl, conUrl);
+    return d ? {...props, data: d, sinCamara: true} : null;
+  }, [props, edl, clave]);
   if (!conUrl.length) return <div className="flex h-full items-center justify-center text-xs text-zinc-500">Cargando los clips originales…</div>;
   return (
     <div data-testid="vista-plan" data-tramos={conUrl.length} data-cuadros={total}>
-      <Player component={PlanComp} inputProps={{tramos: conUrl}} durationInFrames={total} fps={FPS} compositionWidth={1080} compositionHeight={1920} style={{width: w, height: h}} controls autoPlay={false} acknowledgeRemotionLicense />
+      <Player component={PlanComp} inputProps={{tramos: conUrl, graficos}} durationInFrames={total} fps={FPS} compositionWidth={1080} compositionHeight={1920} style={{width: w, height: h}} controls autoPlay={false} acknowledgeRemotionLicense />
     </div>
   );
 };

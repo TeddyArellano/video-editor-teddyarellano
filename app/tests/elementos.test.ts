@@ -62,7 +62,7 @@ describe('agregar / quitar', () => {
     const r = agregarEvento(data(), eventos(), 'labels', 119);
     expect(r.eventos.etiquetas).toHaveLength(3);
     expect(r.eventos.etiquetas[2]).toMatchObject({en: 'a:cuatro', dur: 3, texto: 'NUEVA ETIQUETA'});
-    expect(r.sel).toEqual({lista: 'labels', i: 1});
+    expect(r.sel).toEqual({lista: 'labels', i: 1, ev: 2});
     expect(r.data.labels[1]).toMatchObject({a: 120, ev: 2});
     expect(eventoDe(r.eventos, r.data, r.sel)?.texto).toBe('NUEVA ETIQUETA');
   });
