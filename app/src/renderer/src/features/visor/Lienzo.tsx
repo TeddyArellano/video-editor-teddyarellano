@@ -2,7 +2,7 @@
 // cada elemento movible con data-reel="<lista>:<i>"), arrastrar para moverlo, esquina para escalar, perilla para rotar.
 // Imanes: centro x = 540 y bordes de la zona segura. Al soltar se escriben dx/dy/escala/rot en eventos.json.
 import React, {useEffect, useRef, useState} from 'react';
-import {aplicarCampos, LISTAS, type Lista, type Obj, type Sel} from '@shared/elementos';
+import {aplicarLibre, LISTAS, valoresEn, type Lista, type Obj, type Sel} from '@shared/elementos';
 import {useEditor} from '@/store';
 import {useReloj} from '@/reloj';
 
@@ -12,9 +12,11 @@ const IMAN = 10; // px de composición
 type Caja = {cx: number; cy: number; w: number; h: number}; // en px de composición, sin la transformación libre
 type Valores = {dx: number; dy: number; escala: number; rot: number};
 
-const valoresDe = (data: Obj, sel: Sel): Valores => {
+// valores en el cuadro f (con fotogramas clave, los interpolados: lo mismo que dibuja <Pos>)
+const valoresDe = (data: Obj, sel: Sel, f = useReloj.getState().frame): Valores => {
   const x: Obj = sel.lista === 'hook' ? data.hook?.elementos?.[sel.i] ?? {} : data[sel.lista]?.[sel.i] ?? {};
-  return {dx: x.dx ?? 0, dy: x.dy ?? 0, escala: x.escala ?? 1, rot: x.rot ?? 0};
+  const v = valoresEn(x, f);
+  return {dx: v.dx, dy: v.dy, escala: v.escala, rot: v.rot};
 };
 
 const transformDe = (v: Valores, hook: boolean) => {
@@ -147,7 +149,7 @@ export const Lienzo: React.FC<{escala: number; guias: boolean}> = ({escala, guia
       if (v.dx === v0.dx && v.dy === v0.dy && v.escala === v0.escala && v.rot === v0.rot) return;
       const s = useEditor.getState();
       const campos: Obj = {dx: v.dx, dy: v.dy, escala: v.escala, rot: v.rot};
-      const r = aplicarCampos(s.data!, s.eventos ?? {}, sel, campos);
+      const r = aplicarLibre(s.data!, s.eventos ?? {}, sel, campos, useReloj.getState().frame);
       s.editar({data: r.data, eventos: r.eventos});
     };
     window.addEventListener('pointermove', mov);

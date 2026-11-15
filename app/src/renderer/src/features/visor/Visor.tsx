@@ -8,6 +8,7 @@ import {modeloDe, useEditor} from '@/store';
 import {enScrub, player, useReloj} from '@/reloj';
 import {usePropsPlantilla} from '@/plantilla';
 import {Lienzo} from './Lienzo';
+import {aceptaSoltar, soltarEn} from '../medios/importar';
 
 export const Visor: React.FC = () => {
   const data = useEditor((s) => s.data);
@@ -75,7 +76,17 @@ export const Visor: React.FC = () => {
     );
   }
   return (
-    <div ref={caja} className="relative flex h-full w-full items-center justify-center" data-testid="visor">
+    <div
+      ref={caja}
+      className="relative flex h-full w-full items-center justify-center"
+      data-testid="visor"
+      onDragOver={(e) => aceptaSoltar(e) && (e.preventDefault(), (e.dataTransfer.dropEffect = 'copy'))}
+      onDrop={(e) => {
+        if (!aceptaSoltar(e)) return;
+        e.preventDefault();
+        soltarEn(e, useReloj.getState().frame);
+      }}
+    >
       <div className="relative" style={{width: tam.w, height: tam.h}}>
         <Player
           ref={ref}

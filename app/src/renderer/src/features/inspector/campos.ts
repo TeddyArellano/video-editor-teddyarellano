@@ -1,9 +1,10 @@
 // Propiedades editables de cada tipo de elemento (las mismas de referencia/eventos.md).
 import type {Lista} from '@shared/elementos';
+import {BUCLES, ENTRADAS, FILTROS, FORMAS, SALIDAS, TRANSICIONES} from '@plantilla/components/Capas';
 
 export type Campo = {
   k: string;
-  t: 'texto' | 'area' | 'num' | 'color' | 'bool' | 'opcion' | 'archivo' | 'sfx' | 'fuente' | 'logos';
+  t: 'texto' | 'area' | 'num' | 'color' | 'bool' | 'opcion' | 'archivo' | 'audio' | 'sfx' | 'fuente' | 'logos' | 'rango';
   n: string; // etiqueta visible
   op?: string[];
   min?: number;
@@ -21,7 +22,96 @@ const LIBRE: Campo[] = [
   {k: 'rot', t: 'num', n: 'Rotación (°)', min: -180, max: 180, paso: 1},
 ];
 
+// animación de las capas libres (Capas.tsx → animar)
+const ANIM: Campo[] = [
+  {k: 'entrada', t: 'opcion', n: 'Entrada', op: ENTRADAS},
+  {k: 'dur_entrada', t: 'num', n: 'Duración entrada (s)', min: 0.05, max: 3, paso: 0.05},
+  {k: 'salida', t: 'opcion', n: 'Salida', op: SALIDAS},
+  {k: 'dur_salida', t: 'num', n: 'Duración salida (s)', min: 0.05, max: 3, paso: 0.05},
+  {k: 'bucle', t: 'opcion', n: 'Animación en bucle', op: BUCLES},
+];
+const LUGAR: Campo[] = [
+  {k: 'x', t: 'num', n: 'Centro X (px, 540 = centro)', paso: 10},
+  {k: 'y', t: 'num', n: 'Centro Y (px, 960 = centro)', paso: 10},
+];
+const OPACIDAD: Campo = {k: 'opacidad', t: 'rango', n: 'Opacidad', min: 0, max: 1, paso: 0.05};
+
 export const CAMPOS: Record<Lista, Campo[]> = {
+  textos: [
+    {k: 'texto', t: 'area', n: 'Texto'},
+    {k: 'fuente', t: 'fuente', n: 'Fuente'},
+    {k: 'size', t: 'num', n: 'Tamaño', min: 20, max: 400, paso: 2},
+    {k: 'peso', t: 'num', n: 'Peso', min: 100, max: 900, paso: 100},
+    {k: 'italic', t: 'bool', n: 'Cursiva'},
+    {k: 'mayus', t: 'bool', n: 'Mayúsculas'},
+    {k: 'color', t: 'color', n: 'Color'},
+    {k: 'resaltar', t: 'texto', n: 'Resaltar palabra (amarillo)'},
+    {k: 'bg', t: 'color', n: 'Fondo (píldora)'},
+    {k: 'contorno', t: 'num', n: 'Contorno (px)', min: 0, max: 40, paso: 1},
+    {k: 'contorno_color', t: 'color', n: 'Color del contorno'},
+    {k: 'sombra', t: 'bool', n: 'Sombra'},
+    {k: 'align', t: 'opcion', n: 'Alineación', op: ['center', 'left', 'right']},
+    {k: 'ancho', t: 'num', n: 'Ancho máximo (px)', min: 100, max: 1080, paso: 10},
+    ...LUGAR,
+    ...ANIM,
+    OPACIDAD,
+    ...LIBRE,
+  ],
+  formas: [
+    {k: 'forma', t: 'opcion', n: 'Forma', op: FORMAS},
+    {k: 'color', t: 'color', n: 'Color'},
+    {k: 'ancho', t: 'num', n: 'Ancho (px)', min: 20, max: 1080, paso: 10},
+    {k: 'alto', t: 'num', n: 'Alto (px)', min: 10, max: 1920, paso: 10},
+    {k: 'grosor', t: 'num', n: 'Grosor del trazo', min: 1, max: 60, paso: 1},
+    {k: 'relleno', t: 'bool', n: 'Relleno'},
+    ...LUGAR,
+    {...ANIM[0], op: ['dibujar', ...ENTRADAS]},
+    ...ANIM.slice(1),
+    OPACIDAD,
+    ...LIBRE,
+  ],
+  superpuestos: [
+    {k: 'src', t: 'archivo', n: 'Video o imagen (public/)'},
+    {k: 'completo', t: 'bool', n: 'Pantalla completa'},
+    {k: 'ancho', t: 'num', n: 'Ancho (px)', min: 40, max: 1080, paso: 10},
+    {k: 'alto', t: 'num', n: 'Alto (px, vacío = proporción)', min: 40, max: 1920, paso: 10},
+    {k: 'ajuste', t: 'opcion', n: 'Ajuste', op: ['cubrir', 'contener']},
+    {k: 'recorte', t: 'opcion', n: 'Recorte', op: ['circulo']},
+    {k: 'radio', t: 'num', n: 'Esquinas (px)', min: 0, max: 400, paso: 2},
+    {k: 'borde', t: 'num', n: 'Borde (px)', min: 0, max: 40, paso: 1},
+    {k: 'borde_color', t: 'color', n: 'Color del borde'},
+    {k: 'sombra', t: 'bool', n: 'Sombra'},
+    {k: 'desde', t: 'num', n: 'Empieza en el clip (s)', min: 0, paso: 0.1},
+    {k: 'velocidad', t: 'num', n: 'Velocidad', min: 0.25, max: 4, paso: 0.05},
+    {k: 'vol', t: 'rango', n: 'Volumen del clip', min: 0, max: 1.5, paso: 0.05},
+    ...LUGAR,
+    ...ANIM,
+    OPACIDAD,
+    ...LIBRE,
+  ],
+  audios: [
+    {k: 'src', t: 'audio', n: 'Audio (public/)'},
+    {k: 'vol', t: 'rango', n: 'Volumen', min: 0, max: 1.5, paso: 0.01},
+    {k: 'fade_in', t: 'num', n: 'Fundido de entrada (s)', min: 0, max: 10, paso: 0.1},
+    {k: 'fade_out', t: 'num', n: 'Fundido de salida (s)', min: 0, max: 10, paso: 0.1},
+    {k: 'ducking', t: 'rango', n: 'Bajar cuando hablan (ducking)', min: 0, max: 1, paso: 0.05, ayuda: '0 = nada · 0.7 = queda al 30 % mientras hay voz'},
+    {k: 'desde', t: 'num', n: 'Empieza en el archivo (s)', min: 0, paso: 0.1},
+    {k: 'velocidad', t: 'num', n: 'Velocidad', min: 0.5, max: 2, paso: 0.05},
+    {k: 'todo', t: 'bool', n: 'Todo el video'},
+  ],
+  ajustes: [
+    {k: 'filtro', t: 'opcion', n: 'Filtro', op: FILTROS},
+    {k: 'intensidad', t: 'rango', n: 'Intensidad del filtro', min: 0, max: 1.5, paso: 0.05},
+    {k: 'brillo', t: 'rango', n: 'Brillo', min: -100, max: 100, paso: 1},
+    {k: 'contraste', t: 'rango', n: 'Contraste', min: -100, max: 100, paso: 1},
+    {k: 'saturacion', t: 'rango', n: 'Saturación', min: -100, max: 100, paso: 1},
+    {k: 'temperatura', t: 'rango', n: 'Temperatura', min: -100, max: 100, paso: 1},
+    {k: 'tono', t: 'rango', n: 'Tono (°)', min: -180, max: 180, paso: 1},
+    {k: 'vineta', t: 'rango', n: 'Viñeta', min: 0, max: 100, paso: 1},
+    {k: 'desenfoque', t: 'rango', n: 'Desenfoque', min: 0, max: 100, paso: 1},
+    {k: 'todo', t: 'bool', n: 'Todo el video'},
+  ],
+  tcortes: [{k: 'tipo', t: 'opcion', n: 'Transición', op: TRANSICIONES}],
   labels: [{k: 'texto', t: 'area', n: 'Texto', ayuda: '"RÓTULO|NOMBRE": lo de antes de | va chico arriba'}, {k: 'color', t: 'color', n: 'Color de fondo'}, ...LIBRE],
   names: [{k: 'nombre', t: 'texto', n: 'Nombre'}, {k: 'sub', t: 'texto', n: 'Subtítulo'}, {k: 'color', t: 'color', n: 'Color'}, ...LIBRE],
   images: [

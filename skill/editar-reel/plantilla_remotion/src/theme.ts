@@ -97,7 +97,28 @@ export type Data = {
   calendario?: (Span & {dia: string; mes: string; texto?: string; top?: number; color?: string})[];
   patrocinadores?: (Span & {fila: 'arriba' | 'abajo'; logos: (Logo | string)[]; top?: number})[];
   fechas?: Fecha[];
+  // capas libres (estilo CapCut, ver components/Capas.tsx): se agregan desde Reel Studio o desde eventos.json
+  textos?: TextoLibre[];
+  formas?: Forma[];
+  superpuestos?: Superpuesto[];
+  audios?: PistaAudio[];
+  ajustes?: Ajuste[];
+  tcortes?: TransCorte[];
 };
+// animación de entrada / salida / en bucle de una capa libre (duraciones en segundos)
+export type Anim = {entrada?: string; salida?: string; bucle?: string; dur_entrada?: number; dur_salida?: number};
+// x / y = centro de la capa en px del lienzo 1080×1920 (por defecto el centro)
+export type TextoLibre = Span & Anim & {texto: string; x?: number; y?: number; fuente?: string; size?: number; peso?: number; italic?: boolean;
+  color?: string; bg?: string; contorno?: number; contorno_color?: string; sombra?: boolean; align?: 'center' | 'left' | 'right'; ancho?: number;
+  mayus?: boolean; resaltar?: string};
+export type Forma = Span & Anim & {forma: string; x?: number; y?: number; color?: string; ancho?: number; alto?: number; grosor?: number; relleno?: boolean};
+export type Superpuesto = Span & Anim & {src: string; x?: number; y?: number; ancho?: number; alto?: number; completo?: boolean; radio?: number;
+  borde?: number; borde_color?: string; sombra?: boolean; recorte?: 'circulo' | null; desde?: number; vol?: number; velocidad?: number;
+  ajuste?: 'cubrir' | 'contener'; video?: boolean};
+export type PistaAudio = Span & {src: string; vol?: number; desde?: number; fade_in?: number; fade_out?: number; ducking?: number; velocidad?: number};
+export type Ajuste = Span & {filtro?: string; intensidad?: number; brillo?: number; contraste?: number; saturacion?: number; temperatura?: number;
+  tono?: number; vineta?: number; desenfoque?: number; nitidez?: number};
+export type TransCorte = Span & {tipo: string};
 export type Logo = {src: string; ar: number}; // ar = ancho / alto
 // rango de fechas: a = 1ª hoja, f2 = 2ª hoja, fl = flecha, b = fin (cuadros)
 export type Fecha = Span & {f2: number; fl: number; dia1: string; mes1: string; tag1?: string; color1?: string;
@@ -190,7 +211,35 @@ setDatos({});
 // Cualquier elemento movible se envuelve en <Pos>: sin campos se dibuja EXACTAMENTE igual que antes (el envoltorio se
 // comporta como su contenedor flex); con dx/dy (px), escala y rot se mueve sobre su posición normal.
 // data-reel="<lista>:<i>" permite que Reel Studio encuentre el elemento en el lienzo.
-export type Libre = {dx?: number; dy?: number; escala?: number; rot?: number};
+export type Clave = {t: number; dx?: number; dy?: number; escala?: number; rot?: number; opacidad?: number};
+export type Libre = {dx?: number; dy?: number; escala?: number; rot?: number; opacidad?: number; claves?: Clave[]; a?: number};
+export const CAMPOS_CLAVE = ['dx', 'dy', 'escala', 'rot', 'opacidad'] as const;
+const BASE_CLAVE: Record<(typeof CAMPOS_CLAVE)[number], number> = {dx: 0, dy: 0, escala: 1, rot: 0, opacidad: 1};
+// fotogramas clave (estilo CapCut): claves = [{t (s desde que aparece la capa), dx, dy, escala, rot, opacidad}].
+// Cada propiedad se interpola entre las claves que la definen (suave, ease-in-out); antes de la primera y después de la
+// última se queda en su valor. Sin claves devuelve el mismo objeto.
+const suave = (k: number) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+export const conClaves = <T extends Libre>(o: T | null | undefined, f: number): T | null | undefined => {
+  if (!o || !o.claves?.length) return o;
+  const t = (f - (o.a ?? 0)) / FPS;
+  const r: Libre = {...o};
+  for (const k of CAMPOS_CLAVE) {
+    const ks = o.claves.filter((c) => typeof c[k] === 'number').sort((x, y) => x.t - y.t);
+    if (!ks.length) continue;
+    let v: number;
+    if (t <= ks[0].t) v = ks[0][k]!;
+    else if (t >= ks[ks.length - 1].t) v = ks[ks.length - 1][k]!;
+    else {
+      const j = ks.findIndex((c) => c.t > t);
+      const p = ks[j - 1];
+      const q = ks[j];
+      v = p[k]! + (q[k]! - p[k]!) * suave((t - p.t) / Math.max(1e-6, q.t - p.t));
+    }
+    r[k] = v;
+  }
+  return r as T;
+};
+export const valorClave = (o: Libre | null | undefined, k: (typeof CAMPOS_CLAVE)[number]) => (o?.[k] ?? BASE_CLAVE[k]) as number;
 export const libre = (o?: Libre | null) => {
   if (!o) return undefined;
   const t: string[] = [];

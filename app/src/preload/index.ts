@@ -1,5 +1,5 @@
 // Puente tipado entre la interfaz y el proceso principal (window.reel). La interfaz no tiene acceso a Node.
-import {contextBridge, ipcRenderer, type IpcRendererEvent} from 'electron';
+import {contextBridge, ipcRenderer, webUtils, type IpcRendererEvent} from 'electron';
 import type {CambioArchivo, EventoClaude, ReelAPI, Trabajo} from '../shared/tipos';
 
 const on = <T>(canal: string, fn: (x: T) => void) => {
@@ -15,6 +15,9 @@ const api: ReelAPI = {
   onRecientes: (fn) => on<void>('recientes-cambio', fn),
   elegirCarpeta: (t) => ipcRenderer.invoke('elegirCarpeta', t),
   elegirArchivo: (f) => ipcRenderer.invoke('elegirArchivo', f),
+  elegirArchivos: (f) => ipcRenderer.invoke('elegirArchivos', f),
+  rutaDeArchivo: (f) => webUtils.getPathForFile(f),
+  duracionMedio: (id, r) => ipcRenderer.invoke('duracionMedio', id, r),
   abrir: (r) => ipcRenderer.invoke('abrir', r),
   cerrar: (id) => ipcRenderer.invoke('cerrar', id),
   leer: (id, a) => ipcRenderer.invoke('leer', id, a),

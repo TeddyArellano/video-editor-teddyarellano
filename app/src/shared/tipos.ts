@@ -78,6 +78,9 @@ export type ReelAPI = {
   onRecientes: (fn: () => void) => () => void;
   elegirCarpeta: (titulo?: string) => Promise<string | null>;
   elegirArchivo: (filtros?: {name: string; extensions: string[]}[]) => Promise<string | null>;
+  elegirArchivos: (filtros?: {name: string; extensions: string[]}[]) => Promise<string[]>;
+  rutaDeArchivo: (f: File) => string; // archivo soltado desde Finder → ruta en disco
+  duracionMedio: (id: string, rel: string) => Promise<number | null>; // s de un video/audio de public/
   abrir: (ruta: string) => Promise<Snapshot>;
   cerrar: (id: string) => Promise<void>;
   leer: (id: string, archivo: Archivo) => Promise<ContenidoArchivo>;

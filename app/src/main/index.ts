@@ -10,7 +10,17 @@ import {alAvisar, cancelar, detenerTodo, encolar, encolarCadena, lista} from './
 import {abrir, cerrar, dejarDeVigilarRegistro, infoDe, miniatura, propias, recientes, rutaDe, vigilarRegistro} from './proyectos';
 import {TOOLKIT, entorno, python, reelPy, repoDir, skillDir} from './rutas';
 import {guardarPreferencias, preferencias} from './preferencias';
-import {execFileSync} from 'node:child_process';
+import {execFile, execFileSync} from 'node:child_process';
+
+// duración (s) de un video o audio con ffprobe; null si no se puede leer
+const duracionMedio = (f: string) =>
+  new Promise<number | null>((ok) => {
+    if (!fs.existsSync(f)) return ok(null);
+    execFile('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'default=nw=1:nk=1', f], {env: entorno(), timeout: 15_000}, (e, out) => {
+      const d = Number(String(out).trim());
+      ok(e || !Number.isFinite(d) ? null : d);
+    });
+  });
 
 registrarEsquema();
 // pruebas: perfil aislado (recientes, etc.)
@@ -66,6 +76,11 @@ const registrarIPC = () => {
     const r = await dialog.showOpenDialog(ventana!, {properties: ['openFile'], filters: filtros});
     return r.canceled ? null : r.filePaths[0];
   });
+  ipcMain.handle('elegirArchivos', async (_e, filtros?: {name: string; extensions: string[]}[]) => {
+    const r = await dialog.showOpenDialog(ventana!, {properties: ['openFile', 'multiSelections'], filters: filtros});
+    return r.canceled ? [] : r.filePaths;
+  });
+  ipcMain.handle('duracionMedio', (_e, id: string, rel: string) => duracionMedio(dentro(path.join(rutaDe(id), 'public'), rel)));
   ipcMain.handle('abrir', (_e, ruta: string) => abrir(ruta, (c: CambioArchivo) => enviar('cambio', c)));
   ipcMain.handle('cerrar', (_e, id: string) => cerrar(id));
   ipcMain.handle('info', (_e, id: string) => infoDe(rutaDe(id)));

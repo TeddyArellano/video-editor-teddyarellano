@@ -3,6 +3,14 @@ import React from 'react';
 
 const trazos: Record<string, React.ReactNode> = {
   atras: <path d="M15 18l-6-6 6-6" />,
+  medios: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 15l5-5 4 4 3-3 6 6" />
+      <circle cx="16" cy="9" r="1.5" />
+    </>
+  ),
+  exportar: <path d="M12 3v12M7 8l5-5 5 5M5 15v4a2 2 0 002 2h10a2 2 0 002-2v-4" />,
   deshacer: <path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3" />,
   rehacer: <path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3" />,
   ajustes: (

@@ -13,6 +13,7 @@ import {conPlantilla, usePropsPlantilla} from '@/plantilla';
 import {BarraTimeline} from './BarraTimeline';
 import {dividir} from './acciones';
 import {PPC_MAX, useVista, zoomVista} from './vista';
+import {aceptaSoltar, soltarEn} from '../medios/importar';
 
 const ALTO = 22;
 const ALTO_CORTE = 38;
@@ -133,6 +134,7 @@ export const Timeline: React.FC = () => {
   const rango = useVista((s) => s.rango);
   const scroll = useRef<HTMLDivElement>(null);
   const guiaCuchilla = useRef<HTMLDivElement>(null);
+  const guiaSoltar = useRef<HTMLDivElement>(null);
   const [arr, setArr] = useState<ArrElemento | null>(null);
   const [arrBorde, setArrBorde] = useState<ArrBorde | null>(null);
   const [arrRango, setArrRango] = useState<{a: number; b: number} | null>(null);
@@ -515,6 +517,24 @@ export const Timeline: React.FC = () => {
         className={`relative min-h-0 flex-1 overflow-auto bg-zinc-950 select-none ${herramienta === 'cuchilla' ? 'cursor-crosshair' : ''}`}
         onPointerDown={alFondo}
         onPointerMove={moverCuchilla}
+        onDragOver={(e) => {
+          if (!aceptaSoltar(e)) return;
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+          if (guiaSoltar.current) {
+            guiaSoltar.current.style.display = 'block';
+            guiaSoltar.current.style.transform = `translateX(${ETIQUETA + cuadroDe(e) * vivo.current.ppc}px)`;
+          }
+        }}
+        onDragLeave={() => guiaSoltar.current && (guiaSoltar.current.style.display = 'none')}
+        onDrop={(e) => {
+          if (!aceptaSoltar(e)) return;
+          e.preventDefault();
+          if (guiaSoltar.current) guiaSoltar.current.style.display = 'none';
+          const f = cuadroDe(e);
+          ir(f);
+          soltarEn(e, f);
+        }}
         data-testid="timeline"
         data-ppc={ppc.toFixed(3)}
         data-ppc-min={ppcMin.toFixed(3)}
@@ -578,6 +598,7 @@ export const Timeline: React.FC = () => {
           {rangoVis && <div data-testid="rango" data-a={rangoVis.a} data-b={rangoVis.b} className="pointer-events-none absolute top-5 bottom-0 z-[15] border-x border-acento bg-acento/15" style={{left: X(rangoVis.a), width: Math.max(1, (rangoVis.b - rangoVis.a) * ppc)}} />}
           {/* imán activo */}
           {arr?.guia != null && <div data-testid="guia-iman" className="pointer-events-none absolute top-0 bottom-0 z-30 w-px bg-amber-300" style={{left: X(arr.guia)}} />}
+          <div ref={guiaSoltar} data-testid="guia-soltar" className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 w-0.5 bg-sky-400" style={{display: 'none'}} />
           {herramienta === 'cuchilla' && <div ref={guiaCuchilla} className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 w-px border-l border-dashed border-white/70" />}
           <Cabezal scroll={scroll} empezar={empezarScrub} />
           {arrBorde?.texto && (

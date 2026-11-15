@@ -1185,7 +1185,8 @@ def _datos(pr):
         return a0, b0
 
     # posición libre (Reel Studio): dx/dy en px, escala y rot se copian tal cual; "ev" = índice en la lista de eventos.json
-    libre = lambda x, j: {**{k: x[k] for k in ('dx', 'dy', 'escala', 'rot') if k in x}, 'ev': j}
+    # opacidad y claves (fotogramas clave: [{t, dx, dy, escala, rot, opacidad}], t en s desde que aparece) también
+    libre = lambda x, j: {**{k: x[k] for k in ('dx', 'dy', 'escala', 'rot', 'opacidad', 'claves') if k in x}, 'ev': j}
     names = [dict(zip(('a', 'b'), span(x, 3.0)), nombre=x['nombre'], sub=x.get('sub', ''), color=x.get('color'), **libre(x, j)) for j, x in enumerate(ev.get('nombres', []))]
     labels = [dict(zip(('a', 'b'), span(x, 3.0)), texto=x['texto'], color=x.get('color'), **libre(x, j)) for j, x in enumerate(ev.get('etiquetas', []))]
     images = [dict(zip(('a', 'b'), span(x, 2.5)), src=x['src'], pos=x.get('pos', 'arriba'), ancho=x.get('ancho', 420),
@@ -1223,6 +1224,7 @@ def _datos(pr):
         fechas.append({"a": a0, "b": min(b0, n), "f2": f2, "fl": fl, "dia1": str(x.get('dia1', '1')), "mes1": x.get('mes1', ''),
                        "dia2": str(x.get('dia2', '1')), "mes2": x.get('mes2', ''),
                        **{k: x[k] for k in ('tag1', 'tag2', 'color1', 'color2', 'banner', 'top', 'ocultar_subs') if k in x}, **libre(x, j)})
+    capas = _capas_libres(pr, ev, A, n, E, span, libre)
     trans = []
     for t in ev.get('transiciones', []):
         s = next(x for x in secs if x['id'] == t['antes_de'])
@@ -1303,6 +1305,9 @@ def _datos(pr):
         data["patrocinadores"] = patrocinadores
     if fechas:
         data["fechas"] = fechas
+    for k, v in capas.items():
+        if v:
+            data[k] = v
     if intro3d:
         c = capa_path(pr, data)
         if (pr.P / 'public' / c).exists():
@@ -1311,9 +1316,92 @@ def _datos(pr):
     print(f"✓ src/data.json  {n} cuadros ({n / FPS:.1f} s) | secciones {[(s['id'], round(s['a'] / FPS, 1), round(s['b'] / FPS, 1)) for s in secs]}")
     if zooms:
         print("  zooms (s del corte; centra con  reel cuadricula -p P <t> …):", ' '.join(f"{(z['a'] + z['b']) / 2 / FPS:.1f}" for z in zooms))
+    if any(capas.values()):
+        print("  capas: " + ' · '.join(f"{'transiciones' if k == 'tcortes' else k} {len(v)}" for k, v in capas.items()))
     print(f"  objetos {len(items)} · zooms {len(zooms)} · sfx {len(sfx)} · nombres {len(names)} · etiquetas {len(labels)} · imágenes {len(images)} · cámara rápida {[(round(x / FPS, 1), round(y / FPS, 1)) for x, y, *_ in fast]}")
 
 
+
+
+# ---------------------------------------------------------------- capas libres (estilo CapCut, Reel Studio)
+_DUR_MEDIO = {}
+
+
+def dur_medio(pr, src):
+    """Duración (s) de un archivo de public/ (video o audio); None si no se puede leer. Con caché por tamaño y fecha."""
+    f = pr.P / 'public' / src
+    try:
+        st = f.stat()
+    except OSError:
+        return None
+    k = (str(f), st.st_size, st.st_mtime_ns)
+    if k not in _DUR_MEDIO:
+        try:
+            _DUR_MEDIO[k] = float(probe(f)['format']['duration'])
+        except (subprocess.CalledProcessError, KeyError, ValueError):
+            _DUR_MEDIO[k] = None
+    return _DUR_MEDIO[k]
+
+
+def _capas_libres(pr, ev, A, n, E, span, libre):
+    """textos, formas, superpuestos, audios, ajustes y transiciones_corte de eventos.json → listas de data.json.
+    Todas usan las anclas de siempre (en / hasta / dur / offset); "todo": true = todo el video."""
+    def rango(x, dur_def):
+        if x.get('todo'):
+            return 0, n
+        a0, b0 = span(x, dur_def)
+        a0 = max(0, min(a0, n - 1))
+        return a0, max(a0 + 1, min(b0, n))
+    anim = ('entrada', 'salida', 'bucle', 'dur_entrada', 'dur_salida')
+    copia = lambda x, ks: {k: x[k] for k in ks if k in x}
+    textos = [dict(zip(('a', 'b'), rango(x, 2.5)), texto=str(x.get('texto', '')),
+                   **copia(x, ('x', 'y', 'fuente', 'size', 'peso', 'italic', 'color', 'bg', 'contorno', 'contorno_color', 'sombra', 'align',
+                               'ancho', 'mayus', 'resaltar') + anim), **libre(x, j))
+              for j, x in enumerate(ev.get('textos', []))]
+    formas = [dict(zip(('a', 'b'), rango(x, 2.0)), forma=x.get('forma', 'flecha'),
+                   **copia(x, ('x', 'y', 'color', 'ancho', 'alto', 'grosor', 'relleno') + anim), **libre(x, j))
+              for j, x in enumerate(ev.get('formas', []))]
+    superpuestos = []
+    for j, x in enumerate(ev.get('superpuestos', [])):
+        src = x.get('src', '')
+        video = bool(re.search(r'\.(mp4|mov|m4v|webm)$', src, re.I))
+        dur_def = 3.0
+        if video and x.get('dur') is None and x.get('hasta') is None:
+            d = dur_medio(pr, src)
+            if d:
+                dur_def = max(0.2, (d - x.get('desde', 0)) / x.get('velocidad', 1))
+            else:
+                print(f"  ⚠ superpuestos: no pude leer public/{src}")
+        superpuestos.append(dict(zip(('a', 'b'), rango(x, dur_def)), src=src, video=video,
+                                 **copia(x, ('x', 'y', 'ancho', 'alto', 'completo', 'radio', 'borde', 'borde_color', 'sombra', 'recorte',
+                                             'desde', 'vol', 'velocidad', 'ajuste') + anim), **libre(x, j)))
+    audios = []
+    for j, x in enumerate(ev.get('audios', [])):
+        src = x.get('src', '')
+        dur_def = (n - A.f(x['en'], x.get('offset', 0))) / FPS if x.get('en') is not None else n / FPS
+        if x.get('dur') is None and x.get('hasta') is None and not x.get('todo'):
+            d = dur_medio(pr, src)
+            if d:
+                dur_def = min(dur_def, max(0.2, (d - x.get('desde', 0)) / x.get('velocidad', 1)))
+            elif not (pr.P / 'public' / src).exists():
+                print(f"  ⚠ audios: no existe public/{src}")
+        audios.append(dict(zip(('a', 'b'), rango(x, dur_def)), src=src,
+                           **copia(x, ('vol', 'desde', 'fade_in', 'fade_out', 'ducking', 'velocidad')), ev=j))
+    ajustes = [dict(zip(('a', 'b'), rango(x, 3.0)),
+                    **copia(x, ('filtro', 'intensidad', 'brillo', 'contraste', 'saturacion', 'temperatura', 'tono', 'vineta', 'desenfoque')), ev=j)
+               for j, x in enumerate(ev.get('ajustes', []))]
+    # transiciones en los cortes: el centro se pega al corte entre tramos más cercano (±0.4 s)
+    bordes = [p['start'] for p in E[1:]]
+    tcortes = []
+    for j, x in enumerate(ev.get('transiciones_corte', [])):
+        a0, b0 = rango(x, 0.4)
+        ln = max(4, b0 - a0)
+        c = a0 + ln // 2
+        cerca = min(bordes, key=lambda b: abs(b - c)) if bordes else None
+        if cerca is not None and abs(cerca - c) <= 12:
+            c = cerca
+        tcortes.append({"a": max(0, c - ln // 2), "b": min(n, c - ln // 2 + ln), "tipo": x.get('tipo', 'fundido'), "ev": j})
+    return {"textos": textos, "formas": formas, "superpuestos": superpuestos, "audios": audios, "ajustes": ajustes, "tcortes": tcortes}
 
 
 # ---------------------------------------------------------------- capas pre-renderizadas (3D)
@@ -2061,8 +2149,20 @@ def cmd_prueba(a):
         "secciones": {"main": {"zoom": 1.0, "caras": 1, "contador": {"label": "PRUEBA", "color": "#2F80ED"}}},
         "gancho": {"top": 820, "dur": 1.5, "elementos": [{"tipo": "texto", "texto": "AUTOPRUEBA", "fuente": "Lilita One", "size": 120}]},
         "fix": {"lópez": "lápiz"}, "objetos": ["cuaderno", "botella"], "zooms": [{"en": "cuaderno", "dur": 1.2, "cx": 0.5, "cy": 0.5}],
-        "sfx": [{"en": "todo", "sfx": "boom", "vol": 0.4}], "etiquetas": [{"en": "mochila", "dur": 1.5, "texto": "ETIQUETA"}]})
-    step('datos', [*me, 'datos', '-p', P], lambda o: 'objetos 2' in o)
+        "sfx": [{"en": "todo", "sfx": "boom", "vol": 0.4}], "etiquetas": [{"en": "mochila", "dur": 1.5, "texto": "ETIQUETA"}],
+        # capas libres de Reel Studio (una de cada tipo)
+        "textos": [{"en": "cuaderno", "dur": 1.5, "texto": "TEXTO LIBRE", "y": 700, "entrada": "deslizar-arriba", "bucle": "flotar",
+                    "claves": [{"t": 0, "dx": -40}, {"t": 1.2, "dx": 40, "escala": 1.2}]}],
+        "formas": [{"en": "botella", "dur": 1.2, "forma": "circulo", "ancho": 300, "y": 1000}],
+        "superpuestos": [{"en": "mochila", "dur": 1.0, "src": "img/prueba.png", "ancho": 360, "x": 760, "y": 520, "entrada": "pop"}],
+        "audios": [{"todo": True, "src": "audio/tono.wav", "vol": 0.05, "fade_in": 0.5, "fade_out": 0.5, "ducking": 0.6}],
+        "ajustes": [{"en": "botella", "dur": 1.0, "filtro": "calido", "vineta": 20}],
+        "transiciones_corte": [{"en": "lápiz", "tipo": "destello"}]})
+    (P / 'public' / 'img').mkdir(parents=True, exist_ok=True)
+    (P / 'public' / 'audio').mkdir(parents=True, exist_ok=True)
+    step('medios', ['ffmpeg', '-nostdin', '-v', 'error', '-y', '-f', 'lavfi', '-i', 'color=c=0xFF5A36:s=400x300', '-frames:v', '1', P / 'public' / 'img' / 'prueba.png'])
+    step('audio', ['ffmpeg', '-nostdin', '-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=f=330:d=30', P / 'public' / 'audio' / 'tono.wav'])
+    step('datos', [*me, 'datos', '-p', P], lambda o: 'objetos 2' in o and 'capas: textos 1 · formas 1 · superpuestos 1 · audios 1 · ajustes 1 · transiciones 1' in o)
     step('revisar', [*me, 'revisar', '-p', P, '20', '90'])
     step('borrador', [*me, 'render', '-p', P, '--borrador'], lambda o: 'borrador' in o)
     step('render', [*me, 'render', '-p', P, '--nota', 'autoprueba'], lambda o: 'ninguno ✓' in o and 'bt709/bt709' in o)

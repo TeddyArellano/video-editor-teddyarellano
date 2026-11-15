@@ -17,8 +17,10 @@ import {Pipeline, BarraTrabajos} from '../pipeline/Pipeline';
 import {PanelClaude} from '../claude/PanelClaude';
 import {Notas} from '../notas/Notas';
 import {Preferencias} from '../preferencias/Preferencias';
+import {Medios} from '../medios/Medios';
 
 const PANELES = [
+  {id: 'medios', n: 'Medios', i: 'medios'},
   {id: 'inspector', n: 'Elementos', i: 'elementos'},
   {id: 'subtitulos', n: 'Subtítulos', i: 'subtitulos'},
   {id: 'estilo', n: 'Estilo', i: 'estilo'},
@@ -278,6 +280,7 @@ export const Editor: React.FC = () => {
             ))}
           </div>
           <div className="min-h-0 flex-1 overflow-auto">
+            {panel === 'medios' && <Medios />}
             {panel === 'inspector' && <Inspector />}
             {panel === 'subtitulos' && <Subtitulos />}
             {panel === 'estilo' && <Estilo />}

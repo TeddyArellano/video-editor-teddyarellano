@@ -1,4 +1,4 @@
-// Composición "Reel": orden de capas = video → b-roll → intro 3D (capa pre-renderizada si existe) → gancho → persona recortada (gancho "detrás") → gráficos → transiciones → cierre → sonido.
+// Composición "Reel": orden de capas = video → b-roll (con ajustes de color y transiciones de corte) → superpuestos → intro 3D (capa pre-renderizada si existe) → gancho → persona recortada (gancho "detrás") → gráficos → subtítulos → formas y textos libres → transiciones → cierre → sonido y pistas de audio.
 // No hace falta tocar este archivo para un video nuevo: el contenido sale de data.json (reel datos) y el look de estilo.json.
 // Estilo vlog: src/vlog.json (vlog.py datos) activa el gancho cinético, los golpes de cámara, el B/N cómico, las ráfagas de fotos y el globo.
 import React from 'react';
@@ -13,6 +13,7 @@ import {Calendario, EmojiSticker, Gamer, Monto} from './components/Extras';
 import {IntroEspacioCapa} from './components/IntroEspacio';
 import {Patrocinadores} from './components/Patrocinadores';
 import {Fechas} from './components/Fechas';
+import {Audios, Formas, Superpuestos, Textos, TransicionesCorte, VideoBase} from './components/Capas';
 import {BRoll, Counter, EndCard, FastBadge, Images, Labels, NameTag, Sound, Transition} from './components/Overlays';
 import {CIERRE_LEN, CUT, D, Datos, E, VLOG, cargarFuentes, derivado, setDatos, totalFrames} from './theme';
 
@@ -42,8 +43,9 @@ export const Reel: React.FC<Datos> = (props) => {
   return <ReelCapas />;
 };
 
-const ReelCapas: React.FC = () => (
-  <AbsoluteFill style={{background: '#000'}}>
+// video + b-roll; con ajustes de color o transiciones de corte (capas de Reel Studio) van dentro de <VideoBase>
+const Base: React.FC = () => (
+  <>
     <Sequence durationInFrames={CUT}>
       <CameraFX />
     </Sequence>
@@ -52,6 +54,20 @@ const ReelCapas: React.FC = () => (
         <BRoll src={b.src} len={b.b - b.a} />
       </Sequence>
     ))}
+  </>
+);
+
+const ReelCapas: React.FC = () => (
+  <AbsoluteFill style={{background: '#000'}}>
+    {D.ajustes?.length || D.tcortes?.length ? (
+      <VideoBase>
+        <Base />
+      </VideoBase>
+    ) : (
+      <Base />
+    )}
+    <TransicionesCorte />
+    <Superpuestos />
     <IntroEspacioCapa />
     <Gamer />
     {GV() ? <GanchoCinetico /> : <Hook capa={D.hook?.detras ? 'detras' : 'todo'} />}
@@ -70,6 +86,8 @@ const ReelCapas: React.FC = () => (
     <Patrocinadores />
     <Fechas />
     <Captions />
+    <Formas />
+    <Textos />
     {D.transitions.map((t, i) => (
       <Sequence key={i} from={t.f} durationInFrames={t.len}>
         <Transition texto={t.texto} a={t.a ?? E.colores.a} b={t.b ?? E.colores.b} len={t.len} />
@@ -81,5 +99,6 @@ const ReelCapas: React.FC = () => (
       </Sequence>
     )}
     <Sound />
+    <Audios />
   </AbsoluteFill>
 );
