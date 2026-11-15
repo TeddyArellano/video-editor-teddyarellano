@@ -10,6 +10,7 @@ import {alAvisar, cancelar, detenerTodo, encolar, encolarCadena, lista} from './
 import {abrir, cerrar, dejarDeVigilarRegistro, infoDe, miniatura, propias, recientes, rutaDe, vigilarRegistro} from './proyectos';
 import {TOOLKIT, entorno, python, reelPy, repoDir, skillDir} from './rutas';
 import {guardarPreferencias, preferencias} from './preferencias';
+import {compilarProyecto} from './compilar';
 import {execFile, execFileSync} from 'node:child_process';
 
 // duración (s) de un video o audio con ffprobe; null si no se puede leer
@@ -80,6 +81,7 @@ const registrarIPC = () => {
     const r = await dialog.showOpenDialog(ventana!, {properties: ['openFile', 'multiSelections'], filters: filtros});
     return r.canceled ? [] : r.filePaths;
   });
+  ipcMain.handle('compilarProyecto', (_e, id: string) => compilarProyecto(rutaDe(id)));
   ipcMain.handle('existe', (_e, r: string) => fs.existsSync(r));
   ipcMain.handle('copiarA', (_e, origen: string, carpeta: string) => {
     const dst = path.join(carpeta, path.basename(origen));

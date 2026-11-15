@@ -21,6 +21,7 @@ const api: ReelAPI = {
   existe: (r) => ipcRenderer.invoke('existe', r),
   copiarA: (o, c) => ipcRenderer.invoke('copiarA', o, c),
   compartir: (r) => ipcRenderer.invoke('compartir', r),
+  compilarProyecto: (id) => ipcRenderer.invoke('compilarProyecto', id),
   abrir: (r) => ipcRenderer.invoke('abrir', r),
   cerrar: (id) => ipcRenderer.invoke('cerrar', id),
   leer: (id, a) => ipcRenderer.invoke('leer', id, a),

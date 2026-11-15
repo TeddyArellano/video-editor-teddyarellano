@@ -55,6 +55,22 @@ const agregarEnCabezal = (l: Lista) => {
   s.set({panel: 'inspector'});
 };
 
+// proyectos con componentes propios: la vista previa los compila (deps.ts); si falla, usa la plantilla ("aproximada")
+const InsigniaPropios: React.FC<{lista: string[]}> = ({lista}) => {
+  const p = useEditor((s) => s.propios);
+  if (p.estado === 'listo')
+    return (
+      <span data-testid="insignia-propios" className="rounded bg-emerald-900/50 px-1.5 py-0.5 text-[10px] text-emerald-200" title={`La vista previa usa los componentes del proyecto (${lista.join(', ')}), igual que el render.`}>
+        componentes del proyecto
+      </span>
+    );
+  return (
+    <span data-testid="insignia-propios" className="rounded bg-violet-900/50 px-1.5 py-0.5 text-[10px] text-violet-200" title={p.estado === 'error' ? `No se pudieron compilar los componentes del proyecto:\n${p.error}\nLa vista previa usa la plantilla de la skill.` : `Compilando los componentes del proyecto (${lista.join(', ')})…`}>
+      {p.estado === 'compilando' ? 'compilando componentes…' : 'vista aproximada'}
+    </span>
+  );
+};
+
 const ALTO_TL = 'reel-alto-timeline';
 const altoInicial = () => {
   try {
@@ -221,11 +237,7 @@ export const Editor: React.FC = () => {
             <span>{sucios.length ? 'guardando…' : 'guardado'}</span>
           </span>
           {pendiente && <span className="rounded bg-acento/20 px-1.5 py-0.5 text-[10px] text-rose-200">recortes sin aplicar</span>}
-          {info.estado.componentesPropios.length > 0 && (
-            <span className="rounded bg-violet-900/50 px-1.5 py-0.5 text-[10px] text-violet-200" title={`El proyecto tiene componentes propios (${info.estado.componentesPropios.join(', ')}). La vista previa usa la plantilla de la skill; el render usa los del proyecto.`}>
-              vista aproximada
-            </span>
-          )}
+          {info.estado.componentesPropios.length > 0 && <InsigniaPropios lista={info.estado.componentesPropios} />}
         </div>
         <div className="flex-1" />
         <div className="flex items-center gap-1.5" style={{WebkitAppRegion: 'no-drag'} as React.CSSProperties}>

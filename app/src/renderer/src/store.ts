@@ -41,6 +41,7 @@ type Estado = Docs & {
   piezaAbierta: number | null; // pieza expandida en el panel Cortes
   calidad: 'proxy' | 'completa';
   panel: string;
+  propios: {estado: 'sin' | 'compilando' | 'listo' | 'error'; error?: string}; // vista previa con componentes del proyecto
   avisos: Aviso[];
   trabajos: Trabajo[];
   verEdicion: number; // sube con cada cambio que afecta data
@@ -86,6 +87,7 @@ export const useEditor = create<Estado>()(
       piezaAbierta: null,
       calidad: 'proxy',
       panel: 'inspector',
+      propios: {estado: 'sin'},
       avisos: [],
       trabajos: [],
       verEdicion: 0,

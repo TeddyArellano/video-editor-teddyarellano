@@ -6,10 +6,13 @@ import {totalFrames, type Data} from '@plantilla/theme';
 import React, {useEffect, useRef, useState} from 'react';
 import {modeloDe, useCortePendiente, useEditor} from '@/store';
 import {VistaPlan} from './VistaPlan';
+import {useComponentesPropios} from '@/deps';
 import {enScrub, player, useReloj} from '@/reloj';
 import {usePropsPlantilla} from '@/plantilla';
 import {Lienzo} from './Lienzo';
 import {aceptaSoltar, soltarEn} from '../medios/importar';
+
+const GAMMA = 1.13;
 
 export const Visor: React.FC = () => {
   const data = useEditor((s) => s.data);
@@ -25,6 +28,12 @@ export const Visor: React.FC = () => {
   }, [pendiente]);
 
   const props = usePropsPlantilla();
+  // proyectos con componentes propios: se compilan al vuelo y la vista previa usa los del proyecto (como el render)
+  const verDatos = useEditor((s) => s.hashes.data);
+  const propios = useComponentesPropios(info, verDatos);
+  useEffect(() => {
+    useEditor.getState().set({propios: {estado: propios.estado, error: propios.error}});
+  }, [propios.estado, propios.error]);
   const total = data ? Math.max(1, totalFrames(data as unknown as Data)) : 1;
 
   useEffect(() => {
@@ -93,10 +102,21 @@ export const Visor: React.FC = () => {
         soltarEn(e, useReloj.getState().frame);
       }}
     >
-      <div className="relative" style={{width: tam.w, height: tam.h}}>
+      {/* corrección de color de la vista previa: el <video> de Chromium muestra los medios tonos más claros que el
+          render (≈ render^0.88, medido contra remotion still); esta gamma solo se aplica a los videos, no a los gráficos */}
+      <svg width="0" height="0" style={{position: 'absolute'}} aria-hidden>
+        <filter id="reel-gamma" colorInterpolationFilters="sRGB">
+          <feComponentTransfer>
+            <feFuncR type="gamma" amplitude={1} exponent={GAMMA} offset={0} />
+            <feFuncG type="gamma" amplitude={1} exponent={GAMMA} offset={0} />
+            <feFuncB type="gamma" amplitude={1} exponent={GAMMA} offset={0} />
+          </feComponentTransfer>
+        </filter>
+      </svg>
+      <div className="relative vista-video" style={{width: tam.w, height: tam.h}}>
         <Player
           ref={ref}
-          component={Reel as unknown as React.FC<Record<string, unknown>>}
+          component={propios.Reel ?? (Reel as unknown as React.FC<Record<string, unknown>>)}
           inputProps={props as unknown as Record<string, unknown>}
           durationInFrames={total}
           compositionWidth={1080}

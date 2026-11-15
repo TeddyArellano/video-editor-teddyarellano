@@ -31,7 +31,7 @@ test('vista previa = render (stills de Remotion)', async () => {
     execFileSync('npx', ['remotion', 'still', 'src/index.ts', 'Reel', still, `--frame=${f}`, '--log=error'], {cwd: FIXTURE});
     const r = JSON.parse(execFileSync(PY, [path.join(__dirname, 'comparar.py'), prev, still]).toString());
     console.log(`cuadro ${f}:`, r);
-    expect(Math.max(...r.brillo.map(Math.abs))).toBeLessThan(16);
+    expect(Math.max(...r.brillo.map(Math.abs))).toBeLessThan(6); // con la gamma de la vista previa (Visor.tsx) el color coincide
     // el <video> de la vista previa puede quedar ±1 cuadro al buscar (el render es exacto): en tomas con mucho
     // movimiento eso sube la media; los gráficos (lo que se edita) coinciden igual
     expect(r.media).toBeLessThan(8);

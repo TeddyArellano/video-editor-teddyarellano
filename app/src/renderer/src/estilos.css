@@ -66,3 +66,8 @@ select {
 :root[data-tema='claro'] #root img {
   filter: invert(1) hue-rotate(180deg);
 }
+
+/* vista previa: gamma de los videos para que coincidan con el render (ver Visor.tsx → #reel-gamma) */
+.vista-video video {
+  filter: url(#reel-gamma);
+}
