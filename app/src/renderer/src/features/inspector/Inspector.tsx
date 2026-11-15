@@ -9,19 +9,40 @@ import {ir, tc, useReloj} from '@/reloj';
 import {Boton, Etiqueta, inputCls, Seccion, Vacio} from '@/ui';
 import {CAMPOS, FUENTES, type Campo} from './campos';
 
-const AGREGAR: Lista[] = ['labels', 'names', 'images', 'montos', 'emojis', 'calendario', 'zooms', 'sfx'];
+const AGREGAR: Lista[] = ['labels', 'names', 'images', 'montos', 'emojis', 'calendario', 'patrocinadores', 'fechas', 'zooms', 'sfx'];
 
 const useArchivosPublic = (sub: string) => {
   const info = useEditor((s) => s.info);
   const [l, setL] = useState<string[]>([]);
   useEffect(() => {
     if (!info) return;
-    const dirs = sub === 'sfx' ? ['public/sfx'] : ['public/logos', 'public/qr', 'public/img', 'public/marca', 'public/perfiles', 'public/broll', 'public/fotos', 'public'];
+    const dirs = sub === 'sfx' ? ['public/sfx'] : ['public/logos', 'public/sponsors', 'public/qr', 'public/img', 'public/marca', 'public/perfiles', 'public/broll', 'public/fotos', 'public'];
     Promise.all(dirs.map(async (d) => (await window.reel.listar(info.id, d)).map((f) => (d === 'public' ? f : `${d.slice(7)}/${f}`)))).then((r) =>
       setL(r.flat().filter((f) => /\.(png|jpe?g|svg|webp|gif|mp4|mov|wav)$/i.test(f) && !/^cut(_proxy|_voz)?\.mp4$/.test(f))),
     );
   }, [info, sub]);
   return l;
+};
+
+// logos de patrocinadores: uno por renglón. Se guarda al salir del campo (así Enter agrega un renglón sin perderse).
+// eventos.json guarda rutas; data.json puede traer {src, ar}.
+const LogosInput: React.FC<{v: unknown; set: (v: unknown) => void; sugerencias: string[]}> = ({v, set, sugerencias}) => {
+  const texto = (Array.isArray(v) ? v : []).map((x) => (typeof x === 'string' ? x : String((x as {src?: string}).src ?? ''))).join('\n');
+  const [borrador, setBorrador] = useState(texto);
+  useEffect(() => setBorrador(texto), [texto]);
+  return (
+    <textarea
+      className={inputCls}
+      rows={Math.max(2, borrador.split('\n').length + 1)}
+      value={borrador}
+      placeholder={sugerencias.filter((f) => f.startsWith('sponsors/') || f.startsWith('logos/')).slice(0, 2).join('\n')}
+      onChange={(e) => setBorrador(e.target.value)}
+      onBlur={() => {
+        const l = borrador.split('\n').map((x) => x.trim()).filter(Boolean);
+        if (l.join('\n') !== texto) set(l);
+      }}
+    />
+  );
 };
 
 const Control: React.FC<{c: Campo; v: unknown; set: (v: unknown) => void}> = ({c, v, set}) => {
@@ -89,6 +110,7 @@ const Control: React.FC<{c: Campo; v: unknown; set: (v: unknown) => void}> = ({c
         onChange={(e) => set(e.target.value === '' ? undefined : Number(e.target.value))}
       />
     );
+  if (c.t === 'logos') return <LogosInput v={v} set={set} sugerencias={archivos} />;
   if (c.t === 'area') return <textarea className={inputCls} rows={2} value={String(v ?? '')} onChange={(e) => set(e.target.value)} />;
   return <input className={inputCls} value={String(v ?? '')} onChange={(e) => set(e.target.value)} />;
 };

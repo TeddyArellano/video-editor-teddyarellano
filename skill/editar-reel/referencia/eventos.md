@@ -68,6 +68,20 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
   // Hoja de calendario (promos): arriba, sin tapar la cara.
   "calendario": [{"en": "6", "hasta": "registrarte", "dia": "6", "mes": "OCTUBRE", "texto": "FECHA LÍMITE"}],
 
+  // Rango de fechas (promos de eventos de varios días; Feria Zumpango 2026): dos hojas "DEL 30 NOVIEMBRE" → "AL 9 DICIEMBRE"
+  // con flecha y letrero final opcional. en = 1ª hoja, segunda = 2ª hoja, flecha = ancla de "al" (cada hoja entra ~4 cuadros
+  // antes de su palabra). Sin segunda/flecha: 1 s después / justo antes. top (1100), tag1/tag2 ("DEL"/"AL"), color1/color2 opcionales.
+  // Mientras se ve no hay subtítulos (ocultar_subs: false para dejarlos). No recibe SFX automático.
+  "fechas": [{"en": "s2:30", "segunda": "s2:9", "flecha": "s2:al", "hasta": "s3:No",
+              "dia1": "30", "mes1": "NOVIEMBRE", "dia2": "9", "mes2": "DICIEMBRE", "banner": "¡10 DÍAS DE FERIA!"}],
+
+  // Patrocinadores (logos en fila arriba o abajo, 1–3 por grupo, entran con rebote desde los bordes). Copia los logos a
+  // public/sponsors/; reel datos calcula su proporción. Reparte los grupos a lo largo del video (se pueden encimar unos
+  // cuadros arriba/abajo); el último puede llegar al final con un dur grande. top opcional (arriba 215, abajo 1330).
+  // NO se mueven por el gancho (van en las esquinas) y no reciben SFX automático.
+  "patrocinadores": [{"en": 0.2, "hasta": 3.07, "fila": "arriba", "logos": ["sponsors/akro.png", "sponsors/vw.png"]},
+                     {"en": 10.07, "dur": 99, "fila": "abajo", "logos": ["sponsors/comepz.png", "sponsors/cu_victoria.png"]}],
+
   // Contador: cada ancla suma 1 en el contador de su sección y resalta la palabra. SFX automático (estilo.sfx_auto.objeto).
   "objetos": ["juan:Luigi", "juan:mazapán", "juan:inhalador#2", "radio:audífonos"],
 
@@ -114,7 +128,7 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
 `"cortes": ["sec:palabra#n", …]`: esa palabra empieza un bloque de subtítulos nuevo (además de los cortes automáticos por puntuación, sección y tramo). Lo usa Reel Studio en el panel Subtítulos.
 
 ## Posición libre (Reel Studio)
-`nombres`, `etiquetas`, `imagenes`, `montos`, `emojis`, `calendario` y los `elementos` del gancho aceptan además:
+`nombres`, `etiquetas`, `imagenes`, `montos`, `emojis`, `calendario`, `fechas`, `patrocinadores` y los `elementos` del gancho aceptan además:
 - `dx`, `dy`: desplazamiento en px sobre su posición normal (lienzo 1080×1920; `dy` positivo = hacia abajo).
 - `escala`: 1 = tamaño normal.
 - `rot`: grados. En los elementos del gancho `rot` ya existía (giro propio del elemento) y se respeta igual.
@@ -122,7 +136,7 @@ La comparación ignora mayúsculas, acentos y puntuación. `reel datos` valida t
 Sin estos campos todo se dibuja exactamente como antes. Los escribe Reel Studio al arrastrar un elemento en el lienzo; se pueden editar a mano. Mantén el elemento dentro de la zona segura (x 125–905, y 260–1500).
 
 ## Reglas automáticas de `reel datos`
-- Nombres, etiquetas, imágenes, montos, emojis o calendario que empezarían durante el gancho se mueven a cuando termina (misma duración).
+- Nombres, etiquetas, imágenes, montos, emojis, calendario o fechas que empezarían durante el gancho se mueven a cuando termina (misma duración). Los patrocinadores no.
 - Las imágenes `arriba` y los emojis se colocan debajo de lo que ocupe la esquina superior (contador, insignia x2, nombre) durante toda su duración.
 - Con una tarjeta `abajo` (QR), los subtítulos suben arriba solos.
 - Los subtítulos se parten en cada cambio de pieza del plan (`corte`), así no mezclan frases distintas.
@@ -144,4 +158,4 @@ Sin estos campos todo se dibuja exactamente como antes. Los escribe Reel Studio 
   `ffmpeg -ss <inicio> -t <dur> -i sdr.mp4 -an -vf "fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920" -c:v libx264 -crf 17 P/public/broll/x.mp4`
 
 ## Qué genera `reel datos` → `src/data.json`
-`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. Cada elemento de `names`, `labels`, `images`, `broll`, `montos`, `emojis` y `calendario` lleva `ev` (su índice en la lista de `eventos.json`) y, si los tiene, `dx`/`dy`/`escala`/`rot`. Los componentes en `src/components/` leen solo esto y `estilo.json`.
+`n`, `words`, `intro3d` (`fin`, `t`, `monedas`, `capa`) (`text`, `start`, `end`, `sec`, `key`, `corte`), `montos`, `emojis`, `calendario`, `patrocinadores` (`fila`, `logos[]` con `src`/`ar`, `top`), `fechas` (`f2`, `fl`, `dia1`…), `secs` (`id`, `a`, `b`, `zoom`, `color`, `contador`), `track` (`x[]`, `y[]` por cuadro), `fast`, `items`, `zooms`, `names`, `labels`, `images`, `broll`, `transitions`, `sfx`, `hook`, `hookEnd`, `hookfg`, `cierre` y `musica`. Todo está en cuadros, a 30 fps. `patrocinadores` y `fechas` solo aparecen si `eventos.json` los trae. Cada elemento de `names`, `labels`, `images`, `broll`, `montos`, `emojis`, `calendario`, `patrocinadores` y `fechas` lleva `ev` (su índice en la lista de `eventos.json`) y, si los tiene, `dx`/`dy`/`escala`/`rot`. Los componentes en `src/components/` leen solo esto y `estilo.json`.

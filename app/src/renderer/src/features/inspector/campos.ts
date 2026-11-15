@@ -3,7 +3,7 @@ import type {Lista} from '@shared/elementos';
 
 export type Campo = {
   k: string;
-  t: 'texto' | 'area' | 'num' | 'color' | 'bool' | 'opcion' | 'archivo' | 'sfx' | 'fuente';
+  t: 'texto' | 'area' | 'num' | 'color' | 'bool' | 'opcion' | 'archivo' | 'sfx' | 'fuente' | 'logos';
   n: string; // etiqueta visible
   op?: string[];
   min?: number;
@@ -49,6 +49,26 @@ export const CAMPOS: Record<Lista, Campo[]> = {
     {k: 'texto', t: 'texto', n: 'Texto'},
     {k: 'top', t: 'num', n: 'Y (top)', paso: 10},
     {k: 'color', t: 'color', n: 'Color'},
+    ...LIBRE,
+  ],
+  patrocinadores: [
+    {k: 'logos', t: 'logos', n: 'Logos (public/)', ayuda: 'uno por renglón, en orden de izquierda a derecha (1–3)'},
+    {k: 'fila', t: 'opcion', n: 'Fila', op: ['arriba', 'abajo']},
+    {k: 'top', t: 'num', n: 'Y (top)', paso: 10},
+    ...LIBRE,
+  ],
+  fechas: [
+    {k: 'dia1', t: 'texto', n: 'Día 1'},
+    {k: 'mes1', t: 'texto', n: 'Mes 1'},
+    {k: 'tag1', t: 'texto', n: 'Etiqueta 1 (DEL)'},
+    {k: 'color1', t: 'color', n: 'Color 1'},
+    {k: 'dia2', t: 'texto', n: 'Día 2'},
+    {k: 'mes2', t: 'texto', n: 'Mes 2'},
+    {k: 'tag2', t: 'texto', n: 'Etiqueta 2 (AL)'},
+    {k: 'color2', t: 'color', n: 'Color 2'},
+    {k: 'banner', t: 'texto', n: 'Letrero final', ayuda: 'p. ej. ¡10 DÍAS DE FERIA!'},
+    {k: 'top', t: 'num', n: 'Y (top)', paso: 10},
+    {k: 'ocultar_subs', t: 'bool', n: 'Ocultar subtítulos (sin marcar = por defecto sí)'},
     ...LIBRE,
   ],
   broll: [{k: 'src', t: 'archivo', n: 'Video (public/)'}],

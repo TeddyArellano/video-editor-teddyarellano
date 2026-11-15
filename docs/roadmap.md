@@ -9,7 +9,7 @@
   Se puede hacer sin cambiar la edición: `reel sdr` + reconstruir el master con la misma EDL. Google Summit e Interpolitécnicos eran SDR y están bien.
 - [ ] **Mochila: subir a Juan +5.4 dB** (`reel niveles --aplicar`) para que suene igual que Radio.
 - [ ] Primer video **real nuevo** de punta a punta con la skill, incluida una ronda de notas en la página de revisión.
-- [ ] Commit inicial y push de este repo (cuando el creador lo pida).
+- [x] Commit inicial y push de este repo (GitHub, noviembre 2026).
 
 ## Reel Studio: pendientes
 - **Extender un tramo más allá del corte actual:** ya se puede, pero lo agregado solo se ve y se oye después de aplicar.

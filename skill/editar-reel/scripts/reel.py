@@ -1112,7 +1112,7 @@ def _datos(pr):
     def walk(o):
         if isinstance(o, dict):
             for k, v in o.items():
-                if k in ('en', 'hasta', 'monedas') and v is not None:
+                if k in ('en', 'hasta', 'monedas', 'segunda', 'flecha') and v is not None:
                     for an in (v if isinstance(v, list) else [v]):  # intro_espacio.en es una lista de anclas
                         try:
                             A.t(an)
@@ -1197,6 +1197,32 @@ def _datos(pr):
     emojis = [dict(zip(('a', 'b'), span(x, 2.0)), emoji=x['emoji'], texto=x.get('texto'), **libre(x, j)) for j, x in enumerate(ev.get('emojis', []))]
     calendario = [dict(zip(('a', 'b'), span(x, 2.5)), dia=str(x['dia']), mes=x['mes'], **{k: x[k] for k in ('texto', 'top', 'color') if k in x}, **libre(x, j))
                   for j, x in enumerate(ev.get('calendario', []))]
+    # patrocinadores (logos en fila arriba/abajo): ar = ancho/alto de cada logo, leído de public/
+    def logo_ar(l):
+        if isinstance(l, dict):
+            return {"src": l['src'], "ar": l.get('ar') or logo_ar(l['src'])['ar']}
+        from PIL import Image
+        try:
+            with Image.open(pr.P / 'public' / l) as im:
+                return {"src": l, "ar": round(im.width / im.height, 3)}
+        except (OSError, ValueError):
+            print(f"  ⚠ patrocinadores: no pude leer public/{l} (uso proporción 1:1)")
+            return {"src": l, "ar": 1.0}
+    patrocinadores = [dict(zip(('a', 'b'), span(x, 3.0)), fila=x.get('fila', 'arriba'), logos=[logo_ar(l) for l in x.get('logos', [])],
+                           **({'top': x['top']} if 'top' in x else {}), **libre(x, j))
+                      for j, x in enumerate(ev.get('patrocinadores', []))]
+    for x in patrocinadores:
+        x['b'] = min(x['b'], n)
+    # rango de fechas (2 hojas de calendario + flecha): cada hoja entra un poco antes de su palabra
+    fechas = []
+    for j, x in enumerate(ev.get('fechas', [])):
+        a0 = A.f(x['en'], x.get('offset', -0.13))
+        f2 = A.f(x['segunda'], -0.13) if x.get('segunda') is not None else a0 + 30
+        fl = A.f(x['flecha'], -0.1) if x.get('flecha') is not None else f2 - 6
+        b0 = A.f(x['hasta']) if x.get('hasta') is not None else max(f2 + 30, a0 + round(x.get('dur', 3.0) * FPS))
+        fechas.append({"a": a0, "b": min(b0, n), "f2": f2, "fl": fl, "dia1": str(x.get('dia1', '1')), "mes1": x.get('mes1', ''),
+                       "dia2": str(x.get('dia2', '1')), "mes2": x.get('mes2', ''),
+                       **{k: x[k] for k in ('tag1', 'tag2', 'color1', 'color2', 'banner', 'top', 'ocultar_subs') if k in x}, **libre(x, j)})
     trans = []
     for t in ev.get('transiciones', []):
         s = next(x for x in secs if x['id'] == t['antes_de'])
@@ -1215,6 +1241,12 @@ def _datos(pr):
                 if x['a'] < hook_end:
                     d0 = x['b'] - x['a']
                     x['a'], x['b'] = hook_end + 4, hook_end + 4 + d0
+        # el rango de fechas se recorre entero (hojas y flecha conservan su ritmo). Los patrocinadores NO: van en las esquinas.
+        for x in fechas:
+            if x['a'] < hook_end:
+                d0 = hook_end + 4 - x['a']
+                for k in ('a', 'b', 'f2', 'fl'):
+                    x[k] += d0
     # SFX: manuales + automáticos según el estilo
     auto = est.get('sfx_auto', {})
     sfx = []
@@ -1267,6 +1299,10 @@ def _datos(pr):
             "names": names, "labels": labels, "images": images, "broll": broll, "transitions": trans, "sfx": sfx,
             "hook": hook, "hookEnd": hook_end, "hookfg": hookfg, "cierre": ev.get('cierre'), "musica": ev.get('musica'),
             "montos": montos, "emojis": emojis, "calendario": calendario, "intro3d": intro3d}
+    if patrocinadores:
+        data["patrocinadores"] = patrocinadores
+    if fechas:
+        data["fechas"] = fechas
     if intro3d:
         c = capa_path(pr, data)
         if (pr.P / 'public' / c).exists():
