@@ -5,7 +5,7 @@
 // El cabezal se mueve por DOM directo y los bloques van memoizados: reproducir o arrastrar no redibuja las pistas.
 import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {CHUNKS} from '@plantilla/components/Captions';
-import {ajustarBorde, objetivoBorde, rangoAPalabras, type BloqueCorte, type ModeloCorte, type Plan} from '@shared/cortes';
+import {ajustarBorde, destinoPieza, moverPiezaA, objetivoBorde, rangoAPalabras, type BloqueCorte, type ModeloCorte, type Plan} from '@shared/cortes';
 import {aplicarTiempo, bloques, LISTAS, LISTAS_TIEMPO, type Bloque, type Lista, type Obj, type Sel} from '@shared/elementos';
 import {useEditor, useModeloCorte} from '@/store';
 import {irSuave, ir, tc, useReloj} from '@/reloj';
@@ -47,8 +47,8 @@ const BloqueElemento = React.memo<{b: Bloque; carril: number; ppc: number; activ
   );
 });
 
-const BloqueTramo = React.memo<{b: BloqueCorte; m: ModeloCorte; ppc: number; activo: boolean; arr: ArrBorde | null; alBorde: (b: BloqueCorte, lado: 'ini' | 'fin', e: React.PointerEvent) => void; alBloque: (b: BloqueCorte, e: React.PointerEvent) => void; alDoble: (b: BloqueCorte) => void}>(
-  ({b, m, ppc, activo, arr, alBorde, alBloque, alDoble}) => {
+const BloqueTramo = React.memo<{b: BloqueCorte; m: ModeloCorte; ppc: number; activo: boolean; arr: ArrBorde | null; moviendo: number | null; alBorde: (b: BloqueCorte, lado: 'ini' | 'fin', e: React.PointerEvent) => void; alBloque: (b: BloqueCorte, e: React.PointerEvent) => void; alDoble: (b: BloqueCorte) => void; alAsa: (b: BloqueCorte, e: React.PointerEvent) => void}>(
+  ({b, m, ppc, activo, arr, moviendo, alBorde, alBloque, alDoble, alAsa}) => {
     const a = arr ? arr.a : b.a;
     const fin = arr ? arr.b : b.b;
     const w = Math.max(3, (fin - a) * ppc);
@@ -60,7 +60,7 @@ const BloqueTramo = React.memo<{b: BloqueCorte; m: ModeloCorte; ppc: number; act
         data-a={b.a}
         data-b={b.b}
         className={`group absolute overflow-hidden rounded-[5px] text-[10px] leading-none ${b.quitada ? 'rayado text-rose-200/80' : b.speed !== 1 ? 'bg-orange-900/80 text-orange-50' : 'bg-zinc-700 text-zinc-50'} ${activo ? 'z-10 ring-[1.5px] ring-acento' : ''} ${arr ? 'opacity-80' : ''}`}
-        style={{left: ETIQUETA + a * ppc, width: w, height: ALTO_CORTE, top: 3}}
+        style={{left: ETIQUETA + a * ppc, width: w, height: ALTO_CORTE, top: 3, ...(moviendo !== null ? {transform: `translateX(${moviendo}px)`, zIndex: 25, boxShadow: '0 0 0 2px #38bdf8, 0 6px 18px rgba(0,0,0,.6)'} : {})}}
         onPointerDown={(e) => alBloque(b, e)}
         onDoubleClick={() => alDoble(b)}
         title={`${b.quitada ? 'Se quitará al aplicar · ' : ''}${tc(b.a)}–${tc(b.b)} · ${b.src}${b.speed !== 1 ? ` ×${b.speed}` : ''}\n${b.texto}`}
@@ -77,6 +77,10 @@ const BloqueTramo = React.memo<{b: BloqueCorte; m: ModeloCorte; ppc: number; act
         {arr && <div className="pointer-events-none absolute inset-x-0 top-0 h-[3px] bg-acento" />}
         {!b.quitada && (
           <>
+            {/* asa para reordenar: arrastrar el tramo (su pieza completa) a otra posición */}
+            <div data-testid={`corte-asa-${b.id}`} title="Arrastra para mover este tramo a otra posición" className="absolute top-0 left-2.5 right-2.5 z-10 h-[9px] cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing" onPointerDown={(e) => alAsa(b, e)}>
+              <div className="mx-auto mt-[3px] h-[3px] w-6 rounded-full bg-white/70" />
+            </div>
             <div data-testid={`corte-borde-ini-${b.id}`} className="absolute top-0 left-0 h-full w-2.5 cursor-col-resize border-l-2 border-transparent group-hover:border-acento" onPointerDown={(e) => alBorde(b, 'ini', e)} />
             <div data-testid={`corte-borde-fin-${b.id}`} className="absolute top-0 right-0 h-full w-2.5 cursor-col-resize border-r-2 border-transparent group-hover:border-acento" onPointerDown={(e) => alBorde(b, 'fin', e)} />
           </>
@@ -138,6 +142,7 @@ export const Timeline: React.FC = () => {
   const [arr, setArr] = useState<ArrElemento | null>(null);
   const [arrBorde, setArrBorde] = useState<ArrBorde | null>(null);
   const [arrRango, setArrRango] = useState<{a: number; b: number} | null>(null);
+  const [arrPieza, setArrPieza] = useState<{pieza: number; dx: number; x: number} | null>(null);
   const anclaZoom = useRef<{f: number; x: number} | null>(null);
   const vivo = useRef({ppc, total, m});
   vivo.current = {ppc, total, m};
@@ -403,6 +408,34 @@ export const Timeline: React.FC = () => {
   };
   const alBorde = useRef((b: BloqueCorte, lado: 'ini' | 'fin', e: React.PointerEvent) => refBorde.current(b, lado, e)).current;
 
+  // ---- reordenar: arrastrar un tramo por su asa → la pieza del plan cambia de lugar (se ve al aplicar)
+  const refAsa = useRef<(b: BloqueCorte, e: React.PointerEvent) => void>(() => {});
+  refAsa.current = (b, e) => {
+    e.stopPropagation();
+    if (e.button !== 0) return;
+    const mod = vivo.current.m;
+    if (!mod || b.pieza < 0) return;
+    const x0 = e.clientX;
+    let dest: {j: number; x: number} | null = null;
+    seguirPuntero(
+      (ev) => {
+        if (Math.abs(ev.clientX - x0) < 4) return;
+        dest = destinoPieza(mod, b.pieza, cuadroDe(ev));
+        setArrPieza({pieza: b.pieza, dx: ev.clientX - x0, x: dest.x});
+      },
+      () => {
+        setArrPieza(null);
+        const s = useEditor.getState();
+        if (!dest || !s.plan) return;
+        const plan = moverPiezaA(s.plan as Plan, b.pieza, dest.j);
+        if (JSON.stringify(plan.piezas) === JSON.stringify((s.plan as Plan).piezas)) return;
+        s.editar({plan});
+        s.avisar('info', 'Tramo movido · Enter o "Aplicar recortes" para regenerar el video');
+      },
+    );
+  };
+  const alAsa = useRef((b: BloqueCorte, e: React.PointerEvent) => refAsa.current(b, e)).current;
+
   // arrastrar sobre el corte o sobre el fondo selecciona un rango (ajustado a palabras al soltar); un clic solo llama a alClic
   const empezarRango = (f0: number, e: React.PointerEvent, alClic: () => void) => {
     const x0 = e.clientX;
@@ -551,7 +584,7 @@ export const Timeline: React.FC = () => {
             fila(
               'Corte',
               m.bloques.map((b) => (
-                <BloqueTramo key={`${b.id}-${b.a}`} b={b} m={m} ppc={ppc} activo={!!rango && b.a >= rango.a && b.b <= rango.b} arr={arrBorde?.id === b.id ? arrBorde : null} alBorde={alBorde} alBloque={alBloque} alDoble={alDoble} />
+                <BloqueTramo key={`${b.id}-${b.a}`} b={b} m={m} ppc={ppc} activo={!!rango && b.a >= rango.a && b.b <= rango.b} arr={arrBorde?.id === b.id ? arrBorde : null} moviendo={arrPieza?.pieza === b.pieza ? arrPieza.dx : null} alBorde={alBorde} alBloque={alBloque} alDoble={alDoble} alAsa={alAsa} />
               )),
               'corte',
               ALTO_CORTE,
@@ -596,6 +629,7 @@ export const Timeline: React.FC = () => {
             )}
           {/* rango seleccionado */}
           {rangoVis && <div data-testid="rango" data-a={rangoVis.a} data-b={rangoVis.b} className="pointer-events-none absolute top-5 bottom-0 z-[15] border-x border-acento bg-acento/15" style={{left: X(rangoVis.a), width: Math.max(1, (rangoVis.b - rangoVis.a) * ppc)}} />}
+          {arrPieza && <div data-testid="guia-mover-tramo" className="pointer-events-none absolute top-5 bottom-0 z-30 w-[3px] -translate-x-1/2 bg-sky-400" style={{left: X(arrPieza.x)}} />}
           {/* imán activo */}
           {arr?.guia != null && <div data-testid="guia-iman" className="pointer-events-none absolute top-0 bottom-0 z-30 w-px bg-amber-300" style={{left: X(arr.guia)}} />}
           <div ref={guiaSoltar} data-testid="guia-soltar" className="pointer-events-none absolute top-0 bottom-0 left-0 z-30 w-0.5 bg-sky-400" style={{display: 'none'}} />

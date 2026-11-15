@@ -1,5 +1,5 @@
 // Proceso principal de Reel Studio.
-import {BrowserWindow, app, clipboard, dialog, ipcMain, shell} from 'electron';
+import {BrowserWindow, ShareMenu, app, clipboard, dialog, ipcMain, shell} from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import {ARCHIVOS, type Archivo, type CambioArchivo, type EventoClaude, type Herramientas, type Trabajo} from '../shared/tipos';
@@ -79,6 +79,16 @@ const registrarIPC = () => {
   ipcMain.handle('elegirArchivos', async (_e, filtros?: {name: string; extensions: string[]}[]) => {
     const r = await dialog.showOpenDialog(ventana!, {properties: ['openFile', 'multiSelections'], filters: filtros});
     return r.canceled ? [] : r.filePaths;
+  });
+  ipcMain.handle('existe', (_e, r: string) => fs.existsSync(r));
+  ipcMain.handle('copiarA', (_e, origen: string, carpeta: string) => {
+    const dst = path.join(carpeta, path.basename(origen));
+    if (path.resolve(dst) !== path.resolve(origen)) fs.copyFileSync(origen, dst);
+    return dst;
+  });
+  ipcMain.handle('compartir', (_e, rutas: string[]) => {
+    const r = rutas.filter((f) => fs.existsSync(f));
+    if (r.length && ventana) new ShareMenu({filePaths: r}).popup({window: ventana});
   });
   ipcMain.handle('duracionMedio', (_e, id: string, rel: string) => duracionMedio(dentro(path.join(rutaDe(id), 'public'), rel)));
   ipcMain.handle('abrir', (_e, ruta: string) => abrir(ruta, (c: CambioArchivo) => enviar('cambio', c)));

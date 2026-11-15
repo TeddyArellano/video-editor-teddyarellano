@@ -4,7 +4,8 @@ import {Player, type PlayerRef} from '@remotion/player';
 import {Reel} from '@plantilla/Reel';
 import {totalFrames, type Data} from '@plantilla/theme';
 import React, {useEffect, useRef, useState} from 'react';
-import {modeloDe, useEditor} from '@/store';
+import {modeloDe, useCortePendiente, useEditor} from '@/store';
+import {VistaPlan} from './VistaPlan';
 import {enScrub, player, useReloj} from '@/reloj';
 import {usePropsPlantilla} from '@/plantilla';
 import {Lienzo} from './Lienzo';
@@ -17,6 +18,11 @@ export const Visor: React.FC = () => {
   const caja = useRef<HTMLDivElement>(null);
   const [tam, setTam] = useState({w: 360, h: 640});
   const [guias, setGuias] = useState(true);
+  const pendiente = useCortePendiente();
+  const [verPlan, setVerPlan] = useState(false);
+  useEffect(() => {
+    if (!pendiente) setVerPlan(false);
+  }, [pendiente]);
 
   const props = usePropsPlantilla();
   const total = data ? Math.max(1, totalFrames(data as unknown as Data)) : 1;
@@ -104,7 +110,26 @@ export const Visor: React.FC = () => {
           numberOfSharedAudioTags={8}
         />
         <Lienzo escala={tam.w / 1080} guias={guias} />
+        {verPlan && (
+          <div className="absolute inset-0 z-30 bg-black">
+            <VistaPlan w={tam.w} h={tam.h} />
+          </div>
+        )}
       </div>
+      {pendiente && (
+        <button
+          data-testid="ver-plan"
+          className={`absolute top-2 right-2 rounded px-2 py-1 text-[11px] ${verPlan ? 'bg-sky-600 text-white' : 'bg-zinc-800/90 text-zinc-200 hover:bg-zinc-700'}`}
+          onClick={() => {
+            player.ref?.pause();
+            setVerPlan(!verPlan);
+          }}
+          title="Reproduce los recortes sin aplicar (orden nuevo y tramos extendidos) directamente desde los clips originales. Solo video y voz."
+        >
+          {verPlan ? '✕ Volver a la vista del video' : '▶ Ver recortes sin aplicar'}
+        </button>
+      )}
+      {verPlan && <div className="absolute top-9 right-2 max-w-[220px] rounded bg-black/70 px-2 py-1 text-[10px] text-zinc-300">Vista del plan: orden y tramos nuevos desde los clips originales, sin gráficos. Aplica (Enter) para ver el resultado final.</div>}
       <button
         className="absolute bottom-2 right-2 rounded bg-zinc-800/80 px-2 py-1 text-[11px] text-zinc-300 hover:bg-zinc-700"
         onClick={() => setGuias(!guias)}

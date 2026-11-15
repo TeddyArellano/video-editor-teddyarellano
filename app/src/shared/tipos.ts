@@ -66,7 +66,7 @@ export type CambioArchivo = {proyecto: string; archivo: Archivo | 'public/cut.mp
 
 export type Herramientas = {python: string; reel: string; skill: string; toolkit: boolean; detalles: string[]};
 
-export type Preferencias = {skill: string; python: string; tema: 'oscuro' | 'claro'; calidad: 'proxy' | 'completa'};
+export type Preferencias = {skill: string; python: string; tema: 'oscuro' | 'claro'; calidad: 'proxy' | 'completa'; atajos?: Record<string, string[]>};
 
 export type EstadoActualizacion = {repo: string; rama: string; atras: number; adelante: number; cambiosLocales: boolean; ultimo: string; error?: string};
 
@@ -81,6 +81,9 @@ export type ReelAPI = {
   elegirArchivos: (filtros?: {name: string; extensions: string[]}[]) => Promise<string[]>;
   rutaDeArchivo: (f: File) => string; // archivo soltado desde Finder → ruta en disco
   duracionMedio: (id: string, rel: string) => Promise<number | null>; // s de un video/audio de public/
+  existe: (ruta: string) => Promise<boolean>;
+  copiarA: (origen: string, carpeta: string) => Promise<string>; // copia un archivo a otra carpeta (exportar)
+  compartir: (rutas: string[]) => Promise<void>; // menú Compartir de macOS (AirDrop, Mensajes, Mail…)
   abrir: (ruta: string) => Promise<Snapshot>;
   cerrar: (id: string) => Promise<void>;
   leer: (id: string, archivo: Archivo) => Promise<ContenidoArchivo>;

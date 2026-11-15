@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type {Preferencias} from '../shared/tipos';
 
-export const PREF_DEFECTO: Preferencias = {skill: '', python: '', tema: 'oscuro', calidad: 'proxy'};
+export const PREF_DEFECTO: Preferencias = {skill: '', python: '', tema: 'oscuro', calidad: 'proxy', atajos: {}};
 const archivo = () => path.join(app.getPath('userData'), 'preferencias.json');
 let cache: Preferencias | null = null;
 

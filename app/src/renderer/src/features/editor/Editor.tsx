@@ -1,6 +1,8 @@
 // Editor: barra superior, vista previa (centro), paneles (derecha) y línea de tiempo (abajo, con altura ajustable). Atajos de teclado.
 import React, {useEffect, useState} from 'react';
-import {cargarPalabras, guardar, hayCortePendiente, pedirDatos, useCortePendiente, useEditor} from '@/store';
+import {atajos, cargarPalabras, guardar, hayCortePendiente, pedirDatos, useCortePendiente, useEditor} from '@/store';
+import {accionDe} from '@shared/atajos';
+import {agregarClave, agregarEvento, LISTAS, type Lista} from '@shared/elementos';
 import {alternar, ir, mover, tc, useReloj} from '@/reloj';
 import {historial} from '@/historial';
 import {Boton} from '@/ui';
@@ -18,6 +20,7 @@ import {PanelClaude} from '../claude/PanelClaude';
 import {Notas} from '../notas/Notas';
 import {Preferencias} from '../preferencias/Preferencias';
 import {Medios} from '../medios/Medios';
+import {Exportar} from '../exportar/Exportar';
 
 const PANELES = [
   {id: 'medios', n: 'Medios', i: 'medios'},
@@ -33,6 +36,23 @@ const PANELES = [
 const enCampo = (e: KeyboardEvent) => {
   const t = e.target as HTMLInputElement;
   return t && ((t.tagName === 'INPUT' && t.type !== 'range') || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable);
+};
+
+// fotograma clave del elemento seleccionado en el cabezal (atajo ⌥K)
+const claveEnCabezal = () => {
+  const s = useEditor.getState();
+  if (!s.sel || !s.data || s.sel.lista === 'hook' || !LISTAS[s.sel.lista].movible) return;
+  const r = agregarClave(s.data, s.eventos ?? {}, s.sel, useReloj.getState().frame);
+  s.editar({data: r.data, eventos: r.eventos});
+  s.avisar('info', 'Fotograma clave agregado');
+};
+const agregarEnCabezal = (l: Lista) => {
+  const s = useEditor.getState();
+  if (!s.data) return;
+  const r = agregarEvento(s.data, s.eventos ?? {}, l, useReloj.getState().frame);
+  s.editar({data: r.data, eventos: r.eventos});
+  s.seleccionar(r.sel);
+  s.set({panel: 'inspector'});
 };
 
 const ALTO_TL = 'reel-alto-timeline';
@@ -97,6 +117,7 @@ export const Editor: React.FC = () => {
   const sucios = useEditor((s) => s.sucios);
   const pendiente = useCortePendiente();
   const [pref, setPref] = useState(false);
+  const [exportar, setExportar] = useState(false);
   const [altoTL, setAltoTL] = useState(altoInicial);
 
   useEffect(() => {
@@ -106,79 +127,50 @@ export const Editor: React.FC = () => {
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
       if (enCampo(e)) return;
-      const cmd = e.metaKey || e.ctrlKey;
-      const tecla = e.key.toLowerCase();
-      if (cmd) {
-        if (tecla === 'z') (e.preventDefault(), historial(e.shiftKey ? 'rehacer' : 'deshacer'));
-        else if (tecla === 's') (e.preventDefault(), guardar(true));
-        else if (tecla === 'b') (e.preventDefault(), dividir());
-        else if (tecla === 'd') (e.preventDefault(), duplicarElemento());
-        return;
-      }
+      const id = accionDe(e, atajos.mapa);
+      if (!id) return;
       const v = useVista.getState();
-      switch (tecla) {
-        case ' ':
-        case 'k':
-          e.preventDefault();
-          return alternar();
-        case 'arrowleft':
-          return mover(e.shiftKey ? -30 : -1);
-        case 'arrowright':
-          return mover(e.shiftKey ? 30 : 1);
-        case 'arrowup':
-          e.preventDefault();
-          return irCorte(-1);
-        case 'arrowdown':
-          e.preventDefault();
-          return irCorte(1);
-        case 'j':
-          return mover(-30);
-        case 'l':
-          return mover(30);
-        case 'home':
-          return ir(0);
-        case 'end':
-          return ir(useReloj.getState().total - 1);
-        case 'escape':
-          v.set({rango: null, herramienta: 'seleccion'});
-          return useEditor.getState().seleccionar(null);
-        case 's':
-          return dividir();
-        case 'q':
-          return recortar('ini');
-        case 'w':
-          return recortar('fin');
-        case 'x':
-        case 'delete':
-        case 'backspace':
-          return quitarSeleccion();
-        case 'r':
-          return restaurarSeleccion();
-        case 'i':
-          return marcar('a');
-        case 'o':
-          return marcar('b');
-        case 'b':
-          return v.set({herramienta: 'cuchilla'});
-        case 'v':
-          return v.set({herramienta: 'seleccion'});
-        case 'n':
-          return v.set({iman: !v.iman});
-        case 'enter':
-          if (hayCortePendiente(useEditor.getState())) aplicar();
-          return;
-        case ',':
-          return empujarElemento(e.shiftKey ? -5 : -1);
-        case '.':
-          return empujarElemento(e.shiftKey ? 5 : 1);
-        case '+':
-        case '=':
-          return zoomVista.aplicar(1.5);
-        case '-':
-          return zoomVista.aplicar(1 / 1.5);
-        case '0':
-          return zoomVista.ajustar();
-      }
+      const hacer: Record<string, () => unknown> = {
+        play: alternar,
+        cuadroAtras: () => mover(-1),
+        cuadroAdelante: () => mover(1),
+        segAtras: () => mover(-30),
+        segAdelante: () => mover(30),
+        inicio: () => ir(0),
+        fin: () => ir(useReloj.getState().total - 1),
+        corteAnterior: () => irCorte(-1),
+        corteSiguiente: () => irCorte(1),
+        deshacer: () => historial('deshacer'),
+        rehacer: () => historial('rehacer'),
+        guardar: () => guardar(true),
+        exportar: () => setExportar(true),
+        dividir: () => dividir(),
+        duplicar: () => duplicarElemento(),
+        recortarIni: () => recortar('ini'),
+        recortarFin: () => recortar('fin'),
+        marcarA: () => marcar('a'),
+        marcarB: () => marcar('b'),
+        quitar: () => quitarSeleccion(),
+        recuperar: () => restaurarSeleccion(),
+        aplicar: () => hayCortePendiente(useEditor.getState()) && aplicar(),
+        empujarAtras: () => empujarElemento(-1),
+        empujarAdelante: () => empujarElemento(1),
+        empujarAtras5: () => empujarElemento(-5),
+        empujarAdelante5: () => empujarElemento(5),
+        clave: () => claveEnCabezal(),
+        texto: () => agregarEnCabezal('textos'),
+        deseleccionar: () => (v.set({rango: null, herramienta: 'seleccion'}), useEditor.getState().seleccionar(null)),
+        cuchilla: () => v.set({herramienta: 'cuchilla'}),
+        seleccion: () => v.set({herramienta: 'seleccion'}),
+        iman: () => v.set({iman: !v.iman}),
+        acercar: () => zoomVista.aplicar(1.5),
+        alejar: () => zoomVista.aplicar(1 / 1.5),
+        verTodo: () => zoomVista.ajustar(),
+      };
+      if (!hacer[id]) return;
+      // las flechas arriba/abajo, Espacio y las de ⌘ no deben llegar al navegador (desplazar, guardar página…)
+      if (['play', 'corteAnterior', 'corteSiguiente', 'deshacer', 'rehacer', 'guardar', 'exportar', 'duplicar', 'clave'].includes(id) || e.metaKey || e.ctrlKey) e.preventDefault();
+      hacer[id]();
     };
     window.addEventListener('keydown', k);
     return () => window.removeEventListener('keydown', k);
@@ -251,8 +243,11 @@ export const Editor: React.FC = () => {
             Actualizar datos
           </Boton>
           <Boton onClick={() => window.reel.correr(info.id, 'Borrador', ['render', '--borrador'])}>Borrador</Boton>
-          <Boton v="primario" onClick={() => useEditor.getState().set({panel: 'pipeline'})}>
-            Render final…
+          <Boton v="primario" onClick={() => setExportar(true)} data-testid="abrir-exportar" title="Exportar (⌘E): calidad, formatos, SRT, portada y compartir">
+            <span className="flex items-center gap-1.5">
+              <Icono n="exportar" t={14} />
+              Exportar
+            </span>
           </Boton>
         </div>
       </div>
@@ -296,6 +291,7 @@ export const Editor: React.FC = () => {
         <Timeline />
       </div>
       {pref && <Preferencias cerrar={() => setPref(false)} />}
+      {exportar && <Exportar cerrar={() => setExportar(false)} />}
     </div>
   );
 };

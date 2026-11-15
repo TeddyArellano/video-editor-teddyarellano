@@ -4,35 +4,78 @@ import React, {useEffect, useState} from 'react';
 import type {EstadoActualizacion, Herramientas, Preferencias as Prefs} from '@shared/tipos';
 import {useEditor} from '@/store';
 import {Boton, Etiqueta, inputCls} from '@/ui';
+import {ACCIONES, combosDe, comboDe, conflictos, textoCombo, type Atajos} from '@shared/atajos';
+import {ponerAtajos} from '@/store';
 
-export const ATAJOS: [string, string][] = [
-  ['Espacio / K', 'Reproducir / pausar'],
-  ['← / →', 'Cuadro anterior / siguiente'],
-  ['⇧← / ⇧→', '1 segundo atrás / adelante'],
-  ['J / L', '1 segundo atrás / adelante'],
-  ['Inicio / Fin', 'Ir al principio / al final'],
-  ['⌘Z / ⇧⌘Z', 'Deshacer / rehacer'],
-  ['⌘S', 'Guardar ahora'],
-  ['↑ / ↓', 'Corte anterior / siguiente'],
-  ['S', 'Dividir el corte en el cabezal'],
-  ['B / V', 'Cuchilla / selección'],
-  ['Q / W', 'Recortar inicio / final hasta el cabezal'],
-  ['I / O', 'Marcar entrada / salida del rango'],
-  ['X / Supr / ⌫', 'Quitar el rango o el elemento seleccionado'],
-  ['R', 'Recuperar lo tachado'],
-  ['Enter', 'Aplicar los recortes (regenera el video)'],
-  [', / .', 'Mover el elemento un cuadro (⇧: 5 cuadros)'],
-  ['⌘D', 'Duplicar el elemento'],
-  ['+ / − / 0', 'Acercar / alejar / ver todo'],
-  ['N', 'Imán de la línea de tiempo'],
-  ['Esc', 'Quitar la selección'],
+// gestos del ratón (no se pueden cambiar): los atajos de teclado salen de shared/atajos.ts y se editan abajo
+export const GESTOS: [string, string][] = [
   ['Alt al arrastrar', 'Sin imanes (lienzo) / sin pegar a palabra (línea de tiempo)'],
   ['⇧ al rotar', 'Rotación libre (sin saltos de 45°)'],
   ['Pellizco / ⌘ o Alt + rueda', 'Zoom de la línea de tiempo'],
   ['Rueda / botón central', 'Desplazar la línea de tiempo'],
   ['Doble clic (Subtítulos)', 'Corregir la palabra'],
   ['Alt + clic (Cortes)', 'Dividir la pieza en esa palabra'],
+  ['Arrastrar desde Medios o Finder', 'Agregar el archivo en ese punto de la línea de tiempo'],
 ];
+
+// tabla de atajos editable: clic en la combinación → presiona la nueva (Esc cancela, ⌫ la quita)
+const EditorAtajos: React.FC<{propios: Atajos; guardar: (a: Atajos) => void}> = ({propios, guardar}) => {
+  const [grabando, setGrabando] = useState<string | null>(null);
+  useEffect(() => {
+    if (!grabando) return;
+    const k = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.key === 'Escape') return setGrabando(null);
+      const c = comboDe(e);
+      if (!c) return; // solo un modificador: seguir esperando
+      const a = ACCIONES.find((x) => x.id === grabando)!;
+      const n = {...propios, [a.id]: e.key === 'Backspace' && !e.metaKey ? [] : [c]};
+      guardar(n);
+      setGrabando(null);
+    };
+    window.addEventListener('keydown', k, true);
+    return () => window.removeEventListener('keydown', k, true);
+  }, [grabando, propios]);
+  const choques = new Map(conflictos(propios));
+  const grupos = [...new Set(ACCIONES.map((a) => a.grupo))];
+  return (
+    <div data-testid="pref-atajos">
+      {grupos.map((g) => (
+        <div key={g} className="mb-3">
+          <div className="mb-1 text-[10px] tracking-wide text-zinc-500 uppercase">{g}</div>
+          <div className="grid grid-cols-[1fr_auto_auto] items-center gap-x-2 gap-y-1 text-xs">
+            {ACCIONES.filter((a) => a.grupo === g).map((a) => {
+              const combos = combosDe(a, propios);
+              const choca = combos.some((c) => choques.has(c));
+              return (
+                <React.Fragment key={a.id}>
+                  <span className="text-zinc-400">{a.n}</span>
+                  <button
+                    data-testid={`atajo-${a.id}`}
+                    onClick={() => setGrabando(a.id)}
+                    title="Clic y presiona la nueva combinación (Esc cancela, ⌫ la deja sin atajo)"
+                    className={`min-w-[96px] rounded px-1.5 py-0.5 text-center font-mono text-[11px] ${grabando === a.id ? 'animate-pulse bg-acento text-white' : choca ? 'bg-amber-900/60 text-amber-100' : 'bg-zinc-800 text-zinc-200 hover:bg-zinc-700'}`}
+                  >
+                    {grabando === a.id ? 'presiona…' : combos.length ? combos.map(textoCombo).join(' / ') : '—'}
+                  </button>
+                  <button className={`text-[11px] ${propios[a.id] ? 'text-zinc-400 hover:text-white' : 'invisible'}`} title="Volver al valor por defecto" onClick={() => {
+                    const n = {...propios};
+                    delete n[a.id];
+                    guardar(n);
+                  }}>
+                    ↺
+                  </button>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      {choques.size > 0 && <div className="mb-2 text-[11px] text-amber-300">Hay combinaciones repetidas (en ámbar): solo una de las acciones responderá.</div>}
+    </div>
+  );
+};
 
 export const aplicarTema = (tema: Prefs['tema']) => {
   document.documentElement.dataset.tema = tema;
@@ -52,6 +95,7 @@ export const Preferencias: React.FC<{cerrar: () => void}> = ({cerrar}) => {
     const n = await window.reel.guardarPreferencias(cambio);
     setP(n);
     if (cambio.tema) aplicarTema(n.tema);
+    if (cambio.atajos) ponerAtajos(n.atajos);
     if (cambio.skill !== undefined || cambio.python !== undefined) setHerr(await window.reel.herramientas());
   };
   const actualizando = trabajos.find((t) => t.titulo === 'Actualizar Reel Studio');
@@ -180,9 +224,17 @@ export const Preferencias: React.FC<{cerrar: () => void}> = ({cerrar}) => {
           )}
         </div>
 
-        <h3 className="mt-5 mb-2 text-[11px] font-semibold tracking-wide text-zinc-400 uppercase">Atajos de teclado</h3>
-        <div className="grid grid-cols-[150px_1fr] gap-x-3 gap-y-1 text-xs" data-testid="pref-atajos">
-          {ATAJOS.map(([k, d]) => (
+        <h3 className="mt-5 mb-2 flex items-center text-[11px] font-semibold tracking-wide text-zinc-400 uppercase">
+          <span className="flex-1">Atajos de teclado</span>
+          {Object.keys(p.atajos ?? {}).length > 0 && (
+            <Boton v="fantasma" onClick={() => guardar({atajos: {}})}>
+              Restaurar todos
+            </Boton>
+          )}
+        </h3>
+        <EditorAtajos propios={p.atajos ?? {}} guardar={(a) => guardar({atajos: a})} />
+        <div className="mt-3 grid grid-cols-[180px_1fr] gap-x-3 gap-y-1 text-xs">
+          {GESTOS.map(([k, d]) => (
             <React.Fragment key={k}>
               <kbd className="rounded bg-zinc-800 px-1.5 py-0.5 text-center font-mono text-[11px] text-zinc-200">{k}</kbd>
               <span className="text-zinc-400">{d}</span>

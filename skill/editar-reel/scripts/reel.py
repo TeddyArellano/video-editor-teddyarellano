@@ -2039,6 +2039,54 @@ def cmd_render(a):
         print("  ⚠ el color no quedó bt709")
     if n_ver > 1:
         print(f"  versión anterior en {vdir}  · historial: edicion/cambios.md")
+    for f in [x.strip() for x in (getattr(a, 'formatos', '') or '').split(',') if x.strip()]:
+        hacer_formato(pr, final, f, getattr(a, 'modo', 'fondo'))
+
+
+FORMATOS = {'16:9': (1920, 1080), '1:1': (1080, 1080), '4:5': (1080, 1350), '9:16': (1080, 1920)}
+
+
+def hacer_formato(pr, entrada, formato, modo='fondo', salida=None):
+    """Versión en otro formato a partir del render vertical (ffmpeg; sirve con cualquier versión de la plantilla).
+    fondo   = el reel entero, centrado, sobre una copia ampliada y desenfocada de sí mismo (nada se pierde).
+    recorte = llena el cuadro recortando alrededor de la cara (la cámara virtual la deja a la altura de camara.ancla_y)."""
+    if formato not in FORMATOS:
+        sys.exit(f"✗ formato desconocido: {formato} (usa {', '.join(FORMATOS)})")
+    W_, H_ = FORMATOS[formato]
+    entrada = Path(entrada)
+    if not entrada.exists():
+        sys.exit(f"✗ no existe {entrada} (primero  reel render)")
+    v = next(x for x in probe(entrada)['streams'] if x['codec_type'] == 'video')
+    w0, h0 = int(v['width']), int(v['height'])
+    if modo == 'recorte':
+        est = jload(pr.P / 'src' / 'estilo.json', {})
+        ay = est.get('camara', {}).get('ancla_y', 0.38)
+        k = max(W_ / w0, H_ / h0)  # escala para cubrir
+        ws, hs = round(w0 * k / 2) * 2, round(h0 * k / 2) * 2
+        y = min(max(0, round(hs * ay - H_ * 0.42)), hs - H_)
+        vf = f"scale={ws}:{hs}:flags=lanczos,crop={W_}:{H_}:{(ws - W_) // 2}:{y},setsar=1"
+    else:
+        k = min(W_ / w0, H_ / h0)
+        wf, hf = round(w0 * k / 2) * 2, round(h0 * k / 2) * 2
+        vf = (f"split[a][b];[a]scale={W_}:{H_}:force_original_aspect_ratio=increase,crop={W_}:{H_},boxblur=40:3,eq=brightness=-0.08:saturation=1.1[f];"
+              f"[b]scale={wf}:{hf}:flags=lanczos[c];[f][c]overlay=(W-w)/2:(H-h)/2,setsar=1")
+    out = Path(salida) if salida else entrada.with_name(f"{entrada.stem} {formato.replace(':', 'x')}{'' if modo == 'fondo' else ' recorte'}.mp4")
+    print(f"… {formato} ({modo}) → {out.name}")
+    ff('-i', entrada, '-filter_complex' if modo == 'fondo' else '-vf', vf, '-c:v', 'libx264', '-crf', '18', '-preset', 'medium',
+       '-pix_fmt', 'yuv420p', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-c:a', 'copy', '-movflags', '+faststart', out)
+    print(f"✓ {out}  ({W_}x{H_})")
+    return out
+
+
+def cmd_formato(a):
+    need_toolkit()
+    pr = Proyecto(a.proyecto)
+    entrada = Path(a.entrada) if a.entrada else pr.fuentes / f"{pr.cfg['nombre']}.mp4"
+    if not a.entrada and not entrada.exists() and (pr.ed / 'borrador.mp4').exists():
+        entrada = pr.ed / 'borrador.mp4'
+        print("  (no hay render final: uso el borrador)")
+    for f in a.formatos:
+        hacer_formato(pr, entrada, f, a.modo, a.salida if len(a.formatos) == 1 else None)
 
 
 def hacer_proxy(pr, forzar=False):
@@ -2342,7 +2390,13 @@ def main():
     s.add_argument('--borrador', action='store_true', help='render rápido a 540x960 en edicion/borrador.mp4')
     s.add_argument('--4k', dest='k4', action='store_true', help='final a 2160x3840 (solo con el visto bueno; ~4× más lento)')
     s.add_argument('--nota', help='qué cambió en esta versión (va a edicion/cambios.md)')
+    s.add_argument('--formatos', default='', help='además, versiones en otros formatos: 16:9,1:1,4:5')
+    s.add_argument('--modo', choices=['fondo', 'recorte'], default='fondo', help='cómo llenar los formatos: fondo desenfocado o recorte')
     s.set_defaults(fn=cmd_render)
+    s = sp.add_parser('formato', help='versión 16:9 / 1:1 / 4:5 del render (fondo desenfocado o recorte a la cara)')
+    s.add_argument('-p', '--proyecto', required=True); s.add_argument('formatos', nargs='+', choices=list(FORMATOS))
+    s.add_argument('--modo', choices=['fondo', 'recorte'], default='fondo'); s.add_argument('--entrada'); s.add_argument('--salida')
+    s.set_defaults(fn=cmd_formato)
     s = sp.add_parser('prueba'); s.set_defaults(fn=cmd_prueba)
     s = sp.add_parser('notas', help='notas de revisión de Reel Studio (edicion/notas.json)')
     s.add_argument('-p', '--proyecto', required=True); s.add_argument('--marcar', help='id (o inicio del id) de la nota')

@@ -150,3 +150,43 @@ describe('anclas tras un re-corte', () => {
     expect(w).toHaveLength(12);
   });
 });
+
+describe('reordenar piezas', () => {
+  it('moverPiezaA lleva una pieza a cualquier posición', async () => {
+    const {moverPiezaA} = await import('@shared/cortes');
+    const plan = {piezas: [{src: 'A', de: 0, a: 1, sec: 's'}, {src: 'B', de: 0, a: 1, sec: 's'}, {src: 'C', de: 0, a: 1, sec: 's'}]};
+    expect(moverPiezaA(plan, 0, 2).piezas.map((p) => p.src)).toEqual(['B', 'C', 'A']);
+    expect(moverPiezaA(plan, 2, 0).piezas.map((p) => p.src)).toEqual(['C', 'A', 'B']);
+    expect(plan.piezas.map((p) => p.src)).toEqual(['A', 'B', 'C']);
+  });
+  it('destinoPieza: soltar antes de la mitad de una pieza la pone antes de ella', async () => {
+    const {destinoPieza, moverPiezaA} = await import('@shared/cortes');
+    const b = (pieza: number, a: number, fin: number) => ({id: pieza, a, b: fin, pieza, quitada: false, src: 'X', k0: 0, k1: 0, speed: 1, i0: 0, i1: 0, texto: ''});
+    const m = {pal: [], bloques: [b(0, 0, 30), b(1, 30, 60), b(2, 60, 90)], zonas: [], agregadas: 0, total: 90};
+    const plan = {piezas: [{src: 'A', de: 0, a: 1, sec: 's'}, {src: 'B', de: 0, a: 1, sec: 's'}, {src: 'C', de: 0, a: 1, sec: 's'}]};
+    // la pieza A soltada al final
+    let d = destinoPieza(m, 0, 85);
+    expect(moverPiezaA(plan, 0, d.j).piezas.map((p) => p.src)).toEqual(['B', 'C', 'A']);
+    expect(d.x).toBe(90);
+    // la C soltada al principio
+    d = destinoPieza(m, 2, 5);
+    expect(moverPiezaA(plan, 2, d.j).piezas.map((p) => p.src)).toEqual(['C', 'A', 'B']);
+    expect(d.x).toBe(0);
+    // la A entre B y C
+    d = destinoPieza(m, 0, 70);
+    expect(moverPiezaA(plan, 0, d.j).piezas.map((p) => p.src)).toEqual(['B', 'A', 'C']);
+  });
+});
+
+describe('tramosPlan (vista del plan sin re-cortar)', () => {
+  it('sigue el orden del plan, con márgenes, palabras quitadas y mas_inicio', async () => {
+    const {tramosPlan} = await import('@shared/cortes');
+    const W: [string, number, number][] = [['hola', 1, 1.3], ['qué', 1.4, 1.6], ['tal', 1.7, 1.9], ['amigos', 4, 4.5]];
+    const r = tramosPlan({piezas: [{src: 'B', de: 3, a: 3, sec: 's2'}, {src: 'B', de: 0, a: 2, sec: 's1', quitar: [1], mas_inicio: 0.1}]}, {B: W});
+    expect(r.map((t) => t.texto)).toEqual(['amigos', 'hola', 'tal']);
+    expect(r[0]).toMatchObject({src: 'B', sec: 's2'});
+    expect(r[0].in).toBeCloseTo(3.86, 2); // 4 − 0.14
+    expect(r[1].in).toBeCloseTo(0.76, 2); // 1 − 0.14 − 0.1
+    expect(r[2].out).toBeLessThanOrEqual(4 - 0.1 + 1e-9); // nunca entra en la palabra siguiente
+  });
+});

@@ -19,7 +19,7 @@ export const dejarDeServir = (id: string) => proyectos.delete(id);
 export const baseDe = (id: string) => `${ESQUEMA}://p/${id}/`;
 
 const TIPOS: Record<string, string> = {
-  '.mp4': 'video/mp4', '.mov': 'video/quicktime', '.m4v': 'video/mp4', '.webm': 'video/webm',
+  '.mp4': 'video/mp4', '.mov': 'video/mp4' /* Chromium no reproduce video/quicktime; el contenedor MOV sí */, '.m4v': 'video/mp4', '.webm': 'video/webm',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.svg': 'image/svg+xml', '.webp': 'image/webp',
   '.wav': 'audio/wav', '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4', '.aac': 'audio/aac',
   '.json': 'application/json', '.woff2': 'font/woff2', '.ttf': 'font/ttf',

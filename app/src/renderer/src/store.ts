@@ -8,6 +8,7 @@ import type {Archivo, ProyectoInfo, Snapshot, Trabajo} from '@shared/tipos';
 import type {Obj, Sel} from '@shared/elementos';
 import {cuadroTrasCorte, modeloCorte, reanclar, type ModeloCorte, type Palabras, type Plan, type TramoEdl} from '@shared/cortes';
 import {ir, useReloj} from './reloj';
+import {mapaAtajos, type Atajos} from '@shared/atajos';
 
 export type Doc = 'data' | 'estilo' | 'vlog' | 'eventos' | 'plan' | 'notas' | 'proyecto' | 'edl' | 'planCortado';
 export const ARCHIVO_DE: Record<Doc, Archivo> = {
@@ -56,6 +57,12 @@ type Estado = Docs & {
 let idAviso = 0;
 // calidad preferida al abrir un proyecto (Preferencias)
 export const prefs = {calidad: 'proxy' as 'proxy' | 'completa'};
+// atajos de teclado vigentes (Preferencias → atajos; ver shared/atajos.ts)
+export const atajos = {mapa: mapaAtajos(), propios: {} as Atajos};
+export const ponerAtajos = (propios: Atajos = {}) => {
+  atajos.propios = propios;
+  atajos.mapa = mapaAtajos(propios);
+};
 let temporizador: ReturnType<typeof setTimeout> | null = null;
 
 export const useEditor = create<Estado>()(

@@ -1,6 +1,6 @@
 // Raíz: biblioteca ↔ editor, y la conexión con el proceso principal (cambios en disco y trabajos de reel.py).
 import React, {useEffect} from 'react';
-import {aceptarDataExterna, ARCHIVO_DE, docDeArchivo, prefs, useEditor, type Doc} from './store';
+import {aceptarDataExterna, ARCHIVO_DE, docDeArchivo, ponerAtajos, prefs, useEditor, type Doc} from './store';
 import {aplicarTema} from './features/preferencias/Preferencias';
 import {Biblioteca} from './features/biblioteca/Biblioteca';
 import {Editor} from './features/editor/Editor';
@@ -66,6 +66,7 @@ export const App: React.FC = () => {
     window.reel.preferencias().then((p) => {
       aplicarTema(p.tema);
       prefs.calidad = p.calidad;
+      ponerAtajos(p.atajos);
     });
     const quitarAbrir = window.reel.onAbrir((r) => abrir(r));
     return () => {

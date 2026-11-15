@@ -30,6 +30,32 @@ export const moverPieza = (plan: Plan, i: number, d: -1 | 1): Plan => {
   return p;
 };
 
+// mueve la pieza i para que quede en la posición j (0 = primera); j se cuenta en el plan ya sin la pieza
+export const moverPiezaA = (plan: Plan, i: number, j: number): Plan => {
+  const p = clon(plan);
+  if (i < 0 || i >= p.piezas.length) return p;
+  const [x] = p.piezas.splice(i, 1);
+  p.piezas.splice(Math.max(0, Math.min(j, p.piezas.length)), 0, x);
+  return p;
+};
+
+// dónde caería una pieza soltada en el cuadro f: índice destino (en el plan sin la pieza) y el cuadro de la línea guía
+export const destinoPieza = (m: ModeloCorte, i: number, f: number): {j: number; x: number} => {
+  const spans = new Map<number, {a: number; b: number}>();
+  for (const b of m.bloques) {
+    if (b.quitada || b.pieza < 0 || b.pieza === i) continue;
+    const s = spans.get(b.pieza);
+    spans.set(b.pieza, s ? {a: Math.min(s.a, b.a), b: Math.max(s.b, b.b)} : {a: b.a, b: b.b});
+  }
+  const orden = [...spans.entries()].sort((x, y) => x[1].a - y[1].a);
+  let k = orden.findIndex(([, s]) => f < (s.a + s.b) / 2);
+  if (k < 0) k = orden.length;
+  const x = k < orden.length ? orden[k][1].a : orden.length ? orden[orden.length - 1][1].b : 0;
+  // índice en el plan sin la pieza i: las piezas antes de la posición k
+  const j = k < orden.length ? orden[k][0] - (orden[k][0] > i ? 1 : 0) : m.bloques.reduce((mx, b) => Math.max(mx, b.pieza), 0);
+  return {j: Math.max(0, j), x};
+};
+
 export const quitarPieza = (plan: Plan, i: number): Plan => {
   const p = clon(plan);
   p.piezas.splice(i, 1);
@@ -409,4 +435,72 @@ export const reanclar = (eventos: Record<string, unknown>, edlViejo: TramoEdl[],
     else if (k !== 'fix') recorrer(v);
   }
   return {eventos: ev, movidas};
+};
+
+// ---------------------------------------------------------------- vista del plan (cambios al instante)
+// Aproximación de `reel edl` para ver el plan SIN re-cortar: tramos de los clips originales por palabras, con los mismos
+// márgenes (PAD_IN/PAD_OUT), vecinas, pausas largas (GAP_SPLIT), uniones (MERGE_GAP) y mas_inicio/mas_final.
+// No afina con la energía de la voz ni quita silencios (eso lo hace `reel cortar`): es para escuchar y ver el orden.
+export type TramoPlan = {src: string; in: number; out: number; speed: number; gain_db: number; sec: string; texto: string};
+const PAD_IN = 0.14;
+const PAD_OUT = 0.12;
+const GAP_SPLIT = 0.3;
+const MERGE_GAP = 0.25;
+const finPalabra = (w: PalabraClip) => Math.min(w[2], w[1] + 0.08 * w[0].length + 0.25);
+
+const unirPegadas = (piezas: Pieza[]): Pieza[] => {
+  const out: Pieza[] = [];
+  for (const pz of piezas) {
+    const ant = out[out.length - 1];
+    if (pz.pegada && ant && ant.src === pz.src && pz.de === ant.a + 1 && ant.sec === pz.sec && (ant.speed ?? 1) === (pz.speed ?? 1) && (ant.gain_db ?? 0) === (pz.gain_db ?? 0)) {
+      ant.a = pz.a;
+      if (pz.quitar) ant.quitar = [...(ant.quitar ?? []), ...pz.quitar];
+      delete ant.mas_final;
+      if (pz.mas_final !== undefined) ant.mas_final = pz.mas_final;
+    } else out.push({...pz});
+  }
+  return out;
+};
+
+export const tramosPlan = (plan: Plan | null, palabras: Palabras): TramoPlan[] => {
+  if (!plan) return [];
+  const out: TramoPlan[] = [];
+  for (const pz of unirPegadas(plan.piezas)) {
+    const W = palabras[pz.src];
+    if (!W) continue;
+    const quitar = new Set(pz.quitar ?? []);
+    const idx: number[] = [];
+    for (let i = pz.de; i <= Math.min(pz.a, W.length - 1); i++) if (!quitar.has(i)) idx.push(i);
+    const runs: number[][] = [];
+    let cur: number[] = [];
+    for (const i of idx) {
+      if (cur.length && (i !== cur[cur.length - 1] + 1 || W[i][1] - finPalabra(W[cur[cur.length - 1]]) > GAP_SPLIT)) (runs.push(cur), (cur = []));
+      cur.push(i);
+    }
+    if (cur.length) runs.push(cur);
+    const piezas = runs.map((r) => {
+      const f = r[0];
+      const l = r[r.length - 1];
+      let tin = W[f][1] - PAD_IN;
+      if (f > 0) tin = Math.min(Math.max(tin, finPalabra(W[f - 1]) + 0.02), W[f][1] - 0.03);
+      let tout = finPalabra(W[l]) + PAD_OUT;
+      if (l + 1 < W.length) tout = Math.min(tout, W[l + 1][1] - 0.1);
+      return {in: Math.max(0, tin), out: tout, first: f, last: l};
+    });
+    if (piezas.length) {
+      piezas[0].in = Math.max(0, piezas[0].in - (pz.mas_inicio ?? 0));
+      piezas[piezas.length - 1].out += pz.mas_final ?? 0;
+    }
+    const unidas: typeof piezas = [];
+    for (const p of piezas) {
+      const u = unidas[unidas.length - 1];
+      if (u && p.first === u.last + 1 && p.in - u.out < MERGE_GAP) ((u.out = p.out), (u.last = p.last));
+      else unidas.push({...p});
+    }
+    for (const p of unidas) {
+      const texto = W.slice(p.first, p.last + 1).filter((_, k) => !quitar.has(p.first + k)).map((w) => w[0]).join(' ');
+      out.push({src: pz.src, in: +p.in.toFixed(3), out: +p.out.toFixed(3), speed: pz.speed ?? 1, gain_db: pz.gain_db ?? 0, sec: pz.sec ?? 'main', texto});
+    }
+  }
+  return out;
 };
