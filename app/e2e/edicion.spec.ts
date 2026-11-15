@@ -65,7 +65,9 @@ test('editar elementos, subtítulos y notas', async () => {
     console.log('DIAG sel', await page.getByTestId('inspector').locator('h3').first().innerText().catch(() => '-'));
     throw e;
   });
-  expect(typeof etiquetaDe(1).ev.en).toBe('string');
+  // pegada a una palabra ("sec:palabra") o, si el imán la pegó al borde de otro elemento, {palabra, offset}
+  const en1 = etiquetaDe(1).ev.en;
+  expect(typeof en1 === 'string' || (typeof en1 === 'object' && typeof en1.palabra === 'string')).toBe(true);
   await hasta(() => Math.abs(etiquetaDe(1).data.a - etiquetaDe(1).data.a) === 0 && leer('src/data.json').labels[1].a > 0, 40_000);
 
   // --- cambio externo (como Claude): la app recarga eventos.json
