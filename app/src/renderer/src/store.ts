@@ -41,7 +41,8 @@ type Estado = Docs & {
   piezaAbierta: number | null; // pieza expandida en el panel Cortes
   calidad: 'proxy' | 'completa';
   panel: string;
-  propios: {estado: 'sin' | 'compilando' | 'listo' | 'error'; error?: string}; // vista previa con componentes del proyecto
+  propios: {estado: 'sin' | 'compilando' | 'listo' | 'error'; error?: string; editable?: boolean}; // vista previa con componentes del proyecto
+  vistaExacta: boolean | null; // null = automática (exacta solo si los componentes del proyecto son editables)
   avisos: Aviso[];
   trabajos: Trabajo[];
   verEdicion: number; // sube con cada cambio que afecta data
@@ -88,6 +89,7 @@ export const useEditor = create<Estado>()(
       calidad: 'proxy',
       panel: 'inspector',
       propios: {estado: 'sin'},
+      vistaExacta: null,
       avisos: [],
       trabajos: [],
       verEdicion: 0,
@@ -102,7 +104,7 @@ export const useEditor = create<Estado>()(
         }
         // proyectos cortados antes de que existiera plan_cortado.json: lo que hay al abrir cuenta como ya cortado
         docs.planCortado = docs.planCortado ?? docs.plan;
-        set({...docs, info: s.info, hashes, sucios: [], sel: null, palabras: {}, aplicando: false, piezaAbierta: null, calidad: s.info.estado.proxy && prefs.calidad === 'proxy' ? 'proxy' : 'completa'});
+        set({...docs, info: s.info, hashes, vistaExacta: null, sucios: [], sel: null, palabras: {}, aplicando: false, piezaAbierta: null, calidad: s.info.estado.proxy && prefs.calidad === 'proxy' ? 'proxy' : 'completa'});
         useEditor.temporal.getState().clear();
       },
       cerrar: () => set({info: null, data: null, eventos: null, estilo: null, plan: null, planCortado: null, notas: null, sel: null, palabras: {}}),

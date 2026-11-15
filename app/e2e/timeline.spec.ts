@@ -79,9 +79,16 @@ test('posicionarse y hacer zoom', async () => {
   await page.mouse.wheel(0, -300);
   await page.keyboard.up('Meta');
   await expect.poll(() => ppc(page)).toBeGreaterThan(z0 * 1.4);
-  // acercado: la rueda sin teclas desplaza en horizontal
+  // acercado: la rueda sin teclas desplaza en horizontal… salvo que haya más pistas de las que caben (entonces baja
+  // por las pistas y el desplazamiento horizontal va con el trackpad o con Shift)
   const antes = await scrollX(page);
-  await page.mouse.wheel(0, 200);
+  const desborda = await page.getByTestId('timeline').evaluate((el) => el.scrollHeight > el.clientHeight + 1);
+  if (desborda) {
+    const y0 = await page.getByTestId('timeline').evaluate((el) => el.scrollTop);
+    await page.mouse.wheel(0, 200);
+    await expect.poll(() => page.getByTestId('timeline').evaluate((el) => el.scrollTop)).toBeGreaterThan(y0);
+    await page.mouse.wheel(200, 0);
+  } else await page.mouse.wheel(0, 200);
   await expect.poll(() => scrollX(page)).toBeGreaterThan(antes);
   // el zoom alto muestra las palabras
   for (let k = 0; k < 4; k++) await page.keyboard.press('=');

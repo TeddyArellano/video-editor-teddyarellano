@@ -6,7 +6,8 @@ test('preferencias: tema, atajos, toolkit y actualizaciones', async () => {
   const a = await lanzar(false);
   await a.page.getByTestId('abrir-preferencias').click();
   await expect(a.page.getByTestId('preferencias')).toBeVisible();
-  await expect(a.page.getByTestId('pref-atajos')).toContainText('Deshacer / rehacer');
+  await expect(a.page.getByTestId('pref-atajos')).toContainText('Rehacer');
+  await expect(a.page.getByTestId('atajo-rehacer')).toHaveText('⇧⌘Z');
   await expect(a.page.getByTestId('pref-toolkit')).toContainText('Toolkit completo');
   // buscar actualizaciones contra el repo (git fetch)
   await a.page.getByTestId('buscar-actualizaciones').click();

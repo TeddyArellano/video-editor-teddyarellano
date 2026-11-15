@@ -32,8 +32,10 @@ export const Visor: React.FC = () => {
   const verDatos = useEditor((s) => s.hashes.data);
   const propios = useComponentesPropios(info, verDatos);
   useEffect(() => {
-    useEditor.getState().set({propios: {estado: propios.estado, error: propios.error}});
-  }, [propios.estado, propios.error]);
+    useEditor.getState().set({propios: {estado: propios.estado, error: propios.error, editable: propios.editable}});
+  }, [propios.estado, propios.error, propios.editable]);
+  const vistaExacta = useEditor((s) => s.vistaExacta);
+  const usarPropios = propios.estado === 'listo' && (vistaExacta ?? !!propios.editable);
   const total = data ? Math.max(1, totalFrames(data as unknown as Data)) : 1;
 
   useEffect(() => {
@@ -116,7 +118,7 @@ export const Visor: React.FC = () => {
       <div className="relative vista-video" style={{width: tam.w, height: tam.h}}>
         <Player
           ref={ref}
-          component={propios.Reel ?? (Reel as unknown as React.FC<Record<string, unknown>>)}
+          component={usarPropios && propios.Reel ? propios.Reel : (Reel as unknown as React.FC<Record<string, unknown>>)}
           inputProps={props as unknown as Record<string, unknown>}
           durationInFrames={total}
           compositionWidth={1080}
@@ -146,7 +148,7 @@ export const Visor: React.FC = () => {
           }}
           title="Reproduce los recortes sin aplicar (orden nuevo y tramos extendidos) directamente desde los clips originales. Solo video y voz."
         >
-          {verPlan ? '✕ Volver a la vista del video' : '▶ Ver recortes sin aplicar'}
+          {verPlan ? '✕ Volver a la vista del video' : '▶ Ver el plan nuevo'}
         </button>
       )}
       {verPlan && <div className="absolute top-9 right-2 max-w-[220px] rounded bg-black/70 px-2 py-1 text-[10px] text-zinc-300">Vista del plan: orden y tramos nuevos desde los clips originales, sin gráficos. Aplica (Enter) para ver el resultado final.</div>}

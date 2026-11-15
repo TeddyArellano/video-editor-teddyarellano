@@ -47,3 +47,25 @@ describe('subtítulos', () => {
     expect(palabraEn(data().words, 300)).toBe(3);
   });
 });
+
+describe('corregir renombra las anclas', () => {
+  it('las anclas a la palabra corregida siguen apuntando a ella', async () => {
+    const {corregir} = await import('@shared/subtitulos');
+    const data = {words: [{text: 'hola', start: 0, end: 0.3, sec: 'a'}, {text: 'para', start: 1, end: 1.2, sec: 'a'}, {text: 'para.', start: 2, end: 2.2, sec: 'a'}]};
+    const eventos = {
+      textos: [{en: 'a:para', texto: 'X'}, {en: {palabra: 'para', sec: 'a', n: 1, offset: 0.1}}],
+      etiquetas: [{en: 'a:para#1', hasta: 'para', texto: 'para'}],
+      objetos: ['para'],
+      enfasis: [{en: 'a:para'}, 'hola'],
+      fix: {},
+    };
+    const r = corregir(data, eventos, 1, 'PRUEBA');
+    expect(r.eventos.textos[0].en).toBe('a:PRUEBA');
+    expect(r.eventos.textos[1].en).toEqual({palabra: 'PRUEBA', sec: 'a', n: 1, offset: 0.1});
+    expect(r.eventos.etiquetas[0]).toEqual({en: 'a:PRUEBA#1', hasta: 'PRUEBA', texto: 'para'}); // el texto no es ancla
+    expect(r.eventos.objetos).toEqual(['PRUEBA']);
+    expect(r.eventos.enfasis).toEqual([{en: 'a:PRUEBA'}, 'hola']);
+    expect(r.eventos.fix).toEqual({para: 'PRUEBA'});
+    expect(r.data.words.map((w: {text: string}) => w.text)).toEqual(['hola', 'PRUEBA', 'PRUEBA.']);
+  });
+});

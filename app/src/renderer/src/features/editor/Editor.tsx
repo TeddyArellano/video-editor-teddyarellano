@@ -58,11 +58,22 @@ const agregarEnCabezal = (l: Lista) => {
 // proyectos con componentes propios: la vista previa los compila (deps.ts); si falla, usa la plantilla ("aproximada")
 const InsigniaPropios: React.FC<{lista: string[]}> = ({lista}) => {
   const p = useEditor((s) => s.propios);
+  const vistaExacta = useEditor((s) => s.vistaExacta);
+  const exacta = p.estado === 'listo' && (vistaExacta ?? !!p.editable);
   if (p.estado === 'listo')
     return (
-      <span data-testid="insignia-propios" className="rounded bg-emerald-900/50 px-1.5 py-0.5 text-[10px] text-emerald-200" title={`La vista previa usa los componentes del proyecto (${lista.join(', ')}), igual que el render.`}>
-        componentes del proyecto
-      </span>
+      <button
+        data-testid="insignia-propios"
+        onClick={() => useEditor.getState().set({vistaExacta: !exacta})}
+        className={`rounded px-1.5 py-0.5 text-[10px] ${exacta ? 'bg-emerald-900/50 text-emerald-200' : 'bg-violet-900/50 text-violet-200'} hover:brightness-125`}
+        title={
+          exacta
+            ? `La vista previa usa los componentes del proyecto (${lista.join(', ')}), igual que el render.${p.editable ? '' : ' Son de una plantilla anterior: no todo se puede seleccionar en el lienzo y no dibujan las capas nuevas (textos, superpuestos…).'} Clic: vista editable con la plantilla.`
+            : `Vista editable con la plantilla de la skill. El proyecto tiene componentes propios (${lista.join(', ')}) de una plantilla anterior: el render puede verse distinto. Clic: ver exacta.`
+        }
+      >
+        {exacta ? 'componentes del proyecto' : 'vista editable · ver exacta'}
+      </button>
     );
   return (
     <span data-testid="insignia-propios" className="rounded bg-violet-900/50 px-1.5 py-0.5 text-[10px] text-violet-200" title={p.estado === 'error' ? `No se pudieron compilar los componentes del proyecto:\n${p.error}\nLa vista previa usa la plantilla de la skill.` : `Compilando los componentes del proyecto (${lista.join(', ')})…`}>

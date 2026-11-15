@@ -56,7 +56,7 @@ const cargar = (codigo: string) =>
     document.head.appendChild(s);
   });
 
-export type EstadoPropios = {estado: 'sin' | 'compilando' | 'listo' | 'error'; Reel?: React.FC<Record<string, unknown>>; error?: string; ms?: number};
+export type EstadoPropios = {estado: 'sin' | 'compilando' | 'listo' | 'error'; Reel?: React.FC<Record<string, unknown>>; error?: string; ms?: number; editable?: boolean};
 
 // compila los componentes propios del proyecto (si tiene) y vuelve a compilar cuando cambia `version`
 export const useComponentesPropios = (info: ProyectoInfo | null, version: unknown): EstadoPropios => {
@@ -75,7 +75,7 @@ export const useComponentesPropios = (info: ProyectoInfo | null, version: unknow
       if (!r.ok) return setE({estado: 'error', error: r.error});
       try {
         const Reel = await cargar(r.codigo);
-        if (vivo) setE({estado: 'listo', Reel, ms: r.ms});
+        if (vivo) setE({estado: 'listo', Reel, ms: r.ms, editable: r.editable});
       } catch (err) {
         if (vivo) setE({estado: 'error', error: String((err as Error).message ?? err)});
       }

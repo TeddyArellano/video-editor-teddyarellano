@@ -56,7 +56,10 @@ test('capas: medios, texto con claves, transición y ajuste', async () => {
   await hasta(() => (ev().textos[0].claves ?? []).length >= 1);
   await page.locator('body').click({position: {x: 5, y: 300}});
   await page.keyboard.press('Shift+ArrowRight');
-  await expect(page.getByTestId('seleccion')).toBeVisible();
+  await expect(page.getByTestId('seleccion')).toBeVisible().catch(async (e) => {
+    console.log('DIAG capas', await page.evaluate(() => ({reels: [...document.querySelectorAll('[data-testid=visor] [data-reel]')].map((x) => x.getAttribute('data-reel')), tiempo: document.querySelector('[data-testid=tiempo]')?.textContent, insp: document.querySelector('[data-testid=inspector] h3')?.textContent})));
+    throw e;
+  });
   await arrastrar(page, '[data-testid=seleccion] > div', 80, 0);
   await hasta(() => (ev().textos[0].claves ?? []).length >= 2 && ev().textos[0].claves.some((c: {dx?: number}) => (c.dx ?? 0) > 60));
   expect(ev().textos[0].dx).toBeUndefined(); // con claves, mover edita la clave (no la posición fija)

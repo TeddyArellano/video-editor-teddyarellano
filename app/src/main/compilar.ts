@@ -29,7 +29,9 @@ const esbuild = (): Esbuild | null => {
 // @remotion/google-fonts/<Fuente> (proyectos viejos que bajaban las fuentes de Google) → las fuentes locales de la app
 export const EXTERNOS = /^(react|react-dom|react\/jsx-runtime|react\/jsx-dev-runtime|remotion|@remotion\/three|@remotion\/player|three|@remotion\/google-fonts\/[\w-]+)$/;
 
-export type Compilado = {ok: true; codigo: string; ms: number} | {ok: false; error: string};
+// editable = el proyecto tiene <Pos> y las capas libres (plantilla reciente con cambios propios): se puede seleccionar y
+// mover todo en el lienzo, así que la vista exacta es la de por defecto. Si no, la app abre con la plantilla (editable).
+export type Compilado = {ok: true; codigo: string; ms: number; editable: boolean} | {ok: false; error: string};
 const cache = new Map<string, {huella: string; r: Compilado}>();
 
 // huella de src/ (archivos y fechas): si nada cambió, se reusa el resultado
@@ -86,7 +88,8 @@ export const compilarProyecto = async (ruta: string): Promise<Compilado> => {
         },
       ],
     });
-    const res: Compilado = {ok: true, codigo: r.outputFiles[0].text, ms: Date.now() - t0};
+    const editable = ['Pos.tsx', 'Capas.tsx'].every((f) => fs.existsSync(path.join(src, 'components', f)));
+    const res: Compilado = {ok: true, codigo: r.outputFiles[0].text, ms: Date.now() - t0, editable};
     cache.set(ruta, {huella, r: res});
     return res;
   } catch (err) {

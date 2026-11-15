@@ -170,3 +170,8 @@ La app compila `src/Reel.tsx` del proyecto con el esbuild del toolkit (`app/src/
 - **Síntoma:** con `"rampa": "suave"`, una pieza con pausas aceleraba y frenaba varias veces.
 - **Causa:** `edl` parte las piezas en tramos por las pausas largas y la curva se aplicaba a cada tramo.
 - **Arreglo:** `rampa_velocidad()` recibe todos los tramos de la pieza y reparte los escalones sobre su duración total (igual en `app/src/shared/cortes.ts → rampaVelocidad` para la vista del plan).
+
+## Corregir una palabra rompía las anclas que la usaban (noviembre 2026)
+- **Síntoma:** después de corregir una palabra en Subtítulos (`fix`), `reel datos` fallaba con "anclas que no están en el corte: 's1:para'".
+- **Causa:** el `fix` cambia el texto de las palabras del corte, pero los elementos anclados a esa palabra (`"en": "s1:para"`) seguían buscando la palabra vieja. Se notó con las capas nuevas, que la app pega a la palabra más cercana.
+- **Arreglo:** `corregir()` (`app/src/shared/subtitulos.ts`) renombra la palabra en todas las anclas de `eventos.json` (`en`, `hasta`, `segunda`, `flecha`, `objetos`, `cortes`, `enfasis`). Si corriges un `fix` a mano, haz lo mismo con sus anclas.

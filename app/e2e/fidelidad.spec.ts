@@ -28,8 +28,13 @@ test('vista previa = render (stills de Remotion)', async () => {
     const prev = path.join(__dirname, '../test-results', `prev_${f}.png`);
     const still = path.join(__dirname, '../test-results', `still_${f}.png`);
     await reproductor.screenshot({path: prev});
-    execFileSync('npx', ['remotion', 'still', 'src/index.ts', 'Reel', still, `--frame=${f}`, '--log=error'], {cwd: FIXTURE});
-    const r = JSON.parse(execFileSync(PY, [path.join(__dirname, 'comparar.py'), prev, still]).toString());
+    // el <video> de la vista previa puede quedar ±1 cuadro al buscar: se compara con f−1, f y f+1 y gana el más parecido
+    const rs = [f - 1, f, f + 1].map((g) => {
+      const st = still.replace(/\.png$/, `_${g}.png`);
+      execFileSync('npx', ['remotion', 'still', 'src/index.ts', 'Reel', st, `--frame=${g}`, '--log=error'], {cwd: FIXTURE});
+      return JSON.parse(execFileSync(PY, [path.join(__dirname, 'comparar.py'), prev, st]).toString()) as {brillo: number[]; media: number; malos: number};
+    });
+    const r = rs.reduce((m, x) => (x.media < m.media ? x : m));
     console.log(`cuadro ${f}:`, r);
     expect(Math.max(...r.brillo.map(Math.abs))).toBeLessThan(6); // con la gamma de la vista previa (Visor.tsx) el color coincide
     // el <video> de la vista previa puede quedar ±1 cuadro al buscar (el render es exacto): en tomas con mucho

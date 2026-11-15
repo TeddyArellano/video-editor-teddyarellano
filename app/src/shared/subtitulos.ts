@@ -25,7 +25,43 @@ export const corregir = (data: Obj, eventos: Obj, i: number, nuevo: string) => {
   for (const x of d.words as Palabra[]) {
     if (norm(x.text) === k) x.text = x.text.replace(/^([¿¡]?).*?([.,?!…]*)$/u, (_m, a: string, b: string) => a + nuevoLimpio + b);
   }
-  return {data: d, eventos: e};
+  // las anclas que apuntaban a la palabra vieja ("sec:palabra#n") se renombran: si no, `reel datos` ya no las encuentra
+  return {data: d, eventos: renombrarAnclas(e, orig, nuevoLimpio)};
+};
+
+// renombra la palabra `viejo` → `nuevo` en todas las anclas de eventos.json (en, hasta, segunda, flecha, objetos,
+// cortes, enfasis…). Todas las apariciones cambian juntas, así que los "#n" siguen apuntando a la misma palabra.
+const CLAVES_ANCLA = new Set(['en', 'hasta', 'segunda', 'flecha', 'monedas']);
+export const renombrarAnclas = (eventos: Obj, viejo: string, nuevo: string): Obj => {
+  const k = norm(viejo);
+  if (!k || k === norm(nuevo)) return eventos;
+  const palabra = (t: string) => t.split(/(\s+)/).map((x) => (norm(x) === k ? nuevo : x)).join('');
+  const texto = (an: string) => {
+    const m = an.trim().match(/^(?:([\w-]+):)?(.+?)(?:#(\d+))?$/u);
+    if (!m) return an;
+    const w = palabra(m[2]);
+    return w === m[2] ? an : `${m[1] ? `${m[1]}:` : ''}${w}${m[3] ? `#${m[3]}` : ''}`;
+  };
+  const ancla = (an: unknown): unknown => {
+    if (typeof an === 'string') return texto(an);
+    if (Array.isArray(an)) return an.map(ancla);
+    if (an && typeof an === 'object' && typeof (an as Obj).palabra === 'string') return {...(an as Obj), palabra: palabra((an as Obj).palabra)};
+    return an;
+  };
+  const recorrer = (o: unknown): unknown => {
+    if (Array.isArray(o)) return o.map(recorrer);
+    if (!o || typeof o !== 'object') return o;
+    const r: Obj = {};
+    for (const [c, v] of Object.entries(o as Obj)) r[c] = CLAVES_ANCLA.has(c) ? ancla(v) : recorrer(v);
+    return r;
+  };
+  const r = recorrer(eventos) as Obj;
+  for (const c of ['objetos', 'cortes']) if (Array.isArray(eventos[c])) r[c] = eventos[c].map(ancla);
+  if (Array.isArray(r.enfasis)) r.enfasis = (r.enfasis as unknown[]).map((x) => (typeof x === 'string' ? ancla(x) : x));
+  // fix y resaltar no son anclas: se quedan como están
+  r.fix = eventos.fix;
+  if (eventos.resaltar) r.resaltar = eventos.resaltar;
+  return r;
 };
 
 export const alternarResaltar = (data: Obj, eventos: Obj, i: number) => {
