@@ -190,3 +190,13 @@ describe('tramosPlan (vista del plan sin re-cortar)', () => {
     expect(r[2].out).toBeLessThanOrEqual(4 - 0.1 + 1e-9); // nunca entra en la palabra siguiente
   });
 });
+
+describe('curvas de velocidad', () => {
+  it('rampaVelocidad = rampa_velocidad de reel.py (la curva recorre la pieza completa)', async () => {
+    const {rampaVelocidad} = await import('@shared/cortes');
+    const r = (x: [number, number, number][][]) => x.map((t) => t.map(([a, b, s]) => [+a.toFixed(2), +b.toFixed(2), s]));
+    expect(r(rampaVelocidad([[10, 12]], 4, 'suave'))).toEqual([[[10, 10.4, 1.9], [10.4, 10.8, 3.1], [10.8, 11.2, 4], [11.2, 11.6, 3.1], [11.6, 12, 1.9]]]);
+    expect(rampaVelocidad([[10, 12]], 4)).toEqual([[[10, 12, 4]]]);
+    expect(r(rampaVelocidad([[0, 1], [5, 6]], 3, 'subir'))).toEqual([[[0, 0.5, 1], [0.5, 1, 1.66]], [[5, 5.5, 2.32], [5.5, 6, 3]]]);
+  });
+});

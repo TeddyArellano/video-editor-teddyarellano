@@ -694,6 +694,38 @@ def unir_pegadas(piezas):
     return out
 
 
+RAMPAS = {'subir': (0, 0.33, 0.66, 1), 'bajar': (1, 0.66, 0.33, 0), 'suave': (0.3, 0.7, 1, 0.7, 0.3)}
+
+
+def rampa_velocidad(tramos, speed, rampa):
+    """Curva de velocidad sobre TODOS los tramos de una pieza: tramos = [(in, out), …] → por tramo, [(in, out, velocidad), …].
+    subir = acelera de 1× a la velocidad; bajar = frena; suave = acelera y frena. Los escalones son pedazos de igual
+    duración del material de la pieza completa (aunque las pausas la partan en varios tramos). Sin rampa: velocidad fija."""
+    perfil = RAMPAS.get(rampa or '')
+    total = sum(b - a for a, b in tramos)
+    if not perfil or speed == 1 or total < 0.5:
+        return [[(a, b, speed)] for a, b in tramos]
+    n = max(2, min(len(perfil), int(total / 0.25)))
+    if n < len(perfil):  # pieza corta: menos escalones, misma forma
+        perfil = [perfil[round(i * (len(perfil) - 1) / (n - 1))] for i in range(n)]
+    d = total / len(perfil)
+    vel = lambda i: round(1 + (speed - 1) * perfil[min(i, len(perfil) - 1)], 3)
+    out, acum = [], 0.0
+    for a, b in tramos:
+        partes, t = [], a
+        while t < b - 1e-6:
+            i = int((acum + (t - a)) / d + 1e-9)
+            fin = min(b, a + (i + 1) * d - acum)
+            if fin - t > 0.02 or not partes:
+                partes.append((t, fin, vel(i)))
+            else:  # resto diminuto: se une al pedazo anterior
+                partes[-1] = (partes[-1][0], fin, partes[-1][2])
+            t = fin
+        acum += b - a
+        out.append(partes)
+    return out
+
+
 def cmd_edl(a):
     pr = Proyecto(a.proyecto)
     plan = jload(pr.ed / 'plan.json')
@@ -739,14 +771,18 @@ def cmd_edl(a):
                 merged[-1]['out'] = p['out']; merged[-1]['last'] = p['last']
             else:
                 merged.append(p)
+        curva = rampa_velocidad([(p['in'], p['out']) for p in merged], pz.get('speed', 1.0), pz.get('rampa'))
         for k, p in enumerate(merged):
             ws = [W_[i] for i in range(p['first'], p['last'] + 1) if i not in quitar]
             # bloque nuevo en cada pieza del plan y donde se quitaron palabras: ahí los subtítulos se parten
             if k == 0 or p['first'] != merged[k - 1]['last'] + 1:
                 bloque += 1
-            out.append({"src": p['src'], "in": p['in'], "out": p['out'], "sec": pz.get('sec', 'main'), "bloque": bloque,
-                        "speed": pz.get('speed', 1.0), "gain_db": pz.get('gain_db', 0.0), "words": ws,
-                        "text": ' '.join(x[0] for x in ws)})
+            # curva de velocidad (Reel Studio): el tramo se parte en pedazos iguales del clip con velocidades escalonadas
+            for a0, b0, sp in curva[k]:
+                wsr = [w for w in ws if a0 <= w[1] < b0] if (a0, b0) != (p['in'], p['out']) else ws
+                out.append({"src": p['src'], "in": round(a0, 3), "out": round(b0, 3), "sec": pz.get('sec', 'main'), "bloque": bloque,
+                            "speed": sp, "gain_db": pz.get('gain_db', 0.0), "words": wsr,
+                            "text": ' '.join(x[0] for x in wsr)})
     jsave(pr.ed / 'edl.json', out)
     jsave(pr.ed / 'plan_edl.json', plan)  # `cortar` lo vuelve plan_cortado.json al terminar: con eso la app sabe qué recortes faltan por aplicar
     tot = sum((p['out'] - p['in']) / p['speed'] for p in out)

@@ -174,6 +174,14 @@ export const Cortes: React.FC = () => {
                       <Etiqueta n="Velocidad">
                         <input type="number" step={0.25} min={0.5} max={16} className={inputCls} value={p.speed ?? 1} onChange={(e) => set(editarPieza(plan!, i, {speed: Number(e.target.value)}))} />
                       </Etiqueta>
+                      <Etiqueta n="Curva de velocidad" ayuda="Con velocidad distinta de 1: subir = acelera, bajar = frena, suave = acelera y frena">
+                        <select className={inputCls} value={p.rampa ?? ''} onChange={(e) => set(editarPieza(plan!, i, {rampa: (e.target.value || undefined) as Pieza['rampa']}))} data-testid={`rampa-${i}`}>
+                          <option value="">Constante</option>
+                          <option value="subir">Acelerar</option>
+                          <option value="bajar">Frenar</option>
+                          <option value="suave">Acelerar y frenar</option>
+                        </select>
+                      </Etiqueta>
                       <Etiqueta n="Ganancia dB">
                         <input type="number" step={0.5} className={inputCls} value={p.gain_db ?? 0} onChange={(e) => set(editarPieza(plan!, i, {gain_db: Number(e.target.value)}))} />
                       </Etiqueta>

@@ -3,7 +3,7 @@
 import {Anclas, FPS, norm, type Ancla, type Palabra} from './anclas';
 
 export type PalabraClip = [string, number, number];
-export type Pieza = {src: string; de: number; a: number; sec: string; speed?: number; gain_db?: number; quitar?: number[]; mas_inicio?: number; mas_final?: number; pegada?: boolean};
+export type Pieza = {src: string; de: number; a: number; sec: string; speed?: number; rampa?: 'subir' | 'bajar' | 'suave'; gain_db?: number; quitar?: number[]; mas_inicio?: number; mas_final?: number; pegada?: boolean};
 export type Plan = {piezas: Pieza[]; [k: string]: unknown};
 
 const clon = <T>(x: T): T => JSON.parse(JSON.stringify(x));
@@ -462,6 +462,38 @@ const unirPegadas = (piezas: Pieza[]): Pieza[] => {
   return out;
 };
 
+// curva de velocidad, igual que rampa_velocidad() de reel.py
+const RAMPAS: Record<string, number[]> = {subir: [0, 0.33, 0.66, 1], bajar: [1, 0.66, 0.33, 0], suave: [0.3, 0.7, 1, 0.7, 0.3]};
+// tramos de una pieza → por tramo, [in, out, velocidad]: la curva recorre la pieza completa
+export const rampaVelocidad = (tramos: [number, number][], speed: number, rampa?: string): [number, number, number][][] => {
+  let perfil = RAMPAS[rampa ?? ''];
+  const total = tramos.reduce((t, [a, b]) => t + b - a, 0);
+  if (!perfil || speed === 1 || total < 0.5) return tramos.map(([a, b]) => [[a, b, speed]]);
+  const n = Math.max(2, Math.min(perfil.length, Math.floor(total / 0.25)));
+  if (n < perfil.length) {
+    const p0 = perfil;
+    perfil = Array.from({length: n}, (_, i) => p0[Math.round((i * (p0.length - 1)) / (n - 1))]);
+  }
+  const d = total / perfil.length;
+  const vel = (i: number) => Math.round((1 + (speed - 1) * perfil[Math.min(i, perfil.length - 1)]) * 1000) / 1000;
+  const out: [number, number, number][][] = [];
+  let acum = 0;
+  for (const [a, b] of tramos) {
+    const partes: [number, number, number][] = [];
+    let t = a;
+    while (t < b - 1e-6) {
+      const i = Math.floor((acum + (t - a)) / d + 1e-9);
+      const fin = Math.min(b, a + (i + 1) * d - acum);
+      if (fin - t > 0.02 || !partes.length) partes.push([t, fin, vel(i)]);
+      else partes[partes.length - 1] = [partes[partes.length - 1][0], fin, partes[partes.length - 1][2]];
+      t = fin;
+    }
+    acum += b - a;
+    out.push(partes);
+  }
+  return out;
+};
+
 export const tramosPlan = (plan: Plan | null, palabras: Palabras): TramoPlan[] => {
   if (!plan) return [];
   const out: TramoPlan[] = [];
@@ -497,9 +529,11 @@ export const tramosPlan = (plan: Plan | null, palabras: Palabras): TramoPlan[] =
       if (u && p.first === u.last + 1 && p.in - u.out < MERGE_GAP) ((u.out = p.out), (u.last = p.last));
       else unidas.push({...p});
     }
-    for (const p of unidas) {
-      const texto = W.slice(p.first, p.last + 1).filter((_, k) => !quitar.has(p.first + k)).map((w) => w[0]).join(' ');
-      out.push({src: pz.src, in: +p.in.toFixed(3), out: +p.out.toFixed(3), speed: pz.speed ?? 1, gain_db: pz.gain_db ?? 0, sec: pz.sec ?? 'main', texto});
+    const curva = rampaVelocidad(unidas.map((p) => [p.in, p.out]), pz.speed ?? 1, pz.rampa);
+    for (const [k, p] of unidas.entries()) {
+      const texto = W.slice(p.first, p.last + 1).filter((_, j) => !quitar.has(p.first + j)).map((w) => w[0]).join(' ');
+      for (const [a0, b0, sp] of curva[k])
+        out.push({src: pz.src, in: +a0.toFixed(3), out: +b0.toFixed(3), speed: sp, gain_db: pz.gain_db ?? 0, sec: pz.sec ?? 'main', texto});
     }
   }
   return out;
