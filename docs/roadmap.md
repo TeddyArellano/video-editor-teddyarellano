@@ -23,11 +23,16 @@
 - [x] Vista previa con los componentes propios del proyecto; color de la vista previa igual al render.
 - [x] `pnpm dmg` para repartir la app.
 
-## Reel Studio: pendientes
-- **Firmar y notarizar la app** (requiere cuenta de Apple Developer) para que abra sin clic derecho → Abrir.
-- **Publicar directo en TikTok / Instagram** (sus APIs piden una app registrada y OAuth con la cuenta del creador). Hoy: Exportar → Compartir.
-- **Vista del plan con gráficos:** hoy muestra solo video y voz; los gráficos se ven al aplicar.
-- **Instalar el toolkit desde el `.dmg`** sin clonar el repo (el modelo de Whisper pesa ~1.6 GB).
+## Reel Studio: hecho después (noviembre 2026)
+- [x] **El `.dmg` funciona sin el repo:** trae la skill dentro (`Contents/Resources/skill/editar-reel`); **Instalar / reparar** corre su `setup.sh` (toolkit + modelo) y enlaza la skill para Claude si no estaba. Firma ad-hoc.
+- [x] **Publicar:** Exportar → TikTok / Instagram / YouTube Shorts abre la página de subida, muestra el video en Finder y copia el texto del post.
+- [x] **Vista del plan con subtítulos** sincronizados por palabra.
+- [x] **Clips sin conexión:** Cortes avisa si falta un clip original, Re-cortar no corre a ciegas y **Localizar…** lo vuelve a enlazar.
+
+## Reel Studio: lo que depende de terceros
+- **Notarizar con Apple** (cuenta de Apple Developer, de pago): sin ella, la primera vez se abre con clic derecho → Abrir.
+- **Subida automática a TikTok / Instagram** (sus APIs piden una app registrada y OAuth con la cuenta del creador).
+- **Gráficos en la vista del plan:** dependen del nuevo tiempo de cada palabra, que calculan `reel cortar` + `reel datos` al aplicar.
 
 ## Siguientes mejoras (cuando el uso real lo pida)
 - **Equipo:** empaquetar la skill como plugin de Claude Code para otras personas (requieren Mac).

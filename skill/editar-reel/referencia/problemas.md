@@ -175,3 +175,13 @@ La app compila `src/Reel.tsx` del proyecto con el esbuild del toolkit (`app/src/
 - **Síntoma:** después de corregir una palabra en Subtítulos (`fix`), `reel datos` fallaba con "anclas que no están en el corte: 's1:para'".
 - **Causa:** el `fix` cambia el texto de las palabras del corte, pero los elementos anclados a esa palabra (`"en": "s1:para"`) seguían buscando la palabra vieja. Se notó con las capas nuevas, que la app pega a la palabra más cercana.
 - **Arreglo:** `corregir()` (`app/src/shared/subtitulos.ts`) renombra la palabra en todas las anclas de `eventos.json` (`en`, `hasta`, `segunda`, `flecha`, `objetos`, `cortes`, `enfasis`). Si corriges un `fix` a mano, haz lo mismo con sus anclas.
+
+## Re-cortar se queda esperando: falta un clip original
+- **Síntoma:** `reel edl` termina con `✗ no encuentro el clip IMG_3309 en …` y en Reel Studio el corte no avanza.
+- **Causa:** el clip se movió o borró de la carpeta del material (`proyecto.json` → `fuentes`).
+- **Arreglo:** regresar el archivo, o en Reel Studio → Cortes → **Localizar…** (deja un enlace con el nombre original). La app ya no lanza el corte mientras falte algún clip.
+
+## `reel dividir` falla al repetirse: "File exists … node_modules"
+- **Síntoma:** la segunda vez que se divide un proyecto, `shutil.Error … [Errno 17] File exists: …/node_modules`.
+- **Causa:** `copytree(symlinks=True, dirs_exist_ok=True)` no puede reescribir el enlace `node_modules` que ya existe en la parte.
+- **Arreglo (ya en `reel.py`):** `node_modules` se excluye de la copia y se vuelve a enlazar al toolkit.

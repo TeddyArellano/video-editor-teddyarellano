@@ -57,13 +57,21 @@
       "package.json"
     ],
     "asar": true,
+    "extraResources": [
+      {
+        "from": "../skill/editar-reel",
+        "to": "skill/editar-reel",
+        "filter": ["**/*", "!**/node_modules/**", "!**/__pycache__/**"]
+      }
+    ],
     "mac": {
       "category": "public.app-category.video",
       "icon": "build/icon.png",
       "target": [
         "dir"
       ],
-      "identity": null,
+      "identity": "-",
+      "hardenedRuntime": false,
       "extendInfo": {
         "CFBundleDocumentTypes": [
           {

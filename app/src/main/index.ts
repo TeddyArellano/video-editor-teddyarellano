@@ -13,6 +13,13 @@ import {guardarPreferencias, preferencias} from './preferencias';
 import {compilarProyecto} from './compilar';
 import {execFile, execFileSync} from 'node:child_process';
 
+// páginas de subida de cada red (Exportar → Publicar)
+const PUBLICAR: Record<string, string> = {
+  tiktok: 'https://www.tiktok.com/tiktokstudio/upload',
+  instagram: 'https://www.instagram.com/',
+  youtube: 'https://studio.youtube.com/',
+};
+
 // duración (s) de un video o audio con ffprobe; null si no se puede leer
 const duracionMedio = (f: string) =>
   new Promise<number | null>((ok) => {
@@ -123,6 +130,15 @@ const registrarIPC = () => {
     const f = fs.existsSync(dir) ? fs.readdirSync(dir).find((x) => path.parse(x).name === clip && /\.(mov|mp4|m4v)$/i.test(x)) : undefined;
     return f ?? null;
   });
+  // "Localizar…" un clip sin conexión: enlace simbólico <carpeta>/<clip>.<ext> → el archivo elegido (no copia ni mueve nada)
+  ipcMain.handle('localizarClip', (_e, id: string, clip: string, archivo: string) => {
+    const dir = infoDe(rutaDe(id)).carpeta;
+    if (!/^[\w .()-]+$/.test(clip) || !fs.existsSync(archivo)) return false;
+    const dst = path.join(dir, clip + path.extname(archivo).toLowerCase());
+    if (fs.existsSync(dst)) return false;
+    fs.symlinkSync(archivo, dst);
+    return true;
+  });
   ipcMain.handle('cancelar', (_e, t: string) => cancelar(t));
   ipcMain.handle('trabajos', () => lista());
   ipcMain.handle('herramientas', (): Herramientas => {
@@ -163,7 +179,17 @@ const registrarIPC = () => {
       'actualizar', repoDir(), process.env.REEL_DESTINO_APP || '/Applications',
     ]),
   );
-  ipcMain.handle('repararToolkit', () => encolar('', repoDir(), 'Instalar / reparar toolkit', ['__sh', path.join(repoDir(), 'install.sh')]));
+  // con el repo: install.sh (enlaza la skill + toolkit). Instalada desde el .dmg (sin repo): setup.sh de la skill incluida
+  // y, si Claude aún no tiene la skill, la enlaza a la copia de la app.
+  ipcMain.handle('repararToolkit', () => {
+    const inst = path.join(repoDir(), 'install.sh');
+    if (fs.existsSync(inst)) return encolar('', repoDir(), 'Instalar / reparar toolkit', ['__sh', inst]);
+    const skill = skillDir();
+    return encolar('', skill, 'Instalar / reparar toolkit', [
+      '__sh', '-c', 'set -e; D="$HOME/.claude/skills/editar-reel"; if [ ! -e "$D" ]; then mkdir -p "${D:h}"; ln -s "$1" "$D"; echo "✓ skill enlazada: $D → $1"; fi; zsh "$1/setup.sh"',
+      'reparar', skill,
+    ]);
+  });
   ipcMain.handle('probarToolkit', () => encolar('', repoDir(), 'Probar toolkit', ['prueba']));
   ipcMain.handle('reiniciar', () => {
     app.relaunch();
@@ -199,6 +225,21 @@ const registrarIPC = () => {
   });
   ipcMain.handle('claude', (_e, id: string, prompt: string) => preguntar(rutaDe(id), prompt, (ev: EventoClaude) => enviar('claude', ev)));
   ipcMain.handle('copiar', (_e, t: string) => clipboard.writeText(t));
+  // publicar (sin API oficial ni cuentas): abre la página de subida de la red, muestra el video en Finder para arrastrarlo
+  // y copia el texto del post (si existe "<nombre> - post.txt") al portapapeles. Devuelve si copió texto.
+  ipcMain.handle('publicar', (_e, red: string, video: string, post?: string) => {
+    const url = PUBLICAR[red];
+    if (!url) return false;
+    let copiado = false;
+    if (post && fs.existsSync(post)) {
+      clipboard.writeText(fs.readFileSync(post, 'utf8').trim());
+      copiado = true;
+    }
+    if (process.env.REEL_NO_ABRIR) return copiado; // pruebas: no abrir el navegador ni Finder
+    if (fs.existsSync(video)) shell.showItemInFolder(video);
+    shell.openExternal(url);
+    return copiado;
+  });
   ipcMain.handle('publicarRevision', (_e, id: string) => {
     const ruta = rutaDe(id);
     const url = (leerJSON(path.join(ruta, 'edicion', 'proyecto.json'))?.contenido as {revision_url?: string} | null)?.revision_url;

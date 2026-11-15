@@ -84,6 +84,7 @@ export type ReelAPI = {
   existe: (ruta: string) => Promise<boolean>;
   copiarA: (origen: string, carpeta: string) => Promise<string>; // copia un archivo a otra carpeta (exportar)
   compartir: (rutas: string[]) => Promise<void>;
+  publicar: (red: 'tiktok' | 'instagram' | 'youtube', video: string, post?: string) => Promise<boolean>; // abre la subida + copia el post
   compilarProyecto: (id: string) => Promise<{ok: true; codigo: string; ms: number; editable: boolean} | {ok: false; error: string}>; // componentes propios // menú Compartir de macOS (AirDrop, Mensajes, Mail…)
   abrir: (ruta: string) => Promise<Snapshot>;
   cerrar: (id: string) => Promise<void>;
@@ -112,6 +113,7 @@ export type ReelAPI = {
   guardarEstilo: (id: string, contenido: unknown) => Promise<void>;
   claude: (id: string, prompt: string) => Promise<string>;
   copiar: (texto: string) => Promise<void>;
+  localizarClip: (id: string, clip: string, archivo: string) => Promise<boolean>; // relinkea un clip sin conexión
   publicarRevision: (id: string) => Promise<string>;
   claudeCancelar: (sesion: string) => Promise<void>;
   onCambio: (fn: (c: CambioArchivo) => void) => () => void;

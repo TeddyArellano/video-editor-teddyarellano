@@ -22,7 +22,7 @@ export const lanzar = async (abrir: boolean | string = true, userData = fs.mkdte
   const ejecutable = process.env.REEL_EJECUTABLE;
   const app = await electron.launch({
     ...(ejecutable ? {executablePath: ejecutable, args: []} : {args: [path.join(__dirname, '..', 'out', 'main', 'index.js')]}),
-    env: {...process.env, REEL_USER_DATA: userData, ...(abrir ? {REEL_ABRIR: typeof abrir === 'string' ? abrir : FIXTURE} : {})},
+    env: {...process.env, REEL_USER_DATA: userData, REEL_NO_ABRIR: '1', ...(abrir ? {REEL_ABRIR: typeof abrir === 'string' ? abrir : FIXTURE} : {})},
   });
   const page = await app.firstWindow();
   page.on('console', (m) => m.type() === 'error' && console.log('[renderer]', m.text().slice(0, 300)));

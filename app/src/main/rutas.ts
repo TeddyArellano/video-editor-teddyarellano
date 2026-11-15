@@ -9,6 +9,8 @@ export const TOOLKIT = path.join(HOME, '.reels-toolkit');
 // el Python del toolkit (o el que se elija en Preferencias)
 export const python = () => preferencias().python || path.join(TOOLKIT, 'venv', 'bin', 'python');
 
+// copia de la skill dentro de la app empaquetada (Contents/Resources/skill/editar-reel)
+export const skillIncluida = () => path.join(process.resourcesPath ?? '', 'skill', 'editar-reel');
 // la skill: variable REEL_SKILL > el repo donde vive la app (desarrollo) > el enlace que crea install.sh
 export const skillDir = (): string => {
   const cands = [
@@ -18,6 +20,7 @@ export const skillDir = (): string => {
     path.resolve(__dirname, '../../../../skill/editar-reel'),
     path.join(HOME, '.claude', 'skills', 'editar-reel'),
     path.join(HOME, '.claude-tortas', 'skills', 'editar-reel'),
+    skillIncluida(), // la copia que trae la app empaquetada (.dmg): funciona sin el repo
   ].filter(Boolean) as string[];
   for (const c of cands) if (fs.existsSync(path.join(c, 'scripts', 'reel.py'))) return fs.realpathSync(c);
   return cands[1];
@@ -31,5 +34,5 @@ export const repoDir = () => path.resolve(skillDir(), '..', '..');
 export const entorno = (): NodeJS.ProcessEnv => {
   const extra = ['/opt/homebrew/bin', '/opt/homebrew/sbin', '/usr/local/bin', path.join(HOME, '.local', 'bin'), path.join(HOME, '.claude', 'local'), path.join(HOME, '.npm-global', 'bin')];
   const actual = (process.env.PATH ?? '').split(':');
-  return {...process.env, PATH: [...extra.filter((x) => !actual.includes(x)), ...actual].join(':'), PYTHONUNBUFFERED: '1', FORCE_COLOR: '0', NO_COLOR: '1', PYTHON_COLORS: '0'};
+  return {...process.env, PATH: [...extra.filter((x) => !actual.includes(x)), ...actual].join(':'), PYTHONUNBUFFERED: '1', PYTHONDONTWRITEBYTECODE: '1', FORCE_COLOR: '0', NO_COLOR: '1', PYTHON_COLORS: '0'};
 };

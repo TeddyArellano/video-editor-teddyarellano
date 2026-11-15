@@ -39,6 +39,7 @@ test('reordenar, vista del plan, atajo propio y exportar', async () => {
   await page.getByTestId('vista-plan').locator('video').first().evaluate((v: HTMLVideoElement) => v.play());
   await expect.poll(() => page.getByTestId('vista-plan').locator('video').first().evaluate((v: HTMLVideoElement) => v.readyState >= 2 && !v.error), {timeout: 15_000}).toBe(true);
   await page.waitForTimeout(800);
+  await expect(page.getByTestId('subtitulo-plan')).toBeVisible(); // subtítulos sincronizados por palabra
   await page.screenshot({path: 'test-results/vista-plan.png'});
   await page.getByTestId('ver-plan').click();
 
@@ -68,6 +69,9 @@ test('reordenar, vista del plan, atajo propio y exportar', async () => {
   await page.getByTestId('exportar-ya').click();
   await expect(page.getByTestId('compartir')).toBeVisible({timeout: 180_000});
   expect(fs.existsSync(path.join(P, 'edicion', 'borrador 1x1.mp4'))).toBe(true);
+  // publicar: abre la subida (en pruebas no se abre nada) y avisa qué hacer
+  await page.getByTestId('publicar-tiktok').click();
+  await expect(page.getByTestId('aviso-publicar')).toContainText('TikTok');
   await page.screenshot({path: 'test-results/exportar.png'});
   await app.close();
 });

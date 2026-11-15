@@ -1991,7 +1991,13 @@ def cmd_dividir(a):
         slug = re.sub(r'[^a-z0-9]+', '_', plain).strip('_')
         dest = pr.P.parent / f"{pr.P.name}_{slug}"
         shutil.copytree(pr.P, dest, dirs_exist_ok=True, symlinks=True,
-                        ignore=shutil.ignore_patterns('cut.mp4', 'cut_proxy.mp4', 'versiones', 'respaldo', 'revision', 'borrador.mp4', 'hookfg'))
+                        ignore=shutil.ignore_patterns('cut.mp4', 'cut_proxy.mp4', 'versiones', 'respaldo', 'revision', 'borrador.mp4', 'hookfg', 'node_modules'))
+        # node_modules es un enlace al toolkit: copytree falla si la parte ya existía (dividir de nuevo); se vuelve a enlazar
+        nm, nm2 = pr.P / 'node_modules', dest / 'node_modules'
+        if nm.is_symlink() and (nm2.is_symlink() or not nm2.exists()):
+            if nm2.is_symlink():
+                nm2.unlink()
+            nm2.symlink_to(os.readlink(nm))
         p2 = {**plan, "piezas": [x for x in plan['piezas'] if x.get('sec', 'main') in keep]}
         missing = set(keep) - {x.get('sec', 'main') for x in p2['piezas']}
         if missing:

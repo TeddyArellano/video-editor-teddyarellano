@@ -13,13 +13,13 @@ cd app
 
 Vuelve a correrlo después de un `git pull`: la plantilla de la skill va empaquetada dentro de la app.
 
-**Para compartirla:** `pnpm dmg` genera `dist/Reel Studio <versión>.dmg` (arrastrar a Aplicaciones). Quien la instale necesita igual el toolkit de la skill (la app ofrece **Instalar / reparar** al abrir). No va firmada: la primera vez, clic derecho → Abrir.
+**Para compartirla:** `pnpm dmg` genera `dist/Reel Studio <versión>.dmg` (arrastrar a Aplicaciones). La app trae la skill dentro, así que no hace falta clonar el repo: al abrirla por primera vez ofrece **Instalar / reparar**, que instala el toolkit (ffmpeg, Whisper y su modelo de ~1.6 GB, Remotion) y enlaza la skill para Claude. Va con firma ad-hoc (sin notarizar): la primera vez, clic derecho → Abrir.
 
 **Requisitos:**
 - el toolkit de la skill (`install.sh` en la raíz del repo);
 - Node y pnpm.
 
-No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app no va firmada; `instalar.sh` le quita la cuarentena.
+No hace falta Xcode, Rust ni una cuenta de Apple Developer. La app va con firma ad-hoc (sin notarizar); `instalar.sh` le quita la cuarentena.
 
 **Primer arranque:** si falta el toolkit, la biblioteca lo avisa y ofrece **Instalar / reparar**, que corre `install.sh`.
 
@@ -115,7 +115,7 @@ REEL_E2E_CLAUDE=1 …                           # incluye la prueba con Claude r
 - **Video de la vista previa:** al buscar un cuadro puede quedar ±1 cuadro. El render final es exacto. El color se corrige con una gamma (queda a 0–3 niveles del render).
 - **Vista del plan:** es una aproximación de `reel edl` (no afina con la energía de la voz ni quita silencios) y no lleva gráficos ni cámara virtual; el resultado exacto se ve al aplicar.
 - **Atajos con el teclado:** los gestos del ratón (Alt al arrastrar, ⇧ al rotar…) no se pueden cambiar.
-- **Publicar directo en TikTok o Instagram:** no está; sus APIs piden una app registrada con la cuenta del creador. "Compartir" usa el menú de macOS.
+- **Publicar:** Exportar → TikTok / Instagram / YouTube Shorts abre la página de subida, muestra el video en Finder para arrastrarlo y copia el texto del post (`<nombre> - post.txt`). La subida automática necesitaría una app registrada con cada red.
 - **Fuentes:** las 15 van en `plantilla_remotion/public/fonts` (OFL), así que no hace falta internet.
 - **Publicar la página de revisión:** el `claude -p` que usa la app no tiene la herramienta Artifact (verificado: no aparece en las herramientas al iniciar). Por eso **"Publicar con Claude Code"** abre Terminal con una sesión interactiva en la carpeta del proyecto, con el pedido ya escrito y permiso solo para Artifact, leer y correr `reel.py`. Si es la primera vez en esa carpeta, Claude Code pregunta si confías en ella: esa respuesta es tuya. Verificado de punta a punta en noviembre de 2026: tras aceptar la confianza, la sesión publicó la página en unos 70 s, subió el borrador como asset y dejó `revision_url` en `proyecto.json`. También está "Copiar pedido". Se verificó el flujo completo de SKILL.md §4 sobre el proyecto sintético de la autoprueba:
   - publicar la página;

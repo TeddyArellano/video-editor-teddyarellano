@@ -20,6 +20,38 @@ const leerPref = (): Pref => {
   }
 };
 
+// Publicar sin cuentas ni API: abre la página de subida, deja el video a la vista en Finder para arrastrarlo y copia el
+// texto del post (el que escribe Claude en "<nombre> - post.txt") para pegarlo como descripción.
+const REDES = [
+  ['tiktok', 'TikTok'],
+  ['instagram', 'Instagram'],
+  ['youtube', 'YouTube Shorts'],
+] as const;
+const Publicar: React.FC<{video?: string; post: string}> = ({video, post}) => {
+  const [aviso, setAviso] = useState('');
+  if (!video) return null;
+  return (
+    <div className="rounded-md border border-zinc-800 p-2">
+      <div className="mb-1.5 text-[11px] text-zinc-400">Publicar</div>
+      <div className="flex gap-1.5">
+        {REDES.map(([k, n]) => (
+          <Boton
+            key={k}
+            data-testid={`publicar-${k}`}
+            onClick={async () => {
+              const copiado = await window.reel.publicar(k, video, post);
+              setAviso(`Se abrió ${n}: arrastra el video desde Finder${copiado ? ' y pega la descripción (ya está copiada)' : ''}.`);
+            }}
+          >
+            {n}
+          </Boton>
+        ))}
+      </div>
+      {aviso && <div className="mt-1.5 text-[11px] text-emerald-300" data-testid="aviso-publicar">{aviso}</div>}
+    </div>
+  );
+};
+
 export const Exportar: React.FC<{cerrar: () => void}> = ({cerrar}) => {
   const info = useEditor((s) => s.info)!;
   const [p, setP] = useState<Pref>(leerPref);
@@ -78,6 +110,7 @@ export const Exportar: React.FC<{cerrar: () => void}> = ({cerrar}) => {
                 </button>
               ))}
             </div>
+            <Publicar video={salidas.find((f) => f.endsWith('.mp4'))} post={`${info.carpeta}/${info.nombre} - post.txt`} />
             <div className="flex gap-2">
               <Boton v="primario" onClick={() => window.reel.compartir(salidas.filter((f) => f.endsWith('.mp4')))} data-testid="compartir">
                 Compartir…

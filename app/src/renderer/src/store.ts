@@ -235,6 +235,13 @@ export const hayCortePendiente = (s: Pick<Estado, 'plan' | 'planCortado'>) => {
 };
 export const useCortePendiente = () => useEditor(hayCortePendiente);
 
+// clips del plan que no están en la carpeta del material
+export const clipsFaltantes = async (id: string, piezas: {src: string}[]) => {
+  const clips = [...new Set(piezas.map((p) => p.src))];
+  const r = await Promise.all(clips.map(async (c) => ((await window.reel.fuenteDe(id, c)) ? null : c)));
+  return r.filter(Boolean) as string[];
+};
+
 // Aplica los recortes: regenera el video y actualiza las anclas (también las del historial, para que deshacer siga siendo válido).
 // El orden importa: las anclas se reescriben con el edl_final real, después de cortar y antes de `reel datos`.
 export const aplicarCorte = async (op: {verificar?: boolean} = {}): Promise<boolean> => {
@@ -244,6 +251,12 @@ export const aplicarCorte = async (op: {verificar?: boolean} = {}): Promise<bool
   const viejo = s.edl as TramoEdl[] | null;
   const f0 = useReloj.getState().frame;
   const teniaProxy = s.info.estado.proxy;
+  // clips sin conexión (se movieron o borraron): no tiene caso cortar; Cortes ofrece "Localizar…"
+  const faltan = await clipsFaltantes(id, (s.plan as {piezas?: {src: string}[]} | null)?.piezas ?? []);
+  if (faltan.length) {
+    s.avisar('error', `Falta${faltan.length > 1 ? 'n' : ''} el clip original ${faltan.join(', ')} en la carpeta del material. Localízalo en la pestaña Cortes.`);
+    return false;
+  }
   useEditor.setState({aplicando: true});
   try {
     datosPendientes = false;

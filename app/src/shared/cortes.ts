@@ -441,7 +441,8 @@ export const reanclar = (eventos: Record<string, unknown>, edlViejo: TramoEdl[],
 // Aproximación de `reel edl` para ver el plan SIN re-cortar: tramos de los clips originales por palabras, con los mismos
 // márgenes (PAD_IN/PAD_OUT), vecinas, pausas largas (GAP_SPLIT), uniones (MERGE_GAP) y mas_inicio/mas_final.
 // No afina con la energía de la voz ni quita silencios (eso lo hace `reel cortar`): es para escuchar y ver el orden.
-export type TramoPlan = {src: string; in: number; out: number; speed: number; gain_db: number; sec: string; texto: string};
+// palabras: [texto, inicio, fin] en segundos del clip original (para los subtítulos de la vista del plan)
+export type TramoPlan = {src: string; in: number; out: number; speed: number; gain_db: number; sec: string; texto: string; palabras: PalabraClip[]};
 const PAD_IN = 0.14;
 const PAD_OUT = 0.12;
 const GAP_SPLIT = 0.3;
@@ -532,8 +533,9 @@ export const tramosPlan = (plan: Plan | null, palabras: Palabras): TramoPlan[] =
     const curva = rampaVelocidad(unidas.map((p) => [p.in, p.out]), pz.speed ?? 1, pz.rampa);
     for (const [k, p] of unidas.entries()) {
       const texto = W.slice(p.first, p.last + 1).filter((_, j) => !quitar.has(p.first + j)).map((w) => w[0]).join(' ');
+      const ws = W.slice(p.first, p.last + 1).filter((_, j) => !quitar.has(p.first + j));
       for (const [a0, b0, sp] of curva[k])
-        out.push({src: pz.src, in: +a0.toFixed(3), out: +b0.toFixed(3), speed: sp, gain_db: pz.gain_db ?? 0, sec: pz.sec ?? 'main', texto});
+        out.push({src: pz.src, in: +a0.toFixed(3), out: +b0.toFixed(3), speed: sp, gain_db: pz.gain_db ?? 0, sec: pz.sec ?? 'main', texto, palabras: ws.filter((w) => w[2] > a0 && w[1] < b0)});
     }
   }
   return out;

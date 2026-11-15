@@ -3,7 +3,7 @@
 // cualquier clip; escuchar el tramo original; y Re-cortar (edl → cortar --verificar → datos) con progreso.
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {agregarPieza, alternarQuitar, dividirPieza, duracionPieza, editarPieza, moverPieza, quitarPieza, textoPieza, type Pieza, type Plan} from '@shared/cortes';
-import {aplicarCorte, useCortePendiente, useEditor} from '@/store';
+import {aplicarCorte, clipsFaltantes, useCortePendiente, useEditor} from '@/store';
 import {pausar} from '@/reloj';
 import {Boton, Etiqueta, inputCls, Seccion, Vacio} from '@/ui';
 
@@ -60,6 +60,41 @@ const Niveles: React.FC = () => {
   );
 };
 
+// clips del plan que ya no están en la carpeta del material (se movieron o borraron): sin ellos no se puede re-cortar.
+// "Localizar…" deja un enlace con el nombre original apuntando al archivo elegido.
+const SinConexion: React.FC<{piezas: {src: string}[]}> = ({piezas}) => {
+  const info = useEditor((s) => s.info)!;
+  const [faltan, setFaltan] = useState<string[]>([]);
+  const [v, setV] = useState(0);
+  const clave = [...new Set(piezas.map((p) => p.src))].join('|');
+  useEffect(() => {
+    clipsFaltantes(info.id, piezas).then(setFaltan);
+  }, [clave, info.id, v]);
+  if (!faltan.length) return null;
+  return (
+    <div className="mb-2 rounded-md border border-rose-800 bg-rose-950/40 p-2 text-[11px] text-rose-200" data-testid="sin-conexion">
+      {faltan.map((c) => (
+        <div key={c} className="flex items-center gap-2">
+          <span className="flex-1">
+            Falta el clip original <b>{c}</b> en la carpeta del material.
+          </span>
+          <Boton
+            data-testid={`localizar-${c}`}
+            onClick={async () => {
+              const [f] = await window.reel.elegirArchivos([{name: 'Video', extensions: ['mov', 'mp4', 'm4v']}]);
+              if (!f) return;
+              if (await window.reel.localizarClip(info.id, c, f)) setV((x) => x + 1);
+              else useEditor.getState().avisar('error', `No se pudo enlazar ${c} (¿ya existe un archivo con ese nombre?)`);
+            }}
+          >
+            Localizar…
+          </Boton>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const Cortes: React.FC = () => {
   const info = useEditor((s) => s.info)!;
   const plan = useEditor((s) => s.plan) as Plan | null;
@@ -99,6 +134,7 @@ export const Cortes: React.FC = () => {
           </Boton>
         }
       >
+        <SinConexion piezas={piezas} />
         {corte && <div className="text-[11px] text-amber-300">Cambiaste el plan: presiona Re-cortar para ver el resultado.</div>}
         {piezas.length === 0 && <div className="text-[11px] text-zinc-500">Sin piezas. Agrega frases desde la transcripción de abajo.</div>}
         <div className="space-y-1.5">

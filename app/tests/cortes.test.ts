@@ -188,6 +188,9 @@ describe('tramosPlan (vista del plan sin re-cortar)', () => {
     expect(r[0].in).toBeCloseTo(3.86, 2); // 4 − 0.14
     expect(r[1].in).toBeCloseTo(0.76, 2); // 1 − 0.14 − 0.1
     expect(r[2].out).toBeLessThanOrEqual(4 - 0.1 + 1e-9); // nunca entra en la palabra siguiente
+    // subtítulos de la vista del plan: palabras con su tiempo en el clip, sin las quitadas
+    expect(r[1].palabras.map((w) => w[0])).toEqual(['hola']);
+    expect(r[2].palabras).toEqual([['tal', 1.7, 1.9]]);
   });
 });
 

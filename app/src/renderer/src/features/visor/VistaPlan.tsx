@@ -1,14 +1,36 @@
 // Vista del plan (cambios al instante): reproduce el plan pendiente directamente desde los clips originales, en su
-// orden nuevo y con los tramos extendidos, SIN esperar a "Aplicar recortes". Solo video y voz: los gráficos, la cámara
-// virtual y el ajuste fino de silencios se ven después de aplicar (los calcula `reel cortar` + `reel datos`).
+// orden nuevo y con los tramos extendidos, SIN esperar a "Aplicar recortes". Video, voz y subtítulos sincronizados por
+// palabra (de la transcripción de cada clip); los gráficos, la cámara virtual y el ajuste fino de silencios se ven después
+// de aplicar (los calcula `reel cortar` + `reel datos` y dependen del nuevo tiempo de cada palabra).
 import {Player} from '@remotion/player';
 import React, {useEffect, useMemo, useState} from 'react';
-import {AbsoluteFill, Series, Video} from 'remotion';
+import {AbsoluteFill, Series, Video, useCurrentFrame} from 'remotion';
 import {tramosPlan, type Plan, type TramoPlan} from '@shared/cortes';
 import {useEditor} from '@/store';
 
 type TramoUrl = TramoPlan & {url: string; frames: number};
 const FPS = 30;
+
+// subtítulo palabra por palabra: grupos de hasta 3 palabras; la que se está diciendo va en amarillo
+const GRUPO = 3;
+const Subtitulo: React.FC<{t: TramoUrl}> = ({t}) => {
+  const f = useCurrentFrame();
+  const ahora = t.in + (f / FPS) * t.speed; // segundo del clip original
+  const ws = t.palabras;
+  if (!ws.length) return null;
+  let i = ws.findIndex((w) => w[2] > ahora);
+  if (i < 0) i = ws.length - 1;
+  const g = Math.floor(i / GRUPO) * GRUPO;
+  return (
+    <div data-testid="subtitulo-plan" style={{position: 'absolute', left: 40, right: 40, bottom: 300, textAlign: 'center', fontFamily: 'Montserrat, sans-serif', fontWeight: 900, fontSize: 64, lineHeight: 1.15, textTransform: 'uppercase', textShadow: '0 4px 12px #000, 0 0 3px #000'}}>
+      {ws.slice(g, g + GRUPO).map((w, k) => (
+        <span key={k} style={{color: g + k === i && ahora >= w[1] ? '#FFD400' : '#fff', marginRight: 16}}>
+          {w[0]}
+        </span>
+      ))}
+    </div>
+  );
+};
 
 const PlanComp: React.FC<{tramos: TramoUrl[]}> = ({tramos}) => (
   <AbsoluteFill style={{background: '#000'}}>
@@ -23,7 +45,7 @@ const PlanComp: React.FC<{tramos: TramoUrl[]}> = ({tramos}) => (
             volume={Math.min(4, Math.pow(10, (t.gain_db ?? 0) / 20))}
             style={{width: '100%', height: '100%', objectFit: 'cover'}}
           />
-          <div style={{position: 'absolute', left: 24, bottom: 260, right: 24, color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: 44, textShadow: '0 3px 8px #000', textAlign: 'center'}}>{t.texto}</div>
+          <Subtitulo t={t} />
         </Series.Sequence>
       ))}
     </Series>

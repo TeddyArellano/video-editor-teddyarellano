@@ -151,7 +151,7 @@ export const Visor: React.FC = () => {
           {verPlan ? '✕ Volver a la vista del video' : '▶ Ver el plan nuevo'}
         </button>
       )}
-      {verPlan && <div className="absolute top-9 right-2 max-w-[220px] rounded bg-black/70 px-2 py-1 text-[10px] text-zinc-300">Vista del plan: orden y tramos nuevos desde los clips originales, sin gráficos. Aplica (Enter) para ver el resultado final.</div>}
+      {verPlan && <div className="absolute top-9 right-2 max-w-[220px] rounded bg-black/70 px-2 py-1 text-[10px] text-zinc-300">Vista del plan: orden y tramos nuevos desde los clips originales, con subtítulos por palabra. Los gráficos aparecen al aplicar (Enter).</div>}
       <button
         className="absolute bottom-2 right-2 rounded bg-zinc-800/80 px-2 py-1 text-[11px] text-zinc-300 hover:bg-zinc-700"
         onClick={() => setGuias(!guias)}

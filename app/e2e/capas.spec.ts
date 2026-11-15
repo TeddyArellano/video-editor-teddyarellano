@@ -52,7 +52,11 @@ test('capas: medios, texto con claves, transición y ajuste', async () => {
   await page.getByTestId('agregar-textos').click();
   await page.getByTestId('inspector').locator('textarea').first().fill('HOLA CAPCUT');
   await hasta(() => ev().textos?.[0]?.texto === 'HOLA CAPCUT');
-  await page.getByTestId('agregar-clave').click();
+  await page.getByTestId('agregar-clave').click({timeout: 10_000}).catch(async (e) => {
+    await page.screenshot({path: 'test-results/capas-diag.png'});
+    console.log('DIAG clave', (await page.getByTestId('inspector').innerText()).slice(0, 600).replace(/\n/g, ' | '));
+    throw e;
+  });
   await hasta(() => (ev().textos[0].claves ?? []).length >= 1);
   await page.locator('body').click({position: {x: 5, y: 300}});
   await page.keyboard.press('Shift+ArrowRight');
