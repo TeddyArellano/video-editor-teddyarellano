@@ -6,6 +6,7 @@ import {useEditor} from '@/store';
 import {Boton, Etiqueta, inputCls} from '@/ui';
 import {ACCIONES, combosDe, comboDe, conflictos, textoCombo, type Atajos} from '@shared/atajos';
 import {ponerAtajos} from '@/store';
+import {Redes} from './Redes';
 
 // gestos del ratón (no se pueden cambiar): los atajos de teclado salen de shared/atajos.ts y se editan abajo
 export const GESTOS: [string, string][] = [
@@ -181,6 +182,9 @@ export const Preferencias: React.FC<{cerrar: () => void}> = ({cerrar}) => {
             {reparando && <span className="truncate text-[11px] text-zinc-400">{reparando.estado === 'corriendo' ? 'instalando… (puede tardar varios minutos)' : reparando.estado}</span>}
           </div>
         </div>
+
+        <h3 className="mt-5 mb-2 text-[11px] font-semibold tracking-wide text-zinc-400 uppercase">Redes (publicar directo)</h3>
+        <Redes />
 
         <h3 className="mt-5 mb-2 text-[11px] font-semibold tracking-wide text-zinc-400 uppercase">Actualizaciones</h3>
         <div className="rounded-md border border-zinc-800 p-2 text-xs" data-testid="pref-actualizaciones">

@@ -68,6 +68,8 @@ export type Herramientas = {python: string; reel: string; skill: string; toolkit
 
 export type Preferencias = {skill: string; python: string; tema: 'oscuro' | 'claro'; calidad: 'proxy' | 'completa'; atajos?: Record<string, string[]>};
 
+export type EstadoRedes = {tiktok: {configurada: boolean; conectada: boolean; usuario?: string}; instagram: {configurada: boolean}};
+
 export type EstadoActualizacion = {repo: string; rama: string; atras: number; adelante: number; cambiosLocales: boolean; ultimo: string; error?: string};
 
 // API que el preload expone en window.reel
@@ -113,6 +115,11 @@ export type ReelAPI = {
   guardarEstilo: (id: string, contenido: unknown) => Promise<void>;
   claude: (id: string, prompt: string) => Promise<string>;
   copiar: (texto: string) => Promise<void>;
+  estadoRedes: () => Promise<EstadoRedes>;
+  configurarRed: (red: 'tiktok' | 'instagram', datos: Record<string, string> | null) => Promise<EstadoRedes>;
+  conectarTiktok: () => Promise<{ok: true; estado: EstadoRedes} | {ok: false; error: string}>;
+  subirA: (red: 'tiktok' | 'instagram', video: string, post?: string) => Promise<{ok: true; id: string; mensaje: string} | {ok: false; error: string}>;
+  onSubida: (fn: (p: {red: string; texto: string; fraccion?: number}) => void) => () => void;
   localizarClip: (id: string, clip: string, archivo: string) => Promise<boolean>; // relinkea un clip sin conexión
   publicarRevision: (id: string) => Promise<string>;
   claudeCancelar: (sesion: string) => Promise<void>;

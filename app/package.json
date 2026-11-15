@@ -15,6 +15,7 @@
     "e2e": "electron-vite build && playwright test -c e2e",
     "dist": "electron-vite build && electron-builder --mac dir",
     "instalar": "zsh ./instalar.sh",
+    "dmg:firmado": "zsh ./firmar.sh",
     "dmg": "~/.reels-toolkit/venv/bin/python ../skill/editar-reel/scripts/synth_sfx.py ../skill/editar-reel/plantilla_remotion/public/sfx >/dev/null && electron-vite build && electron-builder --mac dmg"
   },
   "devDependencies": {

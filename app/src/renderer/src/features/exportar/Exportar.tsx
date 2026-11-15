@@ -3,6 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import {guardar, useEditor} from '@/store';
 import {Boton, Etiqueta, inputCls} from '@/ui';
+import type {EstadoRedes} from '@shared/tipos';
 
 type Calidad = 'borrador' | 'final' | '4k';
 const FORMATOS = [
@@ -20,8 +21,9 @@ const leerPref = (): Pref => {
   }
 };
 
-// Publicar sin cuentas ni API: abre la página de subida, deja el video a la vista en Finder para arrastrarlo y copia el
-// texto del post (el que escribe Claude en "<nombre> - post.txt") para pegarlo como descripción.
+// Publicar: con la cuenta conectada (Preferencias → Redes) sube directo por la API oficial (TikTok: a la bandeja de
+// entrada para terminar en la app; Instagram: publica el Reel con el texto del post). Sin cuenta, abre la página de
+// subida, deja el video a la vista en Finder y copia el texto del post ("<nombre> - post.txt").
 const REDES = [
   ['tiktok', 'TikTok'],
   ['instagram', 'Instagram'],
@@ -29,25 +31,48 @@ const REDES = [
 ] as const;
 const Publicar: React.FC<{video?: string; post: string}> = ({video, post}) => {
   const [aviso, setAviso] = useState('');
+  const [redes, setRedes] = useState<EstadoRedes | null>(null);
+  const [subiendo, setSubiendo] = useState<{red: string; texto: string; fraccion?: number} | null>(null);
+  useEffect(() => {
+    window.reel.estadoRedes().then(setRedes);
+    return window.reel.onSubida(setSubiendo);
+  }, []);
   if (!video) return null;
+  const directo = (k: string) => (k === 'tiktok' ? !!redes?.tiktok.conectada : k === 'instagram' ? !!redes?.instagram.configurada : false);
   return (
     <div className="rounded-md border border-zinc-800 p-2">
       <div className="mb-1.5 text-[11px] text-zinc-400">Publicar</div>
-      <div className="flex gap-1.5">
+      <div className="flex flex-wrap gap-1.5">
         {REDES.map(([k, n]) => (
           <Boton
             key={k}
             data-testid={`publicar-${k}`}
+            disabled={!!subiendo && !aviso}
+            title={directo(k) ? 'Sube directo con tu cuenta conectada' : 'Abre la página de subida (conecta la cuenta en Preferencias → Redes para subir directo)'}
             onClick={async () => {
+              setAviso('');
+              if (directo(k) && k !== 'youtube') {
+                setSubiendo({red: k, texto: `${n}: empezando…`});
+                const r = await window.reel.subirA(k, video, post);
+                setSubiendo(null);
+                setAviso(r.ok ? r.mensaje : `✗ ${n}: ${r.error}`);
+                return;
+              }
               const copiado = await window.reel.publicar(k, video, post);
               setAviso(`Se abrió ${n}: arrastra el video desde Finder${copiado ? ' y pega la descripción (ya está copiada)' : ''}.`);
             }}
           >
-            {n}
+            {directo(k) ? `↑ ${n}` : n}
           </Boton>
         ))}
       </div>
-      {aviso && <div className="mt-1.5 text-[11px] text-emerald-300" data-testid="aviso-publicar">{aviso}</div>}
+      {subiendo && (
+        <div className="mt-1.5 text-[11px] text-zinc-300" data-testid="progreso-subida">
+          {subiendo.texto}
+          {subiendo.fraccion !== undefined && <div className="mt-1 h-1 rounded bg-zinc-800"><div className="h-1 rounded bg-sky-500" style={{width: `${Math.round(subiendo.fraccion * 100)}%`}} /></div>}
+        </div>
+      )}
+      {aviso && <div className={`mt-1.5 text-[11px] ${aviso.startsWith('✗') ? 'text-rose-400' : 'text-emerald-300'}`} data-testid="aviso-publicar">{aviso}</div>}
     </div>
   );
 };

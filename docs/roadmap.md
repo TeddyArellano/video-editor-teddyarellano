@@ -29,9 +29,9 @@
 - [x] **Vista del plan con subtítulos y gráficos:** la plantilla real va encima sin su cámara (`sinCamara`) y con los cuadros de `data.json` acomodados al plan (`app/src/shared/planDatos.ts`).
 - [x] **Clips sin conexión:** Cortes avisa si falta un clip original, Re-cortar no corre a ciegas y **Localizar…** lo vuelve a enlazar.
 
-## Reel Studio: lo que depende de terceros
-- **Notarizar con Apple** (cuenta de Apple Developer, de pago): sin ella, la primera vez se abre con clic derecho → Abrir.
-- **Subida automática a TikTok / Instagram** (sus APIs piden una app registrada y OAuth con la cuenta del creador).
+## Reel Studio: listo, solo falta la cuenta de cada servicio
+- [x] **Firmar con Developer ID y notarizar:** `pnpm dmg:firmado` (`app/firmar.sh`, hardened runtime con `build/entitlements.mac.plist`). Necesita la cuenta de Apple Developer, el certificado "Developer ID Application" en el llavero y `APPLE_ID` + `APPLE_APP_SPECIFIC_PASSWORD` + `APPLE_TEAM_ID` (o `APPLE_KEYCHAIN_PROFILE`).
+- [x] **Subir directo a TikTok** (Content Posting API, a la bandeja de entrada) **e Instagram** (Graph API, Reel publicado con el texto del post): Preferencias → Redes. Necesita una app de TikTok con "Content Posting API" y una app de Meta con `instagram_content_publish`. Probado contra un simulador de ambas APIs (`e2e/redes.spec.ts`).
 
 ## Siguientes mejoras (cuando el uso real lo pida)
 - **Equipo:** empaquetar la skill como plugin de Claude Code para otras personas (requieren Mac).

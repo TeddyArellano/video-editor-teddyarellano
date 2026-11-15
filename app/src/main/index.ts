@@ -8,6 +8,7 @@ import {abrirSesionInteractiva, cancelarClaude, preguntar} from './claude';
 import {manejarProtocolo, registrarEsquema} from './medios';
 import {alAvisar, cancelar, detenerTodo, encolar, encolarCadena, lista} from './procesos';
 import {abrir, cerrar, dejarDeVigilarRegistro, infoDe, miniatura, propias, recientes, rutaDe, vigilarRegistro} from './proyectos';
+import {configurarRed, conectarTiktok, estadoRedes, subirA, type Red} from './redes';
 import {TOOLKIT, entorno, python, reelPy, repoDir, skillDir} from './rutas';
 import {guardarPreferencias, preferencias} from './preferencias';
 import {compilarProyecto} from './compilar';
@@ -129,6 +130,24 @@ const registrarIPC = () => {
     const dir = infoDe(rutaDe(id)).carpeta;
     const f = fs.existsSync(dir) ? fs.readdirSync(dir).find((x) => path.parse(x).name === clip && /\.(mov|mp4|m4v)$/i.test(x)) : undefined;
     return f ?? null;
+  });
+  // publicar directo con las APIs de TikTok / Instagram (credenciales cifradas en userData/redes.json)
+  ipcMain.handle('estadoRedes', () => estadoRedes());
+  ipcMain.handle('configurarRed', (_e, red: Red, datos: Record<string, string> | null) => configurarRed(red, datos));
+  ipcMain.handle('conectarTiktok', async () => {
+    try {
+      return {ok: true, estado: await conectarTiktok()};
+    } catch (e) {
+      return {ok: false, error: (e as Error).message};
+    }
+  });
+  ipcMain.handle('subirA', async (e, red: Red, video: string, post?: string) => {
+    try {
+      const r = await subirA(red, video, post, (texto, fraccion) => e.sender.send('subida', {red, texto, fraccion}));
+      return {ok: true, ...r};
+    } catch (err) {
+      return {ok: false, error: (err as Error).message};
+    }
   });
   // "Localizar…" un clip sin conexión: enlace simbólico <carpeta>/<clip>.<ext> → el archivo elegido (no copia ni mueve nada)
   ipcMain.handle('localizarClip', (_e, id: string, clip: string, archivo: string) => {
